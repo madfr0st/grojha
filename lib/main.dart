@@ -1,0 +1,189 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:grojha/routes.dart';
+import 'package:grojha/screens/home/home_screen.dart';
+import 'package:grojha/screens/splash/splash_screen.dart';
+import 'package:grojha/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'message.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+AndroidNotificationChannel channel;
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  if (!kIsWeb) {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  runApp(App());
+}
+
+/// The API endpoint here accepts a raw FCM payload for demonstration purposes.
+
+/// We are using a StatefulWidget such that we only create the [Future] once,
+/// no matter how many times our widget rebuild.
+/// If we used a [StatelessWidget], in the event where [App] is rebuilt, that
+/// would re-initialize FlutterFire and make our application re-enter loading state,
+/// which is undesired.
+class App extends StatefulWidget {
+  // Create the initialization Future outside of `build`:
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  /// The future is part of the state of our widget. We should not call `initializeApp`
+  /// directly inside [build].
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  final DatabaseReference databaseReference =
+      FirebaseDatabase.instance.reference();
+  String _token;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      if (message != null) {
+        Navigator.pushNamed(context, '/message',
+            arguments: MessageArguments(message, true));
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
+                icon: 'launch_background',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      Navigator.pushNamed(context, '/message',
+          arguments: MessageArguments(message, true));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          print("snapshot error");
+          return CircularProgressIndicator();
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          print("connection is done");
+          //databaseReference.push().set({'name': "check", 'comment': 'A good season'});
+
+          FirebaseMessaging.instance.getToken().then((value) {
+            print(value);
+          });
+          print("---------------------------");
+
+          return MyApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        print("loading");
+        return CircularProgressIndicator();
+      },
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  User user = FirebaseAuth.instance.currentUser;
+  String string = SplashScreen.routeName;
+
+  @override
+  Widget build(BuildContext context) {
+    if (user != null) {
+      print('User is currently signed in :)');
+      string = HomeScreen.routeName;
+    } else {
+      print('User is currently null :(');
+    }
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: theme(),
+      // home: SplashScreen(),
+      // We use routeName so that we dont need to remember the name
+      initialRoute: string,
+      routes: routes,
+      builder: (context, child) {
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
+    );
+  }
+}
