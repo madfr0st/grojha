@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/place_order.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/components/grad_button.dart';
 import 'package:grojha/constants.dart';
@@ -224,27 +225,12 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
   }
 
   void _pushOrder() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("orders");
-
-    String orderKey = databaseReference.push().key;
-
-    print(orderKey);
-
     Order order = new Order(
-      orderId: orderKey,
       orderState: "pending",
-      //orderTime: ServerValue.timestamp,
       shopId: PlaceOrderVariables.shop.shopId,
       shopName: PlaceOrderVariables.shop.shopName,
       deliveryCharge: PlaceOrderVariables.delivery,
       grandTotal: PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery,
-      userId: uid,
       productList: PlaceOrderVariables.list,
       userName: userName,
       userPhoneNumber: userPhoneNumber,
@@ -252,85 +238,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       shopImage: PlaceOrderVariables.shop.shopImage,
     );
 
-    databaseReference.child(orderKey).set({
-      "orderId": order.orderId,
-      "orderState": order.orderState,
-      "orderTime": ServerValue.timestamp,
-      "shopId": order.shopId,
-      "shopName": order.shopName,
-      "deliveryCharge": order.deliveryCharge,
-      "grandTotal": order.grandTotal,
-      "userId": order.userId,
-      "userName": order.userName,
-      "userPhoneNumber": order.userPhoneNumber,
-      "userAddress": order.userAddress,
-      "shopImage": order.shopImage,
-    });
-
-    DatabaseReference databaseReference1 = FirebaseDatabase.instance
-        .reference()
-        .child("shops")
-        .child(PlaceOrderVariables.shop.shopId)
-        .child("orders");
-
-    databaseReference1.child(orderKey).set({
-      "orderId": order.orderId,
-      "orderState": order.orderState,
-      "orderTime": ServerValue.timestamp,
-      "shopId": order.shopId,
-      "shopName": order.shopName,
-      "deliveryCharge": order.deliveryCharge,
-      "grandTotal": order.grandTotal,
-      "userId": order.userId,
-      "userName": order.userName,
-      "userPhoneNumber": order.userPhoneNumber,
-      "userAddress": order.userAddress,
-      "shopImage": order.shopImage,
-    });
-
-    DatabaseReference databaseReference2 = FirebaseDatabase.instance
-        .reference()
-        .child("orders");
-
-    databaseReference2.child(orderKey).set({
-      "orderId": order.orderId,
-      "orderState": order.orderState,
-      "orderTime": ServerValue.timestamp,
-      "shopId": order.shopId,
-      "shopName": order.shopName,
-      "deliveryCharge": order.deliveryCharge,
-      "grandTotal": order.grandTotal,
-      "userId": order.userId,
-      "userName": order.userName,
-      "userPhoneNumber": order.userPhoneNumber,
-      "userAddress": order.userAddress,
-      "shopImage": order.shopImage,
-    });
-
-    for (int i = 0; i < order.productList.length; i++) {
-      databaseReference2.child(orderKey).child("productList").push().set({
-        "productId": order.productList[i].productId,
-        "productImage": order.productList[i].productImage,
-        "productUnit": order.productList[i].productUnit,
-        "productQuantity": order.productList[i].productQuantity,
-        "productName": order.productList[i].productName,
-        "productTotalCartCost": order.productList[i].productTotalCartCost,
-        "productCartCount": order.productList[i].productCartCount,
-        "productMRP": order.productList[i].productMRP,
-        "productSellingPrice": order.productList[i].productSellingPrice,
-        "productStatus":true,
-      });
-    }
-
-    DatabaseReference databaseReference4 = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("cart")
-        .child(PlaceOrderVariables.shop.shopId);
-
-
-    databaseReference4.set({});
+    PlaceOrder(order: order).pushOrder();
     _success();
 
   }

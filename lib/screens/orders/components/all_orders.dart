@@ -33,26 +33,28 @@ class _AllOrdersState extends State<AllOrders> {
                   Map<dynamic, dynamic> values = snapshot.data.value;
 
                   orderList.clear();
-                  values.forEach((key, value) {
-                    //print(value);
-                   orderList.add(new Order(
-                     orderId: value["orderId"],
-                     orderState: value["orderState"],
-                     orderTime: value["orderTime"],
-                     shopId: value["shopId"],
-                     shopName: value["shopName"],
-                     deliveryCharge: value["deliveryCharge"],
-                     grandTotal: value["grandTotal"],
-                     userId: value["userId"],
-                     //productList: PlaceOrderVariables.list,
-                     userName: value["userName"],
-                     userPhoneNumber: value["userPhoneNumber"],
-                     userAddress: value["userAddress"],
-                   ));
+                  values.forEach((key, val) {
+                    val.forEach((key, value) {
+                      //print(value);
+                      orderList.add(new Order(
+                        orderId: value["orderId"],
+                        orderState: value["orderState"],
+                        orderTime: value["orderTime"],
+                        shopId: value["shopId"],
+                        shopName: value["shopName"],
+                        deliveryCharge: value["deliveryCharge"],
+                        grandTotal: value["grandTotal"],
+                        userId: value["userId"],
+                        //productList: PlaceOrderVariables.list,
+                        userName: value["userName"],
+                        userPhoneNumber: value["userPhoneNumber"],
+                        userAddress: value["userAddress"],
+                      ));
+                    });
                   }); //print(shops);
 
                   return Column(children: [
-                    ...List.generate(orderList.length, (index){
+                    ...List.generate(orderList.length, (index) {
                       return SingleOrderCard(
                         order: orderList[index],
                       );

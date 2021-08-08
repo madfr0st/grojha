@@ -30,7 +30,7 @@ final Map<String, WidgetBuilder> routes = {
   OrdersScreen.routeName: (context) => OrdersScreen(),
   PhoneNumberSignInScreen.routeName: (context) => PhoneNumberSignInScreen(),
   CartScreen.routeName: (context) => CartScreen(),
-  PlaceOrder.routeName: (context) => PlaceOrder(),
+  PlaceOrderScreen.routeName: (context) => PlaceOrderScreen(),
   OfferScreen.routeName: (context) => OfferScreen(),
   SingleSelectedShopCategory.routeName: (context) =>
       SingleSelectedShopCategory(),

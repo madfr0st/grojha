@@ -16,6 +16,7 @@ class Order {
   int orderTime;
   String orderState;
   List<Product> productList;
+  String thumbnail;
 
   Order({String this.shopId,
     String this.shopName,
@@ -30,7 +31,8 @@ class Order {
     String this.orderId,
     String this.orderState,
     int this.deliveryCharge,
-    List<Product> this.productList});
+    List<Product> this.productList,
+    String this.thumbnail});
 
   @override
   String toString() {

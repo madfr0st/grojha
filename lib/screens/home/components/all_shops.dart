@@ -20,7 +20,7 @@ class AllShops extends StatefulWidget {
 class _AllShopsState extends State<AllShops> {
   List<Shop> shops;
   DatabaseReference databaseReference =
-      FirebaseDatabase.instance.reference().child("pincode").child("700001");
+      FirebaseDatabase.instance.reference().child("pincode/700001/shops");
 
   @override
   Widget build(BuildContext context) {

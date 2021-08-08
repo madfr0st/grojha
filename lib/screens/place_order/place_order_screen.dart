@@ -6,10 +6,10 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import '../../constants.dart';
 import 'components/body.dart';
 
-class PlaceOrder extends StatelessWidget {
-  const PlaceOrder({Key key, this.shop,}) : super(key: key);
+class PlaceOrderScreen extends StatelessWidget {
+  const PlaceOrderScreen({Key key, this.shop,}) : super(key: key);
 
-  static String routeName = "/place_order";
+  static String routeName = "/place_order_screen";
 
   final Shop shop;
 

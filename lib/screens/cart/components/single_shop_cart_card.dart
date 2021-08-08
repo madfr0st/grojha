@@ -247,7 +247,7 @@ class SingleShopCartCard extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PlaceOrder(
+                                  builder: (context) => PlaceOrderScreen(
                                     shop : shop
                                   ),
                                 ),
