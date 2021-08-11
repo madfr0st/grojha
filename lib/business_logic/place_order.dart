@@ -62,6 +62,9 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
+      "orderImage":order.orderImage,
+      "secondaryOrderId": ServerValue.timestamp,
+
     });
   }
 
@@ -84,6 +87,8 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
+      "orderImage":order.orderImage,
+      "secondaryOrderId": ServerValue.timestamp,
     });
   }
 
@@ -105,6 +110,8 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
+      "orderImage":order.orderImage,
+      "secondaryOrderId": ServerValue.timestamp,
     });
   }
 

@@ -62,10 +62,10 @@ class _AllOrdersState extends State<AllOrders> {
                   ]);
                 } catch (e) {
                   print(e);
-                  return Text("Some Error Occured!!!");
+                  return Center(child: Text("Some Error Occured!!!"));
                 }
               }
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }),
       ),
     );

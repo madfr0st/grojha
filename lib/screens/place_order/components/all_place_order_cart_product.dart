@@ -65,6 +65,9 @@ class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
                     });
                     PlaceOrderVariables.list = list;
                     PlaceOrderVariables.shop = widget.shop;
+
+                    PlaceOrderVariables.list.sort((a,b)=>a.productName.compareTo(b.productName));
+
                     return Column(children: [
                       Expanded(
                         child: SingleChildScrollView(
@@ -83,6 +86,7 @@ class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
                       ),
                       PlaceOrderFooter(
                         notifyParent: refresh,
+                        product: PlaceOrderVariables.list[0],
                       ),
                     ]);
                   } catch (e) {

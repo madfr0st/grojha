@@ -4,6 +4,8 @@ import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/global_variables/all_product_data.dart';
 import 'package:grojha/screens/single_shop/components/single_product_card.dart';
 
+import '../../../size_config.dart';
+
 class Body extends StatelessWidget {
   const Body({Key key, this.productCategory, this.shop}) : super(key: key);
   final String productCategory;
@@ -29,7 +31,8 @@ class Body extends StatelessWidget {
                 shop: shop,
                 product: list[index],
               ),
-            )
+            ),
+            SizedBox(height: SizeConfig.screenHeight*.4,),
           ],
         ),
       ),

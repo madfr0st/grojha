@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:grojha/size_config.dart';
@@ -7,11 +9,12 @@ import 'package:grojha/constants.dart';
 class MenuTitle extends StatelessWidget {
   final GestureTapCallback press;
   final String title;
+  final Color color;
 
   const MenuTitle({
     Key key,
     this.press,
-    this.title,
+    this.title, this.color,
   }) : super(key: key);
 
   @override
@@ -27,7 +30,7 @@ class MenuTitle extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: getProportionateScreenWidth(18),
-                color: Colors.black,
+                color: color,
                 fontWeight: FontWeight.w800,
               ),
             ),

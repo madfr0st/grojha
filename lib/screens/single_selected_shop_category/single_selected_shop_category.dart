@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grojha/screens/single_selected_shop_category/components/custom_floating_button.dart';
 
 import '../../constants.dart';
 import 'components/body.dart';
@@ -21,6 +22,7 @@ class SingleSelectedShopCategory extends StatelessWidget {
         backgroundColor: kPrimaryColor,
       ),
       body: Body(selectedCategory: selectedCategory),
+      floatingActionButton: CustomFloatingButton(),
     );
   }
 }

@@ -27,8 +27,9 @@ class Body extends StatelessWidget {
               child: Column(
                 children: [
                   //SingleShopDetails(),
-                  MenuTitle(title: shop.shopName),
+                  MenuTitle(title: shop.shopName,color: Colors.black,),
                   ProductsList(shop: shop,),
+                  SizedBox(height: SizeConfig.screenHeight*.4,),
 
                 ],
               ),

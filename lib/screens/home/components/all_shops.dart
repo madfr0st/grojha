@@ -49,13 +49,18 @@ class _AllShopsState extends State<AllShops> {
                   Map<dynamic, dynamic> values = snapshot.data.value;
                   shops.clear();
                   values.forEach((key, value) {
-                    if (value["info"]["shopName"] != null) {
-                      shops.add(new Shop(
-                          shopName: value["info"]["shopName"],
-                          shopCategory: value["info"]["shopCategory"],
-                          shopId: key,
-                          shopAddress: value["info"]["shopAddress"],
-                          shopImage: value["info"]["shopImage"]));
+                    try {
+                      if (value["info"]["shopName"] != null && value["status"]["open"]) {
+                        shops.add(new Shop(
+                            shopName: value["info"]["shopName"],
+                            shopCategory: value["info"]["shopCategory"],
+                            shopId: key,
+                            shopAddress: value["info"]["shopAddress"],
+                            shopImage: value["info"]["shopImage"]));
+                      }
+                    }
+                    catch(e){
+                      print(e);
                     }
                   });
                   //print(shops);

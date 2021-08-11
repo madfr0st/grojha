@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/Objects/product.dart';
 import 'package:grojha/business_logic/place_order.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/components/grad_button.dart';
@@ -13,9 +14,10 @@ import 'package:grojha/size_config.dart';
 class PlaceOrderFooter extends StatefulWidget {
   const PlaceOrderFooter({
     Key key,
-    this.notifyParent,
+    this.notifyParent, this.product,
   }) : super(key: key);
   final Function() notifyParent;
+  final Product product;
 
   @override
   _PlaceOrderFooterState createState() => _PlaceOrderFooterState();
@@ -47,7 +49,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             height: getProportionateScreenWidth(65),
@@ -138,14 +140,14 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                placeOrderButton(
-                  Colors.grey,
+                actionOrderButton(kPrimaryColor,
+                  Colors.white,
                   () {
                     _clearCart();
                   },
                   "Clear Cart",
                 ),
-                placeOrderButton(Colors.orange, () {
+                actionOrderButton(kPrimaryColor,kPrimaryColor, () {
                   placeOrder(context);
                 }, "Place Order")
               ],
@@ -236,6 +238,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       userPhoneNumber: userPhoneNumber,
       userAddress: userAddress,
       shopImage: PlaceOrderVariables.shop.shopImage,
+      orderImage: widget.product.productImage,
     );
 
     PlaceOrder(order: order).pushOrder();
@@ -502,6 +505,76 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
         });
   }
 
+
+  Container actionOrderButton(
+      Color borderColor, Color fillColor, GestureTapCallback press, name) {
+    return Container(
+      height: getProportionateScreenWidth(50),
+      width: SizeConfig.screenWidth * .45,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(3, 3), // changes position of shadow
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        height: getProportionateScreenWidth(50),
+        width: SizeConfig.screenWidth * .45,
+        padding: EdgeInsets.all(3),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              borderColor.withOpacity(1),
+              borderColor.withOpacity(0),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Material(
+          borderRadius: BorderRadius.circular(12),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: press,
+            child: Container(
+              //margin: EdgeInsets.all(),
+              height: getProportionateScreenWidth(50),
+              alignment: Alignment.center,
+              width: SizeConfig.screenWidth * .45,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    fillColor.withOpacity(.9),
+                    fillColor.withOpacity(.1),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                "$name",
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(17),
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: Colors.black),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
   Container placeOrderButton(Color color, GestureTapCallback press, name) {
     return Container(
       height: getProportionateScreenWidth(50),

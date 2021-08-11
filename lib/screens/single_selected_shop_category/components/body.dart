@@ -5,6 +5,8 @@ import 'package:grojha/screens/home/components/all_shops.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
 
+import '../../../size_config.dart';
+
 class Body extends StatefulWidget {
   const Body({Key key, this.selectedCategory}) : super(key: key);
 
@@ -41,7 +43,8 @@ class _BodyState extends State<Body> {
                           ),
                         ));
                   });
-            })
+            }),
+            SizedBox(height: SizeConfig.screenHeight*.4,),
           ],
         ),
       )),

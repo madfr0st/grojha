@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 
+
 import '../../../constants.dart';
+import 'components/body.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({Key key, this.order}) : super(key: key);
+class ShippedOrderDetailsScreen extends StatelessWidget {
+  const ShippedOrderDetailsScreen({Key key, this.order, this.notifyParent}) : super(key: key);
 
-  static String routeName = "/order_details_screen";
+  static String routeName = "/shipped_order_details_screen";
   final Order order;
+  final Function notifyParent;
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,7 @@ class OrderDetailsScreen extends StatelessWidget {
         elevation: 15,
         backgroundColor: kPrimaryColor,
       ),
-
+      body: Body(order: order,),
     );
   }
 }

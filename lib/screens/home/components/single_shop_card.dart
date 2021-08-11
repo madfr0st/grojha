@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/constants.dart';
 
 import '../../../size_config.dart';
 
@@ -25,7 +26,7 @@ class SingleShopCard extends StatelessWidget {
           blurRadius: 5,
           offset: Offset(3, 3), // changes position of shadow
         ),
-      ], color: Colors.orange, borderRadius: BorderRadius.circular(10)),
+      ], color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
       child: Container(
         height: getProportionateScreenWidth(141),
         width: double.infinity,
