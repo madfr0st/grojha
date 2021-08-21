@@ -6,8 +6,8 @@ import '../../../../constants.dart';
 import 'components/body.dart';
 
 class PendingOrderDetailsScreen extends StatelessWidget {
-  const PendingOrderDetailsScreen({Key key, this.order, this.notifyParent}) : super(key: key);
-  final Function notifyParent;
+  const PendingOrderDetailsScreen({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
+  final Function notifyOrderScreen;
 
 
   static String routeName = "/pending_order_details_screen";
@@ -18,12 +18,13 @@ class PendingOrderDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Pending Order Details",style: TextStyle(
-            color: Colors.black
+            color: Colors.black,
+            fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,
       ),
-      body: Body(order: order,notifyParent: notifyParent,),
+      body: Body(order: order,notifyOrderScreen: notifyOrderScreen,),
     );
   }
 }

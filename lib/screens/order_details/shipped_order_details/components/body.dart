@@ -18,7 +18,7 @@ class Body extends StatelessWidget {
     String uid = FirebaseAuth.instance.currentUser.uid;
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
-        .child("orders/shipped")
+        .child("orders")
         .child(order.orderId)
         .child("productList");
 

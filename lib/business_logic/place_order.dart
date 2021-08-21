@@ -1,29 +1,43 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/cart_item_count.dart';
 
 class PlaceOrder {
   String uid = FirebaseAuth.instance.currentUser.uid;
 
   Order order;
+  int orderNumber;
 
   PlaceOrder({Order this.order}){
     this.order.userId = uid;
   }
 
-  void pushOrder() {
-    this.order.orderId = _getOrderKey();
-
-    _setOrderInOrders();
-    _setOrderInShopAccount();
-    _setOrderInUserAccount();
-    _setProductList();
-
-    _clearCart(shopUid: order.shopId);
-    //_success();
+  void pushOrder() async {
+    _orderNumber();
   }
 
-  void _clearCart({String shopUid}) {
+  void _orderNumber(){
+    DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("orderNumber");
+
+    databaseReference.runTransaction((MutableData transaction) async{
+      transaction.value = (transaction.value ?? 0) + 1;
+      orderNumber = transaction.value;
+      return transaction;
+    }).then((value){
+      if(orderNumber != null) {
+        this.order.orderId = _getOrderKey();
+        _setOrderInOrders();
+        _setOrderInShopAccount();
+        _setOrderInUserAccount();
+        _setProductList();
+
+        clearCart(shopUid: order.shopId);
+      }
+    });
+  }
+
+  void clearCart({String shopUid}){
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("users")
@@ -32,6 +46,13 @@ class PlaceOrder {
         .child(shopUid);
 
     databaseReference.set({});
+    CartItemCount.cartItemCount -= order.productList.length;
+    CartItemCount.decreaseItemCount(itemCount: order.productList.length);
+
+    for(int i=0;i<order.productList.length;i++){
+      CartItemCount.map[order.shopId+order.productList[i].productId] = 0;
+    }
+
   }
 
   String _getOrderKey() {
@@ -63,8 +84,8 @@ class PlaceOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "orderImage":order.orderImage,
-      "secondaryOrderId": ServerValue.timestamp,
-
+      "secondaryOrderId": orderNumber,
+      "uniqueItems": order.uniqueItems
     });
   }
 
@@ -88,7 +109,8 @@ class PlaceOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "orderImage":order.orderImage,
-      "secondaryOrderId": ServerValue.timestamp,
+      "secondaryOrderId": orderNumber,
+      "uniqueItems": order.uniqueItems
     });
   }
 
@@ -111,7 +133,8 @@ class PlaceOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "orderImage":order.orderImage,
-      "secondaryOrderId": ServerValue.timestamp,
+      "secondaryOrderId": orderNumber,
+      "uniqueItems": order.uniqueItems
     });
   }
 

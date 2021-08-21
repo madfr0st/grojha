@@ -5,9 +5,9 @@ import '../../constants.dart';
 import 'components/body.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key key}) : super(key: key);
+  const CartScreen({Key key, this.notifyHomeScreen}) : super(key: key);
   static String routeName = "/cart_screen";
-
+  final Function notifyHomeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CartScreen extends StatelessWidget {
     elevation: 15,
     backgroundColor: kPrimaryColor,
       ),
-      body: Body(),
+      body: Body(notifyHomeScreen: notifyHomeScreen,),
     );
   }
 }

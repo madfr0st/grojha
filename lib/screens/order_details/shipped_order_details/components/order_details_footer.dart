@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/refresh_code.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/components/grad_button.dart';
 
@@ -13,9 +16,9 @@ import '../../order_details_variables.dart';
 class OrderDetailsFooter extends StatefulWidget {
   const OrderDetailsFooter({
     Key key,
-    this.notifyParent, this.order,
+    this.notifyOrderScreen, this.order,
   }) : super(key: key);
-  final Function() notifyParent;
+  final Function() notifyOrderScreen;
   final Order order;
 
   @override
@@ -31,6 +34,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   String orderButtonStatus = "Accept Order";
   String acceptOrder = "Accept Order";
   String modifyOrder = "Modify Order";
+  int code;
 
   @override
   Widget build(BuildContext context) {
@@ -146,26 +150,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
             height: getProportionateScreenWidth(60),
             width: double.infinity,
             //    color: Colors.lightGreenAccent,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                actionOrderButton(
-                  kPrimaryColor,
-                  Colors.white,
-                  () {
-                    _rejectOrder();
-                  },
-                  "Reject Order",
-                ),
-                actionOrderButton(kPrimaryColor, kPrimaryColor, () {
-                  if (orderButtonStatus == "Accept Order") {
-                    _acceptOrder(context);
-                  } else {
-                    _modifyOrder(context);
-                  }
-                }, orderButtonStatus)
-              ],
-            ),
+            child:  buildOTPContainer(context),
           ),
         ],
       ),
@@ -240,6 +225,34 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         ),
       ),
     );
+  }
+
+  Container buildOTPContainer(BuildContext context) {
+    return Container(
+      height: getProportionateScreenWidth(60),
+      width: double.infinity,
+      //    color: Colors.lightGreenAccent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          actionOrderButton(kPrimaryColor, Colors.white, () {}, "$code"),
+          actionOrderButton(kPrimaryColor, kPrimaryColor, () {_refreshCode();}, "Refresh" )
+        ],
+      ),
+    );
+  }
+
+  void _refreshCode(){
+    setState(() {
+      code = randomCode();
+    });
+    RefreshCode(order: widget.order,code:code).refreshCode();
+  }
+
+  int randomCode(){
+    Random random = new Random();
+    int randomNumber = random.nextInt(900000)+100000;
+    return randomNumber;
   }
 
   void _rejectOrder() {

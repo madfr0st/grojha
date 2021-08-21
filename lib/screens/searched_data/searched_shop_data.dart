@@ -5,14 +5,16 @@ import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
 
 class SearchedShopData extends SearchDelegate<String> {
-  List<String> list = ["checl", "csd", "adad", "adad"];
-
   List<Shop> emptyList = [
     new Shop(
         shopName: "No Result",
         shopAddress: "No Result",
         shopCategory: "No Result")
   ];
+
+  final Function notifyHomeScreen;
+
+  SearchedShopData({Function this.notifyHomeScreen});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -44,46 +46,46 @@ class SearchedShopData extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     final List<Shop> suggestionList = query.isEmpty
         ? []
-        : AllShopData.list.where((element){
-      if (element.shopName.startsWith(query)) {
-        return true;
-      }
-      if(element.shopName.toLowerCase().startsWith(query)) {
-        return true;
-      }
-      if(element.shopName.toUpperCase().startsWith(query)) {
-        return true;
-      }
+        : AllShopData.list.where((element) {
+            if (element.shopName.startsWith(query)) {
+              return true;
+            }
+            if (element.shopName.toLowerCase().startsWith(query)) {
+              return true;
+            }
+            if (element.shopName.toUpperCase().startsWith(query)) {
+              return true;
+            }
 
-      if(element.shopName.contains(query)) {
-        return true;
-      }
-      if(element.shopName.toUpperCase().contains(query)) {
-        return true;
-      }
-      // if(element.productName.toUpperCase().matchAsPrefix(query) != null) {
-      //   return true;
-      // }
+            if (element.shopName.contains(query)) {
+              return true;
+            }
+            if (element.shopName.toUpperCase().contains(query)) {
+              return true;
+            }
+            // if(element.productName.toUpperCase().matchAsPrefix(query) != null) {
+            //   return true;
+            // }
 
-
-      return false;
-
-    }).toList();
+            return false;
+          }).toList();
 
     return SingleChildScrollView(
       child: Column(children: [
         ...List.generate(suggestionList.length, (index) {
           return SingleShopCard(
+            notifyHomeScreen: notifyHomeScreen,
             shop: suggestionList[index],
             press: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SingleShop(
-                        shop: suggestionList[index]
+                      shop: suggestionList[index],
+                      notifyHomeScreen: notifyHomeScreen,
                     ),
                   ));
-            } ,
+            },
           );
         })
       ]),

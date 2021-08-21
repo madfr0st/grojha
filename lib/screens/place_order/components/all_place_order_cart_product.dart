@@ -8,25 +8,28 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import 'package:grojha/screens/place_order/components/single_place_order_product_card.dart';
 import 'package:grojha/screens/single_shop/components/single_product_card.dart';
 
-class AllPlaceorderCartProduct extends StatefulWidget {
-  const AllPlaceorderCartProduct({
+class AllPlaceOrderCartProduct extends StatefulWidget {
+  const AllPlaceOrderCartProduct({
     Key key,
-    this.shop,
+    this.shop, this.notifyHomeScreen,
   }) : super(key: key);
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
-  _AllPlaceorderCartProductState createState() =>
-      _AllPlaceorderCartProductState();
+  _AllPlaceOrderCartProduct createState() =>
+      _AllPlaceOrderCartProduct();
 }
 
-class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
+class _AllPlaceOrderCartProduct extends State<AllPlaceOrderCartProduct> {
   String uid = FirebaseAuth.instance.currentUser.uid;
   List<Product> list = [];
   int grandTotal = 0;
 
-  refresh() {
+
+  _refresh() {
     setState(() {});
+    widget.notifyHomeScreen();
   }
 
   @override
@@ -37,6 +40,7 @@ class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
         .child(uid)
         .child("cart")
         .child(widget.shop.shopId);
+
 
     return Column(
       children: [
@@ -50,7 +54,6 @@ class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
                     Map<dynamic, dynamic> values = snapshot.data.value;
                     list.clear();
                     PlaceOrderVariables.itemTotal = 0;
-
                     values.forEach((key, value) {
                       list.add(new Product(
                           productId: key,
@@ -75,18 +78,19 @@ class _AllPlaceorderCartProductState extends State<AllPlaceorderCartProduct> {
                             ...List.generate(list.length, (index) {
                               PlaceOrderVariables.itemTotal +=
                                   list[index].productTotalCartCost;
-                              return SinglePlaceOrderProductcard(
+                              return SinglePlaceOrderProductCard(
                                 shop: widget.shop,
                                 product: list[index],
-                                notifyParent: refresh,
+                                notifyHomeScreen: _refresh,
                               );
                             })
                           ]),
                         ),
                       ),
                       PlaceOrderFooter(
-                        notifyParent: refresh,
+                        notifyHome: _refresh,
                         product: PlaceOrderVariables.list[0],
+                        uniqueItems: list.length,
                       ),
                     ]);
                   } catch (e) {

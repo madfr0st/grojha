@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/cancel_order.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/components/grad_button.dart';
 
@@ -13,9 +14,9 @@ import '../../order_details_variables.dart';
 class OrderDetailsFooter extends StatefulWidget {
   const OrderDetailsFooter({
     Key key,
-    this.notifyParent, this.order,
+    this.notifyOrderScreen, this.order,
   }) : super(key: key);
-  final Function() notifyParent;
+  final Function() notifyOrderScreen;
   final Order order;
 
   @override
@@ -146,16 +147,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                   kPrimaryColor,
                   Colors.white,
                   () {
-                    _rejectOrder();
+                    _cancelOrder();
                   },
-                  "Reject Order",
+                  "Cancel Order",
                 ),
-                actionOrderButton(kPrimaryColor, kPrimaryColor, () {
-
-                    _orderPacked(context);
-
-                }, "Continue")
-              ],
+                 ],
             ),
           ),
         ],
@@ -233,7 +229,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
     );
   }
 
-  void _rejectOrder() {
+  void _cancelOrder() {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -274,9 +270,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                         height: getProportionateScreenHeight(56),
                         width: double.infinity,
                         child: DefaultButton(
-                          text: "Reject Order",
+                          text: "Cancel Order",
                           press: () {
                             if (areYouSure) {
+                              print("sdadada");
+                              CancelOrder(order: widget.order).cancelOrder();
                               _success();
                             }
                           },
@@ -293,95 +291,6 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
 
 
 
-  void _orderPacked(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Container(
-                  height: getProportionateScreenWidth(250),
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  width: double.infinity,
-                  child: Container(
-                    alignment: Alignment.center,
-                    // color: Colors.lightGreenAccent,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            height: getProportionateScreenWidth(30),
-                            alignment: Alignment.centerLeft,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.lightGreenAccent.withOpacity(0.7),
-                                    Colors.lightGreenAccent.withOpacity(0.1),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(20)),
-                            //      color: Colors.grey,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Grand Total ",
-                                  style: TextStyle(
-                                      height: 1,
-                                      color: Colors.indigo,
-                                      fontSize: getProportionateScreenWidth(20),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "₹ ${OrderDetailsVariables.itemTotal + OrderDetailsVariables.delivery}",
-                                  style: TextStyle(
-                                      height: 1,
-                                      color: Colors.indigo,
-                                      fontSize: getProportionateScreenWidth(20),
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
-                            )),
-                        CheckboxListTile(
-                          activeColor: kPrimaryColor,
-                          title: Text(
-                            "Confirm",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: getProportionateScreenWidth(15),
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                          value: correctInfo,
-                          onChanged: (newValue) {
-                            setState(() {
-                              correctInfo = newValue;
-                              print(correctInfo);
-                            });
-                          },
-                        ),
-                        Container(
-                          height: getProportionateScreenHeight(56),
-                          width: double.infinity,
-                          child: DefaultButton(
-                            text: "Call Delivery Partner",
-                            press: () {
-                              if (correctInfo) {
-                                _success();
-                              }
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              });
-        });
-  }
   void _error() {
     showDialog(
       context: context,

@@ -14,10 +14,11 @@ import 'package:grojha/size_config.dart';
 class PlaceOrderFooter extends StatefulWidget {
   const PlaceOrderFooter({
     Key key,
-    this.notifyParent, this.product,
+    this.notifyHome, this.product, this.uniqueItems,
   }) : super(key: key);
-  final Function() notifyParent;
+  final Function() notifyHome;
   final Product product;
+  final int uniqueItems;
 
   @override
   _PlaceOrderFooterState createState() => _PlaceOrderFooterState();
@@ -159,15 +160,6 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
   }
 
   void _clearCart() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("cart")
-        .child(PlaceOrderVariables.shop.shopId);
-
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -211,7 +203,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                           text: "Clear Cart",
                           press: () {
                             if (areYouSure) {
-                              databaseReference.set({});
+                              _emptyCart();
                               _success();
                             }
                           },
@@ -224,6 +216,27 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
             ),
           );
         });
+  }
+
+  void _emptyCart() {
+    Order order = new Order(
+      orderState: "pending",
+      shopId: PlaceOrderVariables.shop.shopId,
+      shopName: PlaceOrderVariables.shop.shopName,
+      deliveryCharge: PlaceOrderVariables.delivery,
+      grandTotal: PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery,
+      productList: PlaceOrderVariables.list,
+      userName: userName,
+      userPhoneNumber: userPhoneNumber,
+      userAddress: userAddress,
+      shopImage: PlaceOrderVariables.shop.shopImage,
+      orderImage: widget.product.productImage,
+      uniqueItems: widget.uniqueItems,
+    );
+
+    PlaceOrder(order: order).clearCart(shopUid: order.shopId);
+    _success();
+
   }
 
   void _pushOrder() {
@@ -239,6 +252,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       userAddress: userAddress,
       shopImage: PlaceOrderVariables.shop.shopImage,
       orderImage: widget.product.productImage,
+      uniqueItems: widget.uniqueItems,
     );
 
     PlaceOrder(order: order).pushOrder();

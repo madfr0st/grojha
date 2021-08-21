@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
-import 'package:grojha/global_variables/product_count.dart';
+import 'package:grojha/business_logic/add_product_to_cart.dart';
+import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/size_config.dart';
 
 class SingleProductCard extends StatefulWidget {
@@ -12,10 +13,12 @@ class SingleProductCard extends StatefulWidget {
     Key key,
     this.product,
     this.shop,
+    this.notifyHomeScreen,
   }) : super(key: key);
 
   final Product product;
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
   _SingleProductCardState createState() => _SingleProductCardState();
@@ -24,41 +27,7 @@ class SingleProductCard extends StatefulWidget {
 class _SingleProductCardState extends State<SingleProductCard> {
   int productCartCount = 0;
   int productTotalCost = 0;
-  int productDicountPercent = 0;
-
-
-
-  void _addProductToCart() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("cart");
-    if (productCartCount == 0) {
-      databaseReference
-          .child(widget.shop.shopId)
-          .child(widget.product.productId)
-          .set({});
-    } else {
-      databaseReference
-          .child(widget.shop.shopId)
-          .child(widget.product.productId)
-          .set({
-        "productCartCount": productCartCount,
-        "productTotalCartCost":
-            (productCartCount * widget.product.productSellingPrice),
-        "shopCategory": widget.shop.shopCategory,
-        "shopImage": widget.shop.shopImage,
-        "shopName": widget.shop.shopName,
-        "productName": widget.product.productName,
-        "productImage": widget.product.productImage,
-        "productQuantity": widget.product.productQuantity,
-        "productSellingPrice": widget.product.productSellingPrice,
-        "productUnit": widget.product.productUnit,
-      });
-    }
-  }
+  int productDiscountPercent = 0;
 
   int toInt(String a) {
     try {
@@ -70,14 +39,15 @@ class _SingleProductCardState extends State<SingleProductCard> {
     }
   }
 
-  void _showCartMessage() {}
 
   @override
   Widget build(BuildContext context) {
-    productDicountPercent = calcPercentage(
+    productDiscountPercent = calcPercentage(
         widget.product.productSellingPrice, widget.product.productMRP);
-    if(ProductCount.map.containsKey(widget.shop.shopId+widget.product.productId)){
-      productCartCount = ProductCount.map[widget.shop.shopId+widget.product.productId];
+    if (CartItemCount.map
+        .containsKey(widget.shop.shopId + widget.product.productId)) {
+      productCartCount = CartItemCount
+          .map[widget.shop.shopId + widget.product.productId];
     }
     return Container(
       margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -200,7 +170,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
             ],
           ),
           Positioned(
-            bottom: getProportionateScreenWidth(20),
+            bottom: getProportionateScreenWidth(45),
             right: getProportionateScreenWidth(20),
             child: Container(
               height: getProportionateScreenWidth(25),
@@ -222,9 +192,20 @@ class _SingleProductCardState extends State<SingleProductCard> {
                           if (productCartCount > 0) {
                             productCartCount--;
                             setState(() {
-                              ProductCount.map[widget.shop.shopId+widget.product.productId] = productCartCount;
-                              _addProductToCart();
+                              CartItemCount.map[widget
+                                      .shop.shopId +
+                                  widget.product.productId] = productCartCount;
+                              AddProductToCart.addProductToCart(
+                                  productCartCount: productCartCount,
+                                  shop: widget.shop,
+                                  product: widget.product);
+                              if (productCartCount == 0) {
+                                CartItemCount.decreaseItemCount(itemCount: 1);
+                                CartItemCount.cartItemCount--;
+                                widget.notifyHomeScreen();
+                              }
                             });
+
                           }
                         },
                         child: Container(
@@ -263,9 +244,20 @@ class _SingleProductCardState extends State<SingleProductCard> {
                         onTap: () {
                           productCartCount++;
                           setState(() {
-                            _addProductToCart();
-                            ProductCount.map[widget.shop.shopId+widget.product.productId] = productCartCount;
+                            AddProductToCart.addProductToCart(
+                                productCartCount: productCartCount,
+                                shop: widget.shop,
+                                product: widget.product);
+                            CartItemCount.map[widget
+                                    .shop.shopId +
+                                widget.product.productId] = productCartCount;
+                            if (productCartCount == 1) {
+                              CartItemCount.increaseItemCount(itemCount: 1);
+                              CartItemCount.cartItemCount++;
+                              widget.notifyHomeScreen();
+                            }
                           });
+
                         },
                         child: Container(
                           width: getProportionateScreenWidth(25),
@@ -291,7 +283,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
   }
 
   Positioned buildPositionedDisproductCartCountBanner() {
-    if (productDicountPercent > 0) {
+    if (productDiscountPercent > 0) {
       return Positioned(
         bottom: -12.5,
         child: Container(
@@ -304,7 +296,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
             color: Colors.lightGreen,
           ),
           child: Text(
-            "$productDicountPercent% off",
+            "$productDiscountPercent% off",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: getProportionateScreenWidth(12), color: Colors.black),

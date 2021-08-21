@@ -2,7 +2,7 @@ import 'package:grojha/Objects/product.dart';
 
 class Order {
   String orderId;
-  String totalItem;
+  int uniqueItems;
   String shopId;
   String userId;
   int grandTotal;
@@ -34,10 +34,10 @@ class Order {
     int this.deliveryCharge,
     int this.secondaryOrderId,
     List<Product> this.productList,
-    String this.orderImage});
+    String this.orderImage, int this.uniqueItems});
 
   @override
   String toString() {
-    return 'Order{orderId: $orderId, totalItem: $totalItem, shopId: $shopId, userId: $userId, grandTotal: $grandTotal, deliveryCharge: $deliveryCharge, shopName: $shopName, userName: $userName, userPhoneNumber: $userPhoneNumber, shopPhoneNumber: $shopPhoneNumber, orderTime: $orderTime, orderState: $orderState, product: $productList}';
+    return 'Order{orderState: $orderState}';
   }
 }

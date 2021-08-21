@@ -4,71 +4,41 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
-import 'package:grojha/constants.dart';
+import '../../../../constants.dart';
+import '../../../../size_config.dart';
+import 'order_details_variables.dart';
 
-import 'package:grojha/screens/order_details/order_details_variables.dart';
-import 'package:grojha/size_config.dart';
-
-
-class SingleOrderDetailsProductcard extends StatefulWidget {
-  const SingleOrderDetailsProductcard(
-      {Key key, this.shop, this.product, this.notifyParent, this.order})
+class SingleOrderDetailsProductcardWithoutSwitch extends StatefulWidget {
+  const SingleOrderDetailsProductcardWithoutSwitch(
+      {Key key, this.shop, this.product, this.notifyOrderScreen, this.order})
       : super(key: key);
 
   final Shop shop;
   final Product product;
-  final Function() notifyParent;
+  final Function notifyOrderScreen;
   final Order order;
 
   @override
-  _SingleOrderDetailsProductcardState createState() =>
-      _SingleOrderDetailsProductcardState();
+  _SingleOrderDetailsProductcardWithoutSwitchState createState() =>
+      _SingleOrderDetailsProductcardWithoutSwitchState();
 }
 
-class _SingleOrderDetailsProductcardState
-    extends State<SingleOrderDetailsProductcard> {
+class _SingleOrderDetailsProductcardWithoutSwitchState
+    extends State<SingleOrderDetailsProductcardWithoutSwitch> {
 
   int productCartCount ;
   int productTotalCartCost;
-  String inStock = "In stock";
-  String outOffStock = "Out of stock";
-  String stock = "In stock";
-  bool productStatus = true;
-  Color inStockColor = Colors.green;
-  Color outOffStockColor = Colors.red;
-  Color stockColor = Colors.green;
-
 
   Color color = Colors.red;
   Color color1 = Colors.purple;
 
-  void _setProductStatus(bool productStatus) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("orders")
-        .child(widget.order.orderId)
-        .child("productList")
-        .child(widget.product.productId)
-        .child("productStatus");
-
-    databaseReference.set(productStatus);
-
-  }
 
   @override
   Widget build(BuildContext context) {
     productCartCount = widget.product.productCartCount;
     productTotalCartCost = widget.product.productTotalCartCost;
 
-    if (widget.product.productStatus!=null && !widget.product.productStatus) {
-      productStatus = false;
-      stock = outOffStock;
-      OrderDetailsVariables.boolSet.add(widget.product.productId);
-      stockColor = outOffStockColor;
-    }else{
-      OrderDetailsVariables.itemTotal+=widget.product.productTotalCartCost;
-    }
+    OrderDetailsVariables.itemTotal+=widget.product.productTotalCartCost;
 
     return Container(
       margin: EdgeInsets.fromLTRB(10, 3, 10, 3),

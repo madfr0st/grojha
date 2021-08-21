@@ -35,7 +35,6 @@ class _AllOrdersState extends State<AllOrders> {
                   orderList.clear();
                   values.forEach((key, val) {
                     val.forEach((key, value) {
-                      //print(value);
                       orderList.add(new Order(
                         orderId: value["orderId"],
                         orderState: value["orderState"],
@@ -45,13 +44,17 @@ class _AllOrdersState extends State<AllOrders> {
                         deliveryCharge: value["deliveryCharge"],
                         grandTotal: value["grandTotal"],
                         userId: value["userId"],
-                        //productList: PlaceOrderVariables.list,
                         userName: value["userName"],
                         userPhoneNumber: value["userPhoneNumber"],
                         userAddress: value["userAddress"],
+                        uniqueItems: value["uniqueItems"],
+                        secondaryOrderId: value["secondaryOrderId"],
+                        orderImage: value["orderImage"],
                       ));
                     });
-                  }); //print(shops);
+                  }); //print(s// hops);
+
+                  orderList.sort((a,b)=> -a.orderTime.compareTo(b.orderTime));
 
                   return Column(children: [
                     ...List.generate(orderList.length, (index) {

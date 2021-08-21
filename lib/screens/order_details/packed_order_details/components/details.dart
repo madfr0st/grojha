@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
-import 'package:grojha/screens/order_details/packed_order_details//components/single_order_details_product_card.dart';
+import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
 import 'order_details_footer.dart';
@@ -37,15 +37,14 @@ class _DetailsState extends State<Details> {
                 SizedBox(height: getProportionateScreenHeight(10),),
                 ...List.generate(
                   OrderDetailsVariables.list.length,
-                  (index) => SingleOrderDetailsProductcard(
+                  (index) => SingleOrderDetailsProductcardWithoutSwitch(
                     product: OrderDetailsVariables.list[index],
                     order: widget.order,
-                    notifyParent: _refresh,
+                    notifyOrderScreen: _refresh,
                   ),
                 ),
                 OrderDetailsFooter(order: widget.order,),
-                buildBottomInstruction(),
-                SizedBox(height: getProportionateScreenHeight(10),),
+                //SizedBox(height: getProportionateScreenHeight(10),),
               ],
             ),
           ),
@@ -62,25 +61,7 @@ class _DetailsState extends State<Details> {
         color: Colors.grey.shade300,
       ),
       child: Text(
-        "Wait for delivery partner.\nThey will be arriving soon.",
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  Container buildBottomInstruction(){
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-      ),
-      child: Text(
-        "Enter the code provided by delivery partner.",
+        "Your order has been packed by seller.\nSoon, delivery partner will be assign.",
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,

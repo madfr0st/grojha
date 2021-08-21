@@ -7,8 +7,9 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import '../../../size_config.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key key, this.shop}) : super(key: key);
+  const Body({Key key, this.shop, this.notifyHomeScreen}) : super(key: key);
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: AllPlaceorderCartProduct(shop: shop),
+            child: AllPlaceOrderCartProduct(shop: shop,notifyHomeScreen: notifyHomeScreen,),
           )
         ],
       ),

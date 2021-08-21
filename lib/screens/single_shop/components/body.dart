@@ -13,33 +13,14 @@ import 'menu_title.dart';
 
 class Body extends StatelessWidget {
   final Shop shop;
-  const Body({Key key,this.shop}) : super(key: key);
+  final Function notifyHomeScreen;
+
+  const Body({Key key, this.shop, this.notifyHomeScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:Column(
-        children: [
-          SingleShopSearchBar(shop: shop),
-          Expanded(
-            child: SingleChildScrollView(
-              //physics: ScrollPhysics(),
-              child: Column(
-                children: [
-                  //SingleShopDetails(),
-                  MenuTitle(title: shop.shopName,color: Colors.black,),
-                  ProductsList(shop: shop,),
-                  SizedBox(height: SizeConfig.screenHeight*.4,),
-
-                ],
-              ),
-            ),
-          )
-
-        ],
-      )
-
+      child: ProductsList(shop: shop, notifyHomeScreen: notifyHomeScreen),
     );
-    ;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grojha/screens/home/home_screen.dart';
-import 'package:grojha/screens/offer/offer_screen.dart';
 import 'package:grojha/screens/orders/orders_screen.dart';
 import 'package:grojha/screens/profile/profile_screen.dart';
 import 'package:grojha/screens/searched_data/searched_shop_data.dart';
@@ -132,22 +131,22 @@ class CustomBottomNavBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    Navigator.popAndPushNamed(context, OfferScreen.routeName);
+                    Navigator.popAndPushNamed(context, ProfileScreen.routeName);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.local_offer_outlined,
-                        color: MenuState.offers == selectedMenu
+                        Icons.account_circle_outlined,
+                        color: MenuState.profile == selectedMenu
                             ? kPrimaryColor
                             : inActiveIconColor,
                       ),
                       Text(
-                        "Offer",
+                        "Profile",
                         style: TextStyle(
                             fontSize: getProportionateScreenWidth(10),
-                            color: MenuState.offers == selectedMenu
+                            color: MenuState.profile == selectedMenu
                                 ? kPrimaryColor
                                 : inActiveIconColor,
                             fontWeight: FontWeight.bold),

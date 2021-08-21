@@ -7,9 +7,10 @@ import 'package:grojha/screens/single_shop/components/single_product_card.dart';
 import '../../../size_config.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key key, this.productCategory, this.shop}) : super(key: key);
+  const Body({Key key, this.productCategory, this.shop, this.notifyHomeScreen}) : super(key: key);
   final String productCategory;
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class Body extends StatelessWidget {
               (index) => SingleProductCard(
                 shop: shop,
                 product: list[index],
+                notifyHomeScreen: notifyHomeScreen,
               ),
             ),
             SizedBox(height: SizeConfig.screenHeight*.4,),

@@ -8,9 +8,10 @@ import 'package:grojha/screens/single_shop/single_shop.dart';
 import '../../../size_config.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key key, this.selectedCategory}) : super(key: key);
+  const Body({Key key, this.selectedCategory, this.notifyHomeScreen}) : super(key: key);
 
   final String selectedCategory;
+  final Function notifyHomeScreen;
 
   @override
   _BodyState createState() => _BodyState();
@@ -21,6 +22,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    list.clear();
     for (int i = 0; i < AllShopData.list.length; i++) {
       if (AllShopData.list[i].shopCategory == widget.selectedCategory) {
         list.add(AllShopData.list[i]);
@@ -33,6 +35,7 @@ class _BodyState extends State<Body> {
           children: [
             ...List.generate(list.length, (index) {
               return SingleShopCard(
+                notifyHomeScreen: widget.notifyHomeScreen,
                   shop: list[index],
                   press: () {
                     Navigator.push(
@@ -40,6 +43,7 @@ class _BodyState extends State<Body> {
                         MaterialPageRoute(
                           builder: (context) => SingleShop(
                             shop: list[index],
+                            notifyHomeScreen: widget.notifyHomeScreen,
                           ),
                         ));
                   });

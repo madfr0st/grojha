@@ -6,17 +6,17 @@ import '../../../constants.dart';
 import 'components/body.dart';
 
 class FailedOrderDetailsScreen extends StatelessWidget {
-  const FailedOrderDetailsScreen({Key key, this.order, this.notifyParent}) : super(key: key);
+  const FailedOrderDetailsScreen({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
 
   static String routeName = "/failed_order_details_screen";
   final Order order;
-  final Function notifyParent;
+  final Function notifyOrderScreen;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Oder Details",style: TextStyle(
+        title: Text("Failed Order Details",style: TextStyle(
             color: Colors.black
         ),),
         elevation: 15,

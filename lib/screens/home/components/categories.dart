@@ -5,6 +5,9 @@ import 'package:grojha/screens/single_selected_shop_category/single_selected_sho
 import '../../../size_config.dart';
 
 class Categories extends StatelessWidget {
+  final Function notifyHomeScreen;
+
+  const Categories({Key key, this.notifyHomeScreen}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     List<String> list = [
@@ -91,6 +94,7 @@ class Categories extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => SingleSelectedShopCategory(
                       selectedCategory: list[a],
+                      notifyHomeScreen: notifyHomeScreen,
                     ),
                   ))),
           CategoryCard(
@@ -101,6 +105,7 @@ class Categories extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => SingleSelectedShopCategory(
                       selectedCategory: list[b],
+                      notifyHomeScreen: notifyHomeScreen,
                     ),
                   ))
           ),
@@ -112,6 +117,7 @@ class Categories extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => SingleSelectedShopCategory(
                       selectedCategory: list[c],
+                      notifyHomeScreen: notifyHomeScreen,
                     ),
                   ))
           )

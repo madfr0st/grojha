@@ -8,10 +8,13 @@ import '../../../size_config.dart';
 class CustomFloatingButton extends StatelessWidget {
   final Function function;
   final Shop shop;
+  final Function notifyHomeScreen;
 
   const CustomFloatingButton({
     Key key,
-    this.function, this.shop,
+    this.function,
+    this.shop,
+    this.notifyHomeScreen,
   }) : super(key: key);
 
   @override
@@ -21,7 +24,7 @@ class CustomFloatingButton extends StatelessWidget {
       width: getProportionateScreenWidth(300),
       padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
       alignment: Alignment.bottomRight,
-      child:  Container(
+      child: Container(
         height: getProportionateScreenWidth(49),
         width: getProportionateScreenWidth(149),
         alignment: Alignment.center,
@@ -56,7 +59,10 @@ class CustomFloatingButton extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(100),
               onTap: () {
-                showSearch(context: context, delegate: SearchedProductData(shop: shop));
+                showSearch(
+                    context: context,
+                    delegate: SearchedProductData(
+                        shop: shop, notifyHomeScreen: notifyHomeScreen));
               },
               child: Container(
                 height: getProportionateScreenWidth(45),

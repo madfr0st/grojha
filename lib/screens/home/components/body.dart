@@ -12,26 +12,9 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(height: getProportionateScreenHeight(20)),
-          HomeHeader(),
-          SizedBox(height: getProportionateScreenWidth(10)),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Categories(),
-                  AllShops(),
-                ],
-              ),
-            ),
-          ),
-
-          //AllShops(),
-          //SizedBox(height: getProportionateScreenWidth(30)),
-        ],
-      ),
+      child: AllShops(),
+      //AllShops(),
+      //SizedBox(height: getProportionateScreenWidth(30)),
     );
   }
 }

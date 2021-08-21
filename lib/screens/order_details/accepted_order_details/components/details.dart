@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
-import 'package:grojha/screens/order_details/accepted_order_details/components/single_order_details_product_card.dart';
+import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
 import 'order_details_footer.dart';
@@ -36,10 +36,10 @@ class _DetailsState extends State<Details> {
                 ),
                 ...List.generate(
                   OrderDetailsVariables.list.length,
-                  (index) => SingleOrderDetailsProductcard(
+                  (index) => SingleOrderDetailsProductcardWithoutSwitch(
                     product: OrderDetailsVariables.list[index],
                     order: widget.order,
-                    notifyParent: _refresh,
+                    notifyOrderScreen: _refresh,
                   ),
                 ),
                 OrderDetailsFooter(
@@ -68,7 +68,7 @@ class Instruction extends StatelessWidget {
         color: Colors.grey.shade300,
       ),
       child: Text(
-        "Pack this order and press continue,\n to call for delivery partner.",
+        "Your order has been accepted by seller.\n Soon, he will be packing your order.",
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,

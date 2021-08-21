@@ -13,10 +13,11 @@ import '../../order_details_variables.dart';
 class OrderDetailsFooter extends StatefulWidget {
   const OrderDetailsFooter({
     Key key,
-    this.notifyOrderScreen, this.order,
+    this.order, this.notifyOrderScreen,
   }) : super(key: key);
-  final Function() notifyOrderScreen;
+
   final Order order;
+  final Function notifyOrderScreen;
 
   @override
   _OrderDetailsFooterState createState() => _OrderDetailsFooterState();
@@ -28,17 +29,10 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   String userPhoneNumber;
   String userAddress;
   bool areYouSure = false;
-  String orderButtonStatus = "Accept Order";
-  String acceptOrder = "Accept Order";
-  String modifyOrder = "Modify Order";
+
 
   @override
   Widget build(BuildContext context) {
-    if (OrderDetailsVariables.boolSet.isNotEmpty) {
-      orderButtonStatus = modifyOrder;
-    } else {
-      orderButtonStatus = acceptOrder;
-    }
     return Container(
       height: getProportionateScreenWidth(150),
       margin: EdgeInsets.fromLTRB(5, 20, 5, 40),
@@ -155,15 +149,10 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                   () {
                     _rejectOrder();
                   },
-                  "Reject Order",
+                  "Cancel Order",
                 ),
                 actionOrderButton(kPrimaryColor, kPrimaryColor, () {
-                  if (orderButtonStatus == "Accept Order") {
-                    _acceptOrder(context);
-                  } else {
-                    _modifyOrder(context);
-                  }
-                }, orderButtonStatus)
+                }, "Place Order")
               ],
             ),
           ),
@@ -243,33 +232,6 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   }
 
   void _rejectOrder() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(widget.order.userId)
-        .child("orders")
-        .child(widget.order.orderId)
-        .child("orderState");
-
-    DatabaseReference databaseReference1 = FirebaseDatabase.instance
-        .reference()
-        .child("orders")
-        .child(widget.order.orderId)
-        .child("orderState");
-
-    DatabaseReference databaseReference2 = FirebaseDatabase.instance
-        .reference()
-        .child("shops")
-        .child(uid)
-        .child("orders")
-        .child(widget.order.orderId)
-        .child("orderState");
-
-
-
-
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -310,12 +272,10 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                         height: getProportionateScreenHeight(56),
                         width: double.infinity,
                         child: DefaultButton(
-                          text: "Reject Order",
+                          text: "Cancel Order",
                           press: () {
                             if (areYouSure) {
-                              databaseReference.set("rejected");
-                              databaseReference1.set("rejected");
-                              databaseReference2.set("rejected");
+                              widget.notifyOrderScreen();
                               _success();
                             }
                           },
@@ -330,15 +290,8 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         });
   }
 
-  void _modifyOrder(BuildContext context) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("info");
-    Color color = Colors.blue;
 
+  void _placeModifiedOrder(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -373,7 +326,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Grand Total : ",
+                              "Grand Total ",
                               style: TextStyle(
                                   height: 1,
                                   color: Colors.indigo,
@@ -412,105 +365,12 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                       height: getProportionateScreenHeight(56),
                       width: double.infinity,
                       child: DefaultButton(
-                        text: "Accept Order",
+                        text: "Place Order",
                         press: () {
-                          if (correctInfo) {}
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
-
-  void _acceptOrder(BuildContext context) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("info");
-    Color color = Colors.blue;
-
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              height: getProportionateScreenWidth(250),
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-              width: double.infinity,
-              child: Container(
-                alignment: Alignment.center,
-                // color: Colors.lightGreenAccent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        height: getProportionateScreenWidth(30),
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.lightGreenAccent.withOpacity(0.7),
-                                Colors.lightGreenAccent.withOpacity(0.1),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(20)),
-                        //      color: Colors.grey,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Grand Total : ",
-                              style: TextStyle(
-                                  height: 1,
-                                  color: Colors.indigo,
-                                  fontSize: getProportionateScreenWidth(20),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "₹ ${OrderDetailsVariables.itemTotal + OrderDetailsVariables.delivery}",
-                              style: TextStyle(
-                                  height: 1,
-                                  color: Colors.indigo,
-                                  fontSize: getProportionateScreenWidth(20),
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )),
-                    CheckboxListTile(
-                      activeColor: kPrimaryColor,
-                      title: Text(
-                        "Confirm",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: getProportionateScreenWidth(15),
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      value: correctInfo,
-                      onChanged: (newValue) {
-                        setState(() {
-                          correctInfo = newValue;
-                          print(correctInfo);
-                        });
-                      },
-                    ),
-                    Container(
-                      height: getProportionateScreenHeight(56),
-                      width: double.infinity,
-                      child: DefaultButton(
-                        text: "Accept Order",
-                        press: () {
-                          if (correctInfo) {}
+                          if (correctInfo) {
+                            widget.notifyOrderScreen();
+                            _success();
+                          }
                         },
                       ),
                     )

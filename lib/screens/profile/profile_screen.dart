@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: kPrimaryColor,
       ),
       body: Body(),
-      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.offers),
+      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }
 }

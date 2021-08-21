@@ -7,11 +7,10 @@ import '../../../size_config.dart';
 class SingleShopCard extends StatelessWidget {
   final Shop shop;
   final GestureTapCallback press;
+  final Function notifyHomeScreen;
 
-  const SingleShopCard({
-    Key key,
-     this.press, this.shop,
-  }) : super(key: key);
+  const SingleShopCard({Key key, this.press, this.shop, this.notifyHomeScreen})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +44,23 @@ class SingleShopCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(7),
-                    child: Container(
-                      height: getProportionateScreenWidth(102),
-                      width: getProportionateScreenWidth(102),
-                      alignment: Alignment.center,
+                  Container(
+                    height: getProportionateScreenWidth(102),
+                    width: getProportionateScreenWidth(102),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
                       color: Colors.grey.shade300,
-                      child: Container(
-                        height: getProportionateScreenWidth(100),
-                        width: getProportionateScreenWidth(100),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          color: Colors.white,
-                        ),
+                    ),
+                    child: Container(
+                      height: getProportionateScreenWidth(100),
+                      width: getProportionateScreenWidth(100),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.white,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(7),
                         child: Image.network(shop.shopImage),
                       ),
                     ),

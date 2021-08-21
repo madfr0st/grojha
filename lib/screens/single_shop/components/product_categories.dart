@@ -9,9 +9,9 @@ import 'package:grojha/size_config.dart';
 class ProductCategories extends StatelessWidget {
   final Shop shop;
   const ProductCategories({
-    Key key, this.shop,
+    Key key, this.shop, this.notifyHomeScreen,
   }) : super(key: key);
-
+  final Function notifyHomeScreen;
   @override
   Widget build(BuildContext context) {
     List<String> list = [];
@@ -113,11 +113,13 @@ class ProductCategories extends StatelessWidget {
             name: name1,
             color: color1,
             shop: shop,
+            notifyHomeScreen: notifyHomeScreen,
           ),
           SingleProductCategories(
             name: name2,
             color: color2,
             shop: shop,
+            notifyHomeScreen: notifyHomeScreen,
           ),
         ],
       ),
@@ -134,6 +136,7 @@ class ProductCategories extends StatelessWidget {
             name: name1,
             color: color1,
             shop: shop,
+            notifyHomeScreen: notifyHomeScreen,
           ),
         ],
       ),
@@ -146,12 +149,13 @@ class SingleProductCategories extends StatelessWidget {
     Key key,
     this.color,
     this.name,
-    this.shop,
+    this.shop, this.notifyHomeScreen,
   }) : super(key: key);
 
   final Color color;
   final String name;
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -203,6 +207,7 @@ class SingleProductCategories extends StatelessWidget {
                   builder: (context) => SingleSelectedProductCategory(
                     productCategory: name,
                     shop: shop,
+                    notifyHomeScreen: notifyHomeScreen,
                   ),
                 ));
               },

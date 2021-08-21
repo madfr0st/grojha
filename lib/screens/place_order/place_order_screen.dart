@@ -7,10 +7,10 @@ import '../../constants.dart';
 import 'components/body.dart';
 
 class PlaceOrderScreen extends StatelessWidget {
-  const PlaceOrderScreen({Key key, this.shop,}) : super(key: key);
+  const PlaceOrderScreen({Key key, this.shop, this.notifyHomeScreen,}) : super(key: key);
 
   static String routeName = "/place_order_screen";
-
+  final Function notifyHomeScreen;
   final Shop shop;
 
   @override
@@ -23,7 +23,7 @@ class PlaceOrderScreen extends StatelessWidget {
         elevation: 15,
         backgroundColor: kPrimaryColor,
       ),
-      body: Body(shop: shop),
+      body: Body(shop: shop,notifyHomeScreen: notifyHomeScreen,),
     );
   }
 }

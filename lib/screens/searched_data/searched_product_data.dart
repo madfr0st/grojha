@@ -7,15 +7,12 @@ import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/components/single_product_card.dart';
 
 class SearchedProductData extends SearchDelegate<String> {
-
   Shop shop;
+  final Function notifyHomeScreen;
 
-  List<Product> emptyList = [
-    AllProductData.productList[0]
-  ];
+  List<Product> emptyList = [AllProductData.productList[0]];
 
-
-  SearchedProductData({Shop this.shop});
+  SearchedProductData({Shop this.shop, this.notifyHomeScreen});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -51,32 +48,31 @@ class SearchedProductData extends SearchDelegate<String> {
             if (element.productName.startsWith(query)) {
               return true;
             }
-            if(element.productName.toLowerCase().startsWith(query)) {
+            if (element.productName.toLowerCase().startsWith(query)) {
               return true;
             }
-            if(element.productName.toUpperCase().startsWith(query)) {
+            if (element.productName.toUpperCase().startsWith(query)) {
               return true;
             }
 
-            if(element.productName.contains(query)) {
+            if (element.productName.contains(query)) {
               return true;
             }
-            if(element.productName.toUpperCase().contains(query)) {
+            if (element.productName.toUpperCase().contains(query)) {
               return true;
             }
             // if(element.productName.toUpperCase().matchAsPrefix(query) != null) {
             //   return true;
             // }
 
-
             return false;
-
           }).toList();
 
     return SingleChildScrollView(
       child: Column(children: [
         ...List.generate(suggestionList.length, (index) {
           return SingleProductCard(
+            notifyHomeScreen: notifyHomeScreen,
             product: suggestionList[index],
             shop: shop,
           );

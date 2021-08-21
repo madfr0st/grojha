@@ -5,7 +5,6 @@ import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/home/components/categories.dart';
 import 'package:grojha/screens/home/home_screen.dart';
 import 'package:grojha/screens/login_success/login_success_screen.dart';
-import 'package:grojha/screens/offer/offer_screen.dart';
 import 'package:grojha/screens/orders/orders_screen.dart';
 import 'package:grojha/screens/otp/otp_screen.dart';
 import 'package:grojha/screens/phone_number_sign_in/phone_number_sign_in_screen.dart';
@@ -30,7 +29,6 @@ final Map<String, WidgetBuilder> routes = {
   PhoneNumberSignInScreen.routeName: (context) => PhoneNumberSignInScreen(),
   CartScreen.routeName: (context) => CartScreen(),
   PlaceOrderScreen.routeName: (context) => PlaceOrderScreen(),
-  OfferScreen.routeName: (context) => OfferScreen(),
   SingleSelectedShopCategory.routeName: (context) =>
       SingleSelectedShopCategory(),
   SingleSelectedProductCategory.routeName: (context) =>

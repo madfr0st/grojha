@@ -17,7 +17,8 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("My Orders",style: TextStyle(
-          color: Colors.black
+          color: Colors.black,
+          fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,

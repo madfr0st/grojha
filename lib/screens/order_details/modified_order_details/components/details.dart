@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
-import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
+import 'package:grojha/screens/order_details/modified_order_details/components/single_order_details_product_card.dart';
 import 'package:grojha/size_config.dart';
 
 import 'order_details_footer.dart';
@@ -37,7 +37,7 @@ class _DetailsState extends State<Details> {
                 ),
                 ...List.generate(
                   OrderDetailsVariables.list.length,
-                  (index) => SingleOrderDetailsProductcardWithoutSwitch(
+                  (index) => SingleOrderDetailsProductCard(
                     product: OrderDetailsVariables.list[index],
                     order: widget.order,
                     notifyOrderScreen: _refresh,
@@ -70,7 +70,7 @@ class Instruction extends StatelessWidget {
         color: Colors.grey.shade300,
       ),
       child: Text(
-        "Your order has been placed.\n Soon, the seller will accept it.",
+        "Due to limited stock.\nYour order has been modified by seller.",
         style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,

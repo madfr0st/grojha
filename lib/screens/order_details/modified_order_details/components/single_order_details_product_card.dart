@@ -9,23 +9,23 @@ import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import '../../order_details_variables.dart';
 
-class SingleOrderDetailsProductcard extends StatefulWidget {
-  const SingleOrderDetailsProductcard(
-      {Key key, this.shop, this.product, this.notifyParent, this.order})
+class SingleOrderDetailsProductCard extends StatefulWidget {
+  const SingleOrderDetailsProductCard(
+      {Key key, this.shop, this.product, this.notifyOrderScreen, this.order})
       : super(key: key);
 
   final Shop shop;
   final Product product;
-  final Function() notifyParent;
+  final Function() notifyOrderScreen;
   final Order order;
 
   @override
-  _SingleOrderDetailsProductcardState createState() =>
-      _SingleOrderDetailsProductcardState();
+  _SingleOrderDetailsProductCardState createState() =>
+      _SingleOrderDetailsProductCardState();
 }
 
-class _SingleOrderDetailsProductcardState
-    extends State<SingleOrderDetailsProductcard> {
+class _SingleOrderDetailsProductCardState
+    extends State<SingleOrderDetailsProductCard> {
 
   int productCartCount ;
   int productTotalCartCost;
@@ -41,19 +41,6 @@ class _SingleOrderDetailsProductcardState
   Color color = Colors.red;
   Color color1 = Colors.purple;
 
-  void _setProductStatus(bool productStatus) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("orders")
-        .child(widget.order.orderId)
-        .child("productList")
-        .child(widget.product.productId)
-        .child("productStatus");
-
-    databaseReference.set(productStatus);
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +80,7 @@ class _SingleOrderDetailsProductcardState
         padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
+          color: (productStatus)?Colors.white: Colors.grey.shade400,
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -198,53 +185,25 @@ class _SingleOrderDetailsProductcardState
                 ),
               ],
             ),
-            // Positioned(
-            //   bottom: getProportionateScreenWidth(25),
-            //   right: getProportionateScreenWidth(5),
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //     children: [
-            //       Transform.scale(
-            //         scale: 1.3,
-            //         child: Switch(
-            //           inactiveThumbColor: Colors.redAccent,
-            //           onChanged: (value) {
-            //             setState(() {
-            //               productStatus = value;
-            //               _setProductStatus(productStatus);
-            //               widget.product.productStatus = value;
-            //               if (productStatus) {
-            //                 stock = inStock;
-            //                 stockColor = inStockColor;
-            //                 OrderDetailsVariables.boolSet.remove(widget.product.productId);
-            //                 OrderDetailsVariables.itemTotal+=widget.product.productTotalCartCost;
-            //               } else {
-            //                 stock = outOffStock;
-            //                 stockColor = outOffStockColor;
-            //                 OrderDetailsVariables.boolSet.add(widget.product.productId);
-            //                 OrderDetailsVariables.itemTotal-=widget.product.productTotalCartCost;
-            //               }
-            //               widget.notifyParent();
-            //             });
-            //           },
-            //           activeTrackColor: Colors.lightGreenAccent,
-            //           activeColor: Colors.green,
-            //           inactiveTrackColor: Colors.redAccent.shade100,
-            //           value: productStatus,
-            //         ),
-            //       ),
-            //       Container(
-            //         child: Text(
-            //           stock,
-            //           style: TextStyle(
-            //             color: stockColor,
-            //             fontSize: getProportionateScreenWidth(12),
-            //           ),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // )
+            Positioned(
+              bottom: getProportionateScreenWidth(25),
+              right: getProportionateScreenWidth(5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    child: Text(
+                      stock,
+                      style: TextStyle(
+                        color: stockColor,
+                        fontSize: getProportionateScreenWidth(12),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

@@ -6,8 +6,8 @@ import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/screens/cart/components/single_shop_cart_card.dart';
 
 class AllShopCart extends StatefulWidget {
-  const AllShopCart({Key key}) : super(key: key);
-
+  const AllShopCart({Key key, this.notifyHomeScreen}) : super(key: key);
+  final Function notifyHomeScreen;
   @override
   _AllShopCartState createState() => _AllShopCartState();
 }
@@ -30,8 +30,6 @@ class _AllShopCartState extends State<AllShopCart> {
         .child(uid)
         .child("cart");
 
-    DatabaseReference databaseReference1 =
-        FirebaseDatabase.instance.reference().child("shops");
 
     return Column(
       children: [
@@ -67,8 +65,9 @@ class _AllShopCartState extends State<AllShopCart> {
                         list.length,
                         (index) {
                           return SingleShopCartCard(
+                            notifyHomeScreen: widget.notifyHomeScreen,
                             index: index,
-                            cartTotalCost: list[index].cartTotalCost,
+                            cartTotalCost: list[index].cartTotalProductCost,
                             cartUniqueProducts: list[index].cartUniqueProducts,
                             shop: Shop(
                               shopName: list[index].shopName,

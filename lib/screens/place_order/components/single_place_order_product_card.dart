@@ -3,71 +3,42 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/add_product_to_cart.dart';
+import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/screens/place_order/components/place_order_variables.dart';
 
 import '../../../size_config.dart';
 
-class SinglePlaceOrderProductcard extends StatefulWidget {
-  const SinglePlaceOrderProductcard(
-      {Key key, this.shop, this.product, this.notifyParent})
+class SinglePlaceOrderProductCard extends StatefulWidget {
+  const SinglePlaceOrderProductCard(
+      {Key key, this.shop, this.product, this.notifyHomeScreen})
       : super(key: key);
 
   final Shop shop;
   final Product product;
-  final Function() notifyParent;
+  final Function notifyHomeScreen;
 
   @override
-  _SinglePlaceOrderProductcardState createState() =>
-      _SinglePlaceOrderProductcardState(product.productCartCount,product.productTotalCartCost);
+  _SinglePlaceOrderProductCardState createState() =>
+      _SinglePlaceOrderProductCardState();
 }
 
-class _SinglePlaceOrderProductcardState
-    extends State<SinglePlaceOrderProductcard> {
-
+class _SinglePlaceOrderProductCardState
+    extends State<SinglePlaceOrderProductCard> {
   int productCartCount;
   int productTotalCartCost;
 
-  void _addProductToCart() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(uid)
-        .child("cart");
-    if (productCartCount == 0) {
-      databaseReference
-          .child(widget.shop.shopId)
-          .child(widget.product.productId)
-          .set({});
-    } else {
-      databaseReference
-          .child(widget.shop.shopId)
-          .child(widget.product.productId)
-          .set({
-        "productCartCount": productCartCount,
-        "productTotalCartCost":
-        (productCartCount * widget.product.productSellingPrice),
-        "shopCategory": widget.shop.shopCategory,
-        "shopImage": widget.shop.shopImage,
-        "shopName": widget.shop.shopName,
-        "productName": widget.product.productName,
-        "productImage": widget.product.productImage,
-        "productQuantity": widget.product.productQuantity,
-        "productSellingPrice": widget.product.productSellingPrice,
-        "productUnit": widget.product.productUnit,
-      });
-    }
-  }
-
-
-  _SinglePlaceOrderProductcardState(
-      this.productCartCount, this.productTotalCartCost);
+  _SinglePlaceOrderProductCardState();
 
   Color color = Colors.red;
   Color color1 = Colors.purple;
 
   @override
   Widget build(BuildContext context) {
+    productCartCount = CartItemCount
+        .map[widget.shop.shopId + widget.product.productId];
+    productTotalCartCost =
+        productCartCount * widget.product.productSellingPrice;
     return Container(
       margin: EdgeInsets.fromLTRB(10, 3, 10, 3),
       height: getProportionateScreenWidth(96),
@@ -171,11 +142,11 @@ class _SinglePlaceOrderProductcardState
                             Text(
                               "₹ ${widget.product.productSellingPrice}",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: getProportionateScreenWidth(16),
-                                  height: 1,
-                                  ),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: getProportionateScreenWidth(16),
+                                height: 1,
+                              ),
                             ),
                             SizedBox(
                               width: getProportionateScreenWidth(10),
@@ -183,10 +154,10 @@ class _SinglePlaceOrderProductcardState
                             Text(
                               "x $productCartCount = ₹ ${productCartCount * widget.product.productSellingPrice}",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: getProportionateScreenWidth(16),
-                                  height: 1,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: getProportionateScreenWidth(16),
+                                height: 1,
                               ),
                             )
                           ],
@@ -220,10 +191,21 @@ class _SinglePlaceOrderProductcardState
                             if (productCartCount > 0) {
                               productCartCount--;
                               setState(() {
-                                productCartCount;
-                                _addProductToCart();
-                                PlaceOrderVariables.itemTotal-=widget.product.productSellingPrice;
-                                widget.notifyParent();
+                                PlaceOrderVariables.itemTotal -=
+                                    widget.product.productSellingPrice;
+                                CartItemCount.map[
+                                        widget.shop.shopId +
+                                            widget.product.productId] =
+                                    productCartCount;
+                                AddProductToCart.addProductToCart(
+                                    productCartCount: productCartCount,
+                                    shop: widget.shop,
+                                    product: widget.product);
+                                if (productCartCount == 0) {
+                                  CartItemCount.decreaseItemCount(itemCount: 1);
+                                  CartItemCount.cartItemCount--;
+                                }
+                                widget.notifyHomeScreen();
                               });
                             }
                           },
@@ -263,10 +245,20 @@ class _SinglePlaceOrderProductcardState
                           onTap: () {
                             productCartCount++;
                             setState(() {
-                              productCartCount;
-                              _addProductToCart();
-                              PlaceOrderVariables.itemTotal+=widget.product.productSellingPrice;
-                              widget.notifyParent();
+                              PlaceOrderVariables.itemTotal +=
+                                  widget.product.productSellingPrice;
+                              CartItemCount.map[widget
+                                      .shop.shopId +
+                                  widget.product.productId] = productCartCount;
+                              AddProductToCart.addProductToCart(
+                                  productCartCount: productCartCount,
+                                  shop: widget.shop,
+                                  product: widget.product);
+                              if (productCartCount == 0) {
+                                CartItemCount.increaseItemCount(itemCount: 1);
+                                CartItemCount.cartItemCount++;
+                              }
+                              widget.notifyHomeScreen();
                             });
                           },
                           child: Container(

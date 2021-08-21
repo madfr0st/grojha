@@ -6,7 +6,8 @@ import 'package:grojha/screens/order_details/accepted_order_details/accepted_ord
 import 'package:grojha/screens/order_details/cancelled_order_details/cancelled_order_details_screen.dart';
 import 'package:grojha/screens/order_details/delivered_order_details/delivered_order_details_screen.dart';
 import 'package:grojha/screens/order_details/failed_order_details/failed_order_details_screen.dart';
-import 'package:grojha/screens/order_details/packed_order_details/shipped_order_details_screen.dart';
+import 'package:grojha/screens/order_details/modified_order_details/modified_order_details_screen.dart';
+import 'package:grojha/screens/order_details/packed_order_details/packed_order_details_screen.dart';
 import 'package:grojha/screens/order_details/pending_order_details/pending_order_details_screen.dart';
 import 'package:grojha/screens/order_details/rejected_order_details/rejected_order_details_screen.dart';
 import 'package:grojha/screens/order_details/shipped_order_details/shipped_order_details_screen.dart';
@@ -14,9 +15,9 @@ import 'package:grojha/screens/order_details/shipped_order_details/shipped_order
 import '../../../size_config.dart';
 
 class SingleOrderCard extends StatefulWidget {
-  const SingleOrderCard({Key key, this.order, this.notifyParent})
+  const SingleOrderCard({Key key, this.order, this.notifyOrderScreen})
       : super(key: key);
-  final Function notifyParent;
+  final Function notifyOrderScreen;
   final Order order;
 
   @override
@@ -30,9 +31,10 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     "accepted": Color(0xff03a7ff),
     "shipped": Colors.purple,
     "delivered": Color(0xff0faa26),
-    "rejected": Colors.redAccent,
+    "rejected": Colors.black,
     "failed": Colors.orange,
-    "cancelled": Colors.brown
+    "cancelled": Colors.brown,
+    "modified": Colors.redAccent,
   };
 
   Map<String, String> orderStateName = {
@@ -40,10 +42,11 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     "packed": "Packed",
     "accepted": "Accepted",
     "shipped": "Shipped",
-    "delivered": "Failed",
+    "delivered": "Delivered",
     "rejected": "Rejected",
     "failed": "Failed",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "modified": "Modified",
   };
 
   Color color;
@@ -52,7 +55,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
   Widget build(BuildContext context) {
     color = colorMap[widget.order.orderState];
     return GestureDetector(
-        onTap: ()=> orderDetailsPage(),
+        onTap: () => orderDetailsPage(),
         child: Container(
             margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
             height: getProportionateScreenWidth(141),
@@ -84,14 +87,27 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Order Id: #${widget.order.orderTime}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              //fontStyle: FontStyle.italic,
-                              fontSize: getProportionateScreenWidth(12),
-                            ),
+                          RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: "Order Id: ",
+                                style: TextStyle(
+                                  color: kSecondaryColor,
+                                  fontWeight: FontWeight.w800,
+                                  //fontStyle: FontStyle.italic,
+                                  fontSize: getProportionateScreenWidth(14),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "#${widget.order.secondaryOrderId}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w800,
+                                  //fontStyle: FontStyle.italic,
+                                  fontSize: getProportionateScreenWidth(14),
+                                ),
+                              ),
+                            ]),
                           ),
                           Container(
                             width: getProportionateScreenWidth(100),
@@ -127,21 +143,21 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                     Container(
                       height: getProportionateScreenWidth(79),
                       // color: Colors.tealAccent,
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             height: getProportionateScreenWidth(79),
-                            width: getProportionateScreenWidth(170),
-                            padding: EdgeInsets.fromLTRB(0, 9, 0, 0) ,
+                            width: getProportionateScreenWidth(175),
+                            padding: EdgeInsets.fromLTRB(0, 9, 0, 0),
                             // color: Colors.red,
                             child: Row(children: [
                               Container(
                                 height: getProportionateScreenWidth(62),
                                 width: getProportionateScreenWidth(62),
-                                padding:
-                                EdgeInsets.all(getProportionateScreenWidth(1)),
+                                padding: EdgeInsets.all(
+                                    getProportionateScreenWidth(1)),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
@@ -151,26 +167,30 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                   borderRadius: BorderRadius.circular(5),
                                   child: (widget.order.orderImage != null)
                                       ? Image.network(widget.order.orderImage)
-                                      : Image.asset("assets/images/default.jpg"),
+                                      : Image.asset(
+                                          "assets/images/default.jpg"),
                                 ),
                               ),
-                              Spacer(),
+                              SizedBox(
+                                width: getProportionateScreenWidth(10),
+                              ),
                               Container(
                                 //     color: Colors.redAccent,
                                 height: getProportionateScreenWidth(50),
-                                width: getProportionateScreenWidth(105),
+                                //width: getProportionateScreenWidth(105),
                                 alignment: Alignment.centerLeft,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text("99 ITEMS"),
+                                    Text("${widget.order.uniqueItems} Item"),
                                     Text(
                                       "₹ ${widget.order.grandTotal}",
                                       style: TextStyle(
                                           color: Colors.blue,
                                           fontWeight: FontWeight.bold,
                                           fontSize:
-                                          getProportionateScreenWidth(15)),
+                                              getProportionateScreenWidth(15)),
                                     )
                                   ],
                                 ),
@@ -190,8 +210,8 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                     color: Colors.grey.withOpacity(.5),
                                     spreadRadius: 2,
                                     blurRadius: 8,
-                                    offset:
-                                    Offset(3, 3), // changes position of shadow
+                                    offset: Offset(
+                                        3, 3), // changes position of shadow
                                   ),
                                 ]),
                             child: Container(
@@ -205,16 +225,16 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                 borderRadius: BorderRadius.circular(7),
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(7),
-                                  onTap: ()=> orderDetailsPage(),
+                                  onTap: () => orderDetailsPage(),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
                                         "Order Details",
                                         style: TextStyle(
                                             fontSize:
-                                            getProportionateScreenWidth(13),
+                                                getProportionateScreenWidth(13),
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                             height: 1.1),
@@ -250,8 +270,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       ),
                     ),
                   ],
-                )))
-    );
+                ))));
   }
 
   String timesStampToDate(int timestamp) {
@@ -307,95 +326,87 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     return time.toString();
   }
 
-  void orderDetailsPage(){
+  void orderDetailsPage() {
     if (widget.order.orderState == "pending") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  PendingOrderDetailsScreen(
+              builder: (context) => PendingOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
+                  )));
+    }
+    if (widget.order.orderState == "modified") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ModifiedOrderDetailsScreen(
+                    order: widget.order,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "accepted") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  AcceptedOrderDetailsScreen(
+              builder: (context) => AcceptedOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "packed") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  PackedOrderDetailsScreen(
+              builder: (context) => PackedOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "shipped") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  ShippedOrderDetailsScreen(
+              builder: (context) => ShippedOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "delivered") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  DeliveredOrderDetailsScreen(
+              builder: (context) => DeliveredOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "rejected") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  RejectedOrderDetailsScreen(
+              builder: (context) => RejectedOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "cancelled") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  CancelledOrderDetailsScreen(
+              builder: (context) => CancelledOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
     if (widget.order.orderState == "failed") {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  FailedOrderDetailsScreen(
+              builder: (context) => FailedOrderDetailsScreen(
                     order: widget.order,
-                    notifyParent:
-                    widget.notifyParent,
+                    notifyOrderScreen: widget.notifyOrderScreen,
                   )));
     }
   }
-
 }

@@ -4,14 +4,29 @@ import 'package:grojha/screens/single_shop//components/body.dart';
 import 'package:grojha/screens/single_shop/components/product_categories.dart';
 import 'package:grojha/size_config.dart';
 
-class SingleShop extends StatelessWidget {
+class SingleShop extends StatefulWidget {
   final Shop shop;
+  final Function notifyHomeScreen;
+  static String routeName = "/single_shop";
 
   const SingleShop({
-    Key key, this.shop,
+    Key key,
+    this.shop,
+    this.notifyHomeScreen,
   }) : super(key: key);
 
-  static String routeName = "/single_shop";
+  @override
+  _SingleShopState createState() => _SingleShopState();
+}
+
+class _SingleShopState extends State<SingleShop> {
+
+  void _refresh(){
+    widget.notifyHomeScreen();
+    setState(() {
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +34,24 @@ class SingleShop extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       body: Body(
-       shop: shop,
+        shop: widget.shop,
+        notifyHomeScreen: widget.notifyHomeScreen,
       ),
-      floatingActionButton: CustomFloatingButton(shop: shop,),
+      floatingActionButton: CustomFloatingButton(
+          shop: widget.shop, notifyHomeScreen: _refresh),
     );
   }
 }
 
 class CustomFloatingButton extends StatelessWidget {
   const CustomFloatingButton({
-    Key key, this.shop,
+    Key key,
+    this.shop,
+    this.notifyHomeScreen,
   }) : super(key: key);
 
   final Shop shop;
+  final Function notifyHomeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +106,10 @@ class CustomFloatingButton extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           elevation: 16,
-                          child: ProductCategories(shop:shop,),
+                          child: ProductCategories(
+                            shop: shop,
+                            notifyHomeScreen: notifyHomeScreen,
+                          ),
                         );
                       });
                 },

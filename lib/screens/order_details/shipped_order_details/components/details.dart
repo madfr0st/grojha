@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
-import 'package:grojha/screens/order_details/shipped_order_details//components/single_order_details_product_card.dart';
+
+import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
 import 'order_details_footer.dart';
@@ -36,10 +37,10 @@ class _DetailsState extends State<Details> {
                 SizedBox(height: getProportionateScreenHeight(10),),
                 ...List.generate(
                   OrderDetailsVariables.list.length,
-                  (index) => SingleOrderDetailsProductcard(
+                  (index) => SingleOrderDetailsProductcardWithoutSwitch(
                     product: OrderDetailsVariables.list[index],
                     order: widget.order,
-                    notifyParent: _refresh,
+                    notifyOrderScreen: _refresh,
                   ),
                 ),
                 OrderDetailsFooter(order: widget.order,),
