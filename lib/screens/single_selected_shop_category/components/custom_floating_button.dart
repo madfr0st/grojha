@@ -5,11 +5,11 @@ import 'package:grojha/screens/searched_data/searched_shop_data.dart';
 import '../../../size_config.dart';
 
 class CustomFloatingButton extends StatelessWidget {
-  final Function function;
+  final Function notifyHomeScreen;
 
   const CustomFloatingButton({
     Key key,
-    this.function,
+    this.notifyHomeScreen,
   }) : super(key: key);
 
   @override
@@ -54,7 +54,7 @@ class CustomFloatingButton extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(100),
               onTap: () {
-                showSearch(context: context, delegate: SearchedShopData());
+                showSearch(context: context, delegate: SearchedShopData(notifyHomeScreen: notifyHomeScreen));
               },
               child: Container(
                 height: getProportionateScreenWidth(45),

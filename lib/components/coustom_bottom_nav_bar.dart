@@ -21,6 +21,9 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color inActiveIconColor = Color(0xFFB6B6B6);
+    void _refresh(){
+
+    }
     return Container(
       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       height: getProportionateScreenWidth(50),
@@ -75,7 +78,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    showSearch(context: context, delegate: SearchedShopData());
+                    showSearch(context: context, delegate: SearchedShopData(notifyHomeScreen: _refresh));
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

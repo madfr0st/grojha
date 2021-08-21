@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class CartItemCount {
-  static  int cartItemCount = -1;
+  static  int cartItemCount = 0;
 
   static Map<String,int> map = {};
 

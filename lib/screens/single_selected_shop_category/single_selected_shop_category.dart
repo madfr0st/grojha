@@ -72,7 +72,7 @@ class _SingleSelectedShopCategoryState
         selectedCategory: widget.selectedCategory,
         notifyHomeScreen: _refresh,
       ),
-      floatingActionButton: CustomFloatingButton(),
+      floatingActionButton: CustomFloatingButton(notifyHomeScreen: _refresh,),
     );
   }
 }

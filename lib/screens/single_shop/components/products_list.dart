@@ -35,7 +35,6 @@ class _ProductsListState extends State<ProductsList> {
 
   void _refresh() {
     widget.notifyHomeScreen();
-    print("ProductListScreen--   '");
     setState(() {});
   }
 
@@ -65,9 +64,6 @@ class _ProductsListState extends State<ProductsList> {
       Colors.blue,
     ];
     final _random = new Random();
-
-    print("ProductListScreen--   '" + CartItemCount.cartItemCount.toString());
-    print(CartItemCount.map);
 
     return FutureBuilder(
         future: databaseReference.once(),

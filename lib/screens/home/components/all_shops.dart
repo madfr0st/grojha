@@ -30,7 +30,6 @@ class _AllShopsState extends State<AllShops> {
     shops = [];
 
     void _refresh() {
-      print("Home Screen Refresh");
       setState(() {});
     }
 

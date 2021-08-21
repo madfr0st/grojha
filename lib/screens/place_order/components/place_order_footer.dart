@@ -317,7 +317,6 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
     new Future.delayed(new Duration(seconds: 1), () {
       Navigator.pop(context);
       Navigator.pop(context);
-      Navigator.pop(context);
       //pop dialog
     });
   }

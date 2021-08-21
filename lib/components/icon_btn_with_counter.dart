@@ -33,7 +33,7 @@ class IconBtnWithCounter extends StatelessWidget {
             ),
             child: icon,
           ),
-          if (CartItemCount.cartItemCount != -11)
+          if (CartItemCount.cartItemCount != 0)
             Positioned(
               top: -3,
               right: 0,
