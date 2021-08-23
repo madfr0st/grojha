@@ -80,9 +80,7 @@ class _AppState extends State<App> {
   /// The future is part of the state of our widget. We should not call `initializeApp`
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  final DatabaseReference databaseReference =
-      FirebaseDatabase.instance.reference();
-  String _token;
+
 
   @override
   void initState() {

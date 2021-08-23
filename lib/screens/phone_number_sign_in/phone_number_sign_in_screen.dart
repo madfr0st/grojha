@@ -16,11 +16,13 @@ class PhoneNumberSignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Log In",style: TextStyle(
-            color: Colors.black
+        title: Text("Login",style: TextStyle(
+            color: Colors.black,
+          fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,
+
       ),
       body: Body(),
     );

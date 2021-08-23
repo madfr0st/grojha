@@ -9,7 +9,7 @@ class CompleteProfileScreen extends StatelessWidget {
   static String routeName = "/complete_profile";
   static Image userImage = Image.asset("assets/images/default.jpg");
   //static String userName = "Select shop category";
-  static File userImageFile = new File("assets/images/default.jpg");
+  static File userImageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,8 @@ class CompleteProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "My Profile",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+              fontWeight: FontWeight.bold),
         ),
         elevation: 15,
         backgroundColor: kPrimaryColor,

@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:grojha/Objects/notifications.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
+
+import 'FCM.dart';
 
 class PlaceOrder {
   String uid = FirebaseAuth.instance.currentUser.uid;
@@ -9,7 +12,7 @@ class PlaceOrder {
   Order order;
   int orderNumber;
 
-  PlaceOrder({Order this.order}){
+  PlaceOrder({Order this.order}) {
     this.order.userId = uid;
   }
 
@@ -17,27 +20,46 @@ class PlaceOrder {
     _orderNumber();
   }
 
-  void _orderNumber(){
-    DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("orderNumber");
+  void _orderNumber() {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("orderNumber");
 
-    databaseReference.runTransaction((MutableData transaction) async{
+    databaseReference.runTransaction((MutableData transaction) async {
       transaction.value = (transaction.value ?? 0) + 1;
       orderNumber = transaction.value;
       return transaction;
-    }).then((value){
-      if(orderNumber != null) {
+    }).then((value) {
+      if (orderNumber != null) {
         this.order.orderId = _getOrderKey();
         _setOrderInOrders();
         _setOrderInShopAccount();
         _setOrderInUserAccount();
         _setProductList();
+        FCM().sendNotification(
+            notifications: new Notifications(
+          title: "New order",
+          body:
+              "New Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been is placed.",
+          senderId: order.userId,
+          receiverId: order.shopId,
+          receiverType: "shops",
+          senderType: "users",
+        ));
 
         clearCart(shopUid: order.shopId);
       }
     });
   }
 
-  void clearCart({String shopUid}){
+  String _sixDigitOrderNumber(String string) {
+    int size = string.length;
+    for (int i = size; i < 6; i++) {
+      string = "0" + string;
+    }
+    return string;
+  }
+
+  void clearCart({String shopUid}) {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("users")
@@ -49,10 +71,9 @@ class PlaceOrder {
     CartItemCount.cartItemCount -= order.productList.length;
     CartItemCount.decreaseItemCount(itemCount: order.productList.length);
 
-    for(int i=0;i<order.productList.length;i++){
-      CartItemCount.map[order.shopId+order.productList[i].productId] = 0;
+    for (int i = 0; i < order.productList.length; i++) {
+      CartItemCount.map[order.shopId + order.productList[i].productId] = 0;
     }
-
   }
 
   String _getOrderKey() {
@@ -83,7 +104,7 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
-      "orderImage":order.orderImage,
+      "orderImage": order.orderImage,
       "secondaryOrderId": orderNumber,
       "uniqueItems": order.uniqueItems
     });
@@ -108,7 +129,7 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
-      "orderImage":order.orderImage,
+      "orderImage": order.orderImage,
       "secondaryOrderId": orderNumber,
       "uniqueItems": order.uniqueItems
     });
@@ -132,7 +153,7 @@ class PlaceOrder {
       "userPhoneNumber": order.userPhoneNumber,
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
-      "orderImage":order.orderImage,
+      "orderImage": order.orderImage,
       "secondaryOrderId": orderNumber,
       "uniqueItems": order.uniqueItems
     });

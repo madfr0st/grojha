@@ -234,7 +234,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   void _rejectOrder() {
     showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return Dialog(
             shape:
@@ -385,7 +385,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   void _error() {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
           shape:
@@ -415,7 +415,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   void _success() {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return Dialog(
           shape:

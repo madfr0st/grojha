@@ -31,13 +31,40 @@ class SearchedProductData extends SearchDelegate<String> {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.search_rounded));
+        icon: Icon(Icons.arrow_back_outlined)
+    );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
+    final List<Product> suggestionList = query.isEmpty
+        ? []
+        : AllProductData.productList.where((element) {
+            if (element.productName
+                .toLowerCase()
+                .startsWith(query.toLowerCase())) {
+              return true;
+            }
+            if (element.productName
+                .toLowerCase()
+                .contains(query.toLowerCase())) {
+              return true;
+            }
+
+            return false;
+          }).toList();
+
+    return SingleChildScrollView(
+      child: Column(children: [
+        ...List.generate(suggestionList.length, (index) {
+          return SingleProductCard(
+            notifyHomeScreen: notifyHomeScreen,
+            product: suggestionList[index],
+            shop: shop,
+          );
+        })
+      ]),
+    );
   }
 
   @override
@@ -45,25 +72,16 @@ class SearchedProductData extends SearchDelegate<String> {
     final List<Product> suggestionList = query.isEmpty
         ? []
         : AllProductData.productList.where((element) {
-            if (element.productName.startsWith(query)) {
+            if (element.productName
+                .toLowerCase()
+                .startsWith(query.toLowerCase())) {
               return true;
             }
-            if (element.productName.toLowerCase().startsWith(query)) {
+            if (element.productName
+                .toLowerCase()
+                .contains(query.toLowerCase())) {
               return true;
             }
-            if (element.productName.toUpperCase().startsWith(query)) {
-              return true;
-            }
-
-            if (element.productName.contains(query)) {
-              return true;
-            }
-            if (element.productName.toUpperCase().contains(query)) {
-              return true;
-            }
-            // if(element.productName.toUpperCase().matchAsPrefix(query) != null) {
-            //   return true;
-            // }
 
             return false;
           }).toList();

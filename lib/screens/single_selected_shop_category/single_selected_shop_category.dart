@@ -36,7 +36,8 @@ class _SingleSelectedShopCategoryState
       appBar: AppBar(
         title: Text(
           "${widget.selectedCategory}",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+          fontWeight: FontWeight.bold),
         ),
         elevation: 15,
         backgroundColor: kPrimaryColor,

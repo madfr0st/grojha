@@ -9,7 +9,7 @@ class EventStatus {
 
   EventStatus({this.context,this.popScreen});
 
-  void success(){
+  void success({Function notifyParent}){
 
     showDialog(
       context: context,
@@ -38,6 +38,9 @@ class EventStatus {
           print(e);
         }
       }
+      if(notifyParent!=null){
+        notifyParent();
+      }
       //pop dialog
     });
   }
@@ -45,7 +48,7 @@ class EventStatus {
   void failed(){
     showDialog(
       context: context,
-      barrierDismissible: false ,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
           shape:

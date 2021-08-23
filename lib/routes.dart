@@ -4,7 +4,7 @@ import 'package:grojha/screens/cart/cart_screen.dart';
 import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/home/components/categories.dart';
 import 'package:grojha/screens/home/home_screen.dart';
-import 'package:grojha/screens/login_success/login_success_screen.dart';
+import 'package:grojha/screens/notification/notification_screen.dart';
 import 'package:grojha/screens/orders/orders_screen.dart';
 import 'package:grojha/screens/otp/otp_screen.dart';
 import 'package:grojha/screens/phone_number_sign_in/phone_number_sign_in_screen.dart';
@@ -19,7 +19,6 @@ import 'package:grojha/screens/splash/splash_screen.dart';
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
   SplashScreen.routeName: (context) => SplashScreen(),
-  LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
   OtpScreen.routeName: (context) => OtpScreen(),
   HomeScreen.routeName: (context) => HomeScreen(),
@@ -33,4 +32,5 @@ final Map<String, WidgetBuilder> routes = {
       SingleSelectedShopCategory(),
   SingleSelectedProductCategory.routeName: (context) =>
       SingleSelectedProductCategory(),
+  NotificationScreen.routeName: (context) => NotificationScreen(),
 };

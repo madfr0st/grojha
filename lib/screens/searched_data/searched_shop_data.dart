@@ -33,13 +33,49 @@ class SearchedShopData extends SearchDelegate<String> {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.search_rounded));
+        icon: Icon(Icons.arrow_back_outlined));
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
+    final List<Shop> suggestionList = query.isEmpty
+        ? []
+        : AllShopData.list.where((element) {
+            if (element.shopName
+                .toLowerCase()
+                .startsWith(query.toLowerCase())) {
+              return true;
+            }
+            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
+              return true;
+            }
+            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
+              return true;
+            }
+
+            return false;
+          }).toList();
+
+    return SingleChildScrollView(
+      child: Column(children: [
+        ...List.generate(suggestionList.length, (index) {
+          return SingleShopCard(
+            notifyHomeScreen: notifyHomeScreen,
+            shop: suggestionList[index],
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SingleShop(
+                      shop: suggestionList[index],
+                      notifyHomeScreen: notifyHomeScreen,
+                    ),
+                  ));
+            },
+          );
+        })
+      ]),
+    );
   }
 
   @override
@@ -47,25 +83,17 @@ class SearchedShopData extends SearchDelegate<String> {
     final List<Shop> suggestionList = query.isEmpty
         ? []
         : AllShopData.list.where((element) {
-            if (element.shopName.startsWith(query)) {
+            if (element.shopName
+                .toLowerCase()
+                .startsWith(query.toLowerCase())) {
               return true;
             }
-            if (element.shopName.toLowerCase().startsWith(query)) {
+            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
               return true;
             }
-            if (element.shopName.toUpperCase().startsWith(query)) {
+            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
               return true;
             }
-
-            if (element.shopName.contains(query)) {
-              return true;
-            }
-            if (element.shopName.toUpperCase().contains(query)) {
-              return true;
-            }
-            // if(element.productName.toUpperCase().matchAsPrefix(query) != null) {
-            //   return true;
-            // }
 
             return false;
           }).toList();

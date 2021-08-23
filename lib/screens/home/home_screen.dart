@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/app_user.dart';
+import 'package:grojha/business_logic/FCM.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/coustom_bottom_nav_bar.dart';
 import 'package:grojha/enums.dart';
@@ -16,8 +17,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    CartItemCount().init();
+    CartItemCount.init();
     PlaceOrderVariables();
+    FCM.init();
     return Scaffold(
       body: Body(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),

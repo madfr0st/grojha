@@ -74,7 +74,7 @@ class CustomBottomNavBar extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              Container( 
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {

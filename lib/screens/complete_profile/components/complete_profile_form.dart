@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/app_user.dart';
 import 'package:grojha/components/custom_surfix_icon.dart';
 import 'package:grojha/components/default_button.dart';
+import 'package:grojha/components/event_status.dart';
 import 'package:grojha/components/grad_button.dart';
 import 'package:grojha/screens/home/home_screen.dart';
 import '../../../constants.dart';
@@ -79,74 +80,12 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         "userPhoneNumber": userPhoneNumber,
       });
 
-      _success();
+      EventStatus(context: context,popScreen: 2).success();
     } else {
-      _error();
+      EventStatus(context: context,popScreen: 1).failed();
       print("error while updating profile");
     }
   }
-
-  void _error() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Some fields are empty",
-                color1: Colors.redAccent,
-                color2: Colors.redAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
-
-  void _success() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Updated",
-                color1: Colors.greenAccent,
-                color2: Colors.greenAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context);
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(

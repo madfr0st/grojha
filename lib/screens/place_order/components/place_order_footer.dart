@@ -6,8 +6,10 @@ import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/business_logic/place_order.dart';
 import 'package:grojha/components/default_button.dart';
+import 'package:grojha/components/event_status.dart';
 import 'package:grojha/components/grad_button.dart';
 import 'package:grojha/constants.dart';
+import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/place_order/components/place_order_variables.dart';
 import 'package:grojha/size_config.dart';
 
@@ -162,7 +164,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
   void _clearCart() {
     showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return Dialog(
             shape:
@@ -204,7 +206,6 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                           press: () {
                             if (areYouSure) {
                               _emptyCart();
-                              _success();
                             }
                           },
                         ),
@@ -235,7 +236,9 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
     );
 
     PlaceOrder(order: order).clearCart(shopUid: order.shopId);
-    _success();
+    EventStatus(context: context,popScreen: 3).success(notifyParent: widget.notifyHome);
+
+
 
   }
 
@@ -256,70 +259,11 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
     );
 
     PlaceOrder(order: order).pushOrder();
-    _success();
+    EventStatus(context: context,popScreen: 3).success(notifyParent: widget.notifyHome);
+
 
   }
 
-  void _error() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Some fields are empty",
-                color1: Colors.redAccent,
-                color2: Colors.redAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
-
-  void _success() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Success",
-                color1: Colors.greenAccent,
-                color2: Colors.greenAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 1), () {
-      Navigator.pop(context);
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
 
   void placeOrder(BuildContext context) {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -506,7 +450,24 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                     } catch (e) {
                       print(e);
                       return Center(
-                        child: Text("Some error Occured\n Update your profile"),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text("Your profile is empty.",style: TextStyle(
+                              color: Colors.red,
+                              fontSize: getProportionateScreenWidth(20),
+                              fontWeight: FontWeight.bold,
+                            ),),
+                            SizedBox(height: getProportionateScreenWidth(30),),
+                            DefaultButton(
+                              text: "Complete Profile",
+                              press: (){
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                              },
+                            ),
+                          ],
+                        )
                       );
                     }
                     // return Center(

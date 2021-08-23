@@ -30,6 +30,11 @@ class _AllShopCartState extends State<AllShopCart> {
         .child(uid)
         .child("cart");
 
+    void _refresh(){
+      widget.notifyHomeScreen();
+      setState(() {
+      });
+    }
 
     return Column(
       children: [
@@ -65,7 +70,7 @@ class _AllShopCartState extends State<AllShopCart> {
                         list.length,
                         (index) {
                           return SingleShopCartCard(
-                            notifyHomeScreen: widget.notifyHomeScreen,
+                            notifyHomeScreen: _refresh,
                             index: index,
                             cartTotalCost: list[index].cartTotalProductCost,
                             cartUniqueProducts: list[index].cartUniqueProducts,

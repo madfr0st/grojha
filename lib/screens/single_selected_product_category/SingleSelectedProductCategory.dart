@@ -42,7 +42,8 @@ class _SingleSelectedProductCategoryState extends State<SingleSelectedProductCat
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.productCategory,style: TextStyle(
-            color: Colors.black
+            color: Colors.black,
+            fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,

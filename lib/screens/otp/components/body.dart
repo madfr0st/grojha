@@ -22,11 +22,29 @@ class _BodyState extends State<Body> {
   final TextEditingController _pinPutController = TextEditingController();
   final FocusNode _pinPutFocusNode = FocusNode();
   final BoxDecoration pinPutDecoration = BoxDecoration(
+    color: Color(0xffffffff),
+    borderRadius: BorderRadius.circular(7.0),
+    border: Border.all(
+        color: kPrimaryColor,
+        width: getProportionateScreenWidth(2)
+    ),
+  );
+
+  final BoxDecoration selectedPinPutDecoration = BoxDecoration(
     color: Color(0xffe2e1e1),
     borderRadius: BorderRadius.circular(7.0),
     border: Border.all(
         color: kPrimaryColor,
         width: getProportionateScreenWidth(2)
+    ),
+  );
+
+  final Container cursor = new Container(
+    height: getProportionateScreenWidth(10),
+    width: getProportionateScreenWidth(10),
+    decoration: BoxDecoration(
+        color: kPrimaryColor,
+        shape: BoxShape.circle
     ),
   );
 
@@ -36,7 +54,8 @@ class _BodyState extends State<Body> {
       key: _scaffoldkey,
       appBar: AppBar(
         title: Text("OTP Verification", style: TextStyle(
-            color: Colors.black
+            color: Colors.black,
+            fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,
@@ -56,9 +75,10 @@ class _BodyState extends State<Body> {
           buildTimer(),
           SizedBox(height: getProportionateScreenWidth(20),),
           Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: EdgeInsets.all(getProportionateScreenWidth(30)),
             child: PinPut(
               fieldsCount: 6,
+              //disabledDecoration: ,
               textStyle: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.black,
@@ -68,8 +88,10 @@ class _BodyState extends State<Body> {
               focusNode: _pinPutFocusNode,
               controller: _pinPutController,
               submittedFieldDecoration: pinPutDecoration,
-              selectedFieldDecoration: pinPutDecoration,
+              selectedFieldDecoration: selectedPinPutDecoration,
               followingFieldDecoration: pinPutDecoration,
+              cursor: cursor,
+              withCursor: true,
               pinAnimationType: PinAnimationType.fade,
               onSubmit: (pin) async {
                 try {
@@ -78,14 +100,9 @@ class _BodyState extends State<Body> {
                       verificationId: _verificationCode, smsCode: pin))
                       .then((value) async {
                     if (value.user != null) {
-                      FirebaseMessaging.instance.getToken().then((token) {
-                        FirebaseDatabase.instance.reference().child("users")
-                            .child(value.user.uid).child("deviceToken")
-                            .set(token);
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) =>
-                                HomeScreen()), (Route<dynamic> route) => false);
-                      });
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) =>
+                              HomeScreen()), (Route<dynamic> route) => false);
                     }
                   });
                 } catch (e) {
@@ -109,14 +126,9 @@ class _BodyState extends State<Body> {
               .signInWithCredential(credential)
               .then((value) async {
             if (value.user != null) {
-              FirebaseMessaging.instance.getToken().then((token) {
-                FirebaseDatabase.instance.reference().child("users")
-                    .child(value.user.uid).child("deviceToken")
-                    .set(token);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) =>
-                        HomeScreen()), (Route<dynamic> route) => false);
-              });
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) =>
+                      HomeScreen()), (Route<dynamic> route) => false);
             }
           });
         },
@@ -149,8 +161,8 @@ class _BodyState extends State<Body> {
       children: [
         Text("This code will expired in "),
         TweenAnimationBuilder(
-            tween: Tween(begin: 300.0, end: 0.0),
-            duration: Duration(seconds: 300),
+            tween: Tween(begin: 120.0, end: 0.0),
+            duration: Duration(seconds: 120),
             builder: (_, value, child) {
               int tSec = value.toInt();
               int min = (tSec / 60).floor();

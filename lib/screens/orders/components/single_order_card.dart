@@ -41,7 +41,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     "pending": "Pending",
     "packed": "Packed",
     "accepted": "Accepted",
-    "shipped": "Shipped",
+    "shipped": "Out For Delivery",
     "delivered": "Delivered",
     "rejected": "Rejected",
     "failed": "Failed",
@@ -99,7 +99,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                 ),
                               ),
                               TextSpan(
-                                text: "#${widget.order.secondaryOrderId}",
+                                text: "#${_orderNumber(widget.order.secondaryOrderId.toString())}",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w800,
@@ -110,7 +110,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                             ]),
                           ),
                           Container(
-                            width: getProportionateScreenWidth(100),
+                            width: getProportionateScreenWidth(140),
                             height: getProportionateScreenWidth(30),
                             //color: Colors.blue,
                             child: Row(
@@ -271,6 +271,14 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                     ),
                   ],
                 ))));
+  }
+
+  String _orderNumber(String string){
+    int size = string.length;
+    for(int i=size;i<6;i++){
+      string = "0"+string;
+    }
+    return string;
   }
 
   String timesStampToDate(int timestamp) {

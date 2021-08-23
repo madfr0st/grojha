@@ -18,7 +18,8 @@ class PlaceOrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(shop.shopName,style: TextStyle(
-            color: Colors.black
+            color: Colors.black,
+            fontWeight: FontWeight.bold
         ),),
         elevation: 15,
         backgroundColor: kPrimaryColor,

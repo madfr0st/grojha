@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/shop.dart';
-import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/global_variables/all_shop_data.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
@@ -59,7 +57,6 @@ class _AllShopsState extends State<AllShops> {
               //print(shops);
 
               AllShopData.list = shops;
-
               return Column(children: [
                 SizedBox(height: getProportionateScreenHeight(5)),
                 HomeHeader(

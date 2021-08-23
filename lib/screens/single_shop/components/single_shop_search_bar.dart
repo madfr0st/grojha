@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/icon_btn_with_counter.dart';
-import 'package:grojha/global_variables/FCM.dart';
+import 'package:grojha/business_logic/FCM.dart';
 import 'package:grojha/screens/cart/cart_screen.dart';
 import 'package:grojha/screens/searched_data/searched_product_data.dart';
 

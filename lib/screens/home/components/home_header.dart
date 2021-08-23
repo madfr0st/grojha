@@ -85,7 +85,7 @@ class HomeSearchField extends StatelessWidget {
               width: getProportionateScreenWidth(5),
             ),
             Text(
-              "Search ",
+              "Search near by shops",
               style: TextStyle(
                   fontSize: getProportionateScreenWidth(17), height: 1),
             ),

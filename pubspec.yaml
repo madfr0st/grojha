@@ -35,7 +35,7 @@ dependencies:
   firebase_auth: "^0.20.1"
   flutter_easyloading: ^2.0.0
   image_picker: ^0.6.7+6
-  pinput: ^0.2.6
+  pinput: ^1.2.0
   flutter_switch: ^0.3.2
   firebase_storage: "^7.0.0"
   image_cropper: ^1.4.0

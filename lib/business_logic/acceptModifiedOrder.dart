@@ -7,7 +7,7 @@ class AcceptedModifiedOrder {
 
   Order order;
 
-  AcceptedModifiedOrder({Order this.order}){
+  AcceptedModifiedOrder({this.order}){
     this.order.userId = uid;
   }
 

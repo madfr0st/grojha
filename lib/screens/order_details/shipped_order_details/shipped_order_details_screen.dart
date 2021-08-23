@@ -17,7 +17,7 @@ class ShippedOrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shipped Order Details",style: TextStyle(
+        title: Text("Out For Delivery Order Details",style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold
         ),),

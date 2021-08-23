@@ -3,6 +3,7 @@ import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
+import '../../Instructions.dart';
 import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
@@ -33,7 +34,14 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTopInstruction(),
+                Instructions.orderStateBanner( "Your order has been packed by seller.\nSoon, delivery partner will be assign.",),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
+                Instructions.orderNumberBanner(widget.order.secondaryOrderId.toString()),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
                 SizedBox(height: getProportionateScreenHeight(10),),
                 ...List.generate(
                   OrderDetailsVariables.list.length,
@@ -52,23 +60,4 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-
-  Container buildTopInstruction(){
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-      ),
-      child: Text(
-        "Your order has been packed by seller.\nSoon, delivery partner will be assign.",
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
 }

@@ -3,11 +3,14 @@ import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
+import '../../../../constants.dart';
+import '../../Instructions.dart';
 import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
+  const Details({Key key, this.order, this.notifyOrderScreen})
+      : super(key: key);
   final Function notifyOrderScreen;
 
   final Order order;
@@ -31,7 +34,11 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Instruction(),
+                Instructions.orderStateBanner( "Your order has been placed.\n Soon, the seller will accept it."),
+                SizedBox(
+                  height: getProportionateScreenHeight(10),
+                ),
+                Instructions.orderNumberBanner(widget.order.secondaryOrderId.toString()),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
@@ -56,27 +63,3 @@ class _DetailsState extends State<Details> {
   }
 }
 
-class Instruction extends StatelessWidget {
-  const Instruction({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-      ),
-      child: Text(
-        "Your order has been placed.\n Soon, the seller will accept it.",
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-}
