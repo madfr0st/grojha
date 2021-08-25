@@ -18,6 +18,7 @@ class Order {
   List<Product> productList;
   String orderImage;
   int secondaryOrderId;
+  String deliveryPartnerId;
 
   Order({String this.shopId,
     String this.shopName,
@@ -34,7 +35,7 @@ class Order {
     int this.deliveryCharge,
     int this.secondaryOrderId,
     List<Product> this.productList,
-    String this.orderImage, int this.uniqueItems});
+    String this.orderImage, int this.uniqueItems,this.deliveryPartnerId});
 
   @override
   String toString() {

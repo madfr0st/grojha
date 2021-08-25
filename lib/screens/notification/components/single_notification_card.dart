@@ -12,6 +12,7 @@ class SingleNotificationCard extends StatelessWidget {
   final Notifications notifications;
 
 
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -1,26 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/cancel_order.dart';
 
 class AcceptedModifiedOrder {
   String uid = FirebaseAuth.instance.currentUser.uid;
 
   Order order;
+  int removedCount = 0;
 
-  AcceptedModifiedOrder({this.order}){
+  AcceptedModifiedOrder({this.order}) {
     this.order.userId = uid;
   }
 
-  void acceptModifiedOrder(){
-    _removeOrderFromOrderDatabase();
-    _removeOrderFromShopDatabase();
-    _removeOrderFromUserDatabase();
-    _setOrderToUserDatabase();
-    _setOrderToShopDatabase();
-    _setOrderToOrderDatabase();
+  void acceptModifiedOrder() {
+    _removeOutOfStockProducts();
   }
 
-  void _removeOrderFromUserDatabase(){
+  void _removeOrderFromUserDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("users")
@@ -29,7 +26,8 @@ class AcceptedModifiedOrder {
         .child(order.orderId);
     databaseReference.set({});
   }
-  void _setOrderToUserDatabase(){
+
+  void _setOrderToUserDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("users")
@@ -50,11 +48,12 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems,
-      "orderImage":order.orderImage,
+      "uniqueItems": order.uniqueItems - removedCount,
+      "orderImage": order.orderImage,
     });
   }
-  void _removeOrderFromShopDatabase(){
+
+  void _removeOrderFromShopDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("shops")
@@ -63,7 +62,8 @@ class AcceptedModifiedOrder {
         .child(order.orderId);
     databaseReference.set({});
   }
-  void _setOrderToShopDatabase(){
+
+  void _setOrderToShopDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("shops")
@@ -84,19 +84,21 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems,
-      "orderImage":order.orderImage,
+      "uniqueItems": order.uniqueItems - removedCount,
+      "orderImage": order.orderImage,
     });
   }
-  void _removeOrderFromOrderDatabase(){
+
+  void _removeOrderFromOrderDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("pincode/700001")
         .child("orders/${order.orderState}")
         .child(order.orderId);
-    print(databaseReference.path);
-    databaseReference.set({});  }
-  void _setOrderToOrderDatabase(){
+    databaseReference.set({});
+  }
+
+  void _setOrderToOrderDatabase() {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("pincode/700001")
@@ -116,9 +118,43 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems,
-      "orderImage":order.orderImage,
+      "uniqueItems": order.uniqueItems - removedCount,
+      "orderImage": order.orderImage,
     });
   }
 
+  void _removeOutOfStockProducts() {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("orders")
+        .child(order.orderId).child("productList");
+
+    databaseReference.once().then((snapShot) {
+      if (snapShot.value != null) {
+        Map<dynamic, dynamic> map = snapShot.value;
+
+        print(map);
+
+        map.forEach((key, value) {
+          print(value);
+          print(value["productStatus"]);
+          if (value["productStatus"] != null && !value["productStatus"]) {
+            databaseReference.child(key.toString()).set({});
+            removedCount++;
+          }
+        });
+      }
+      if(removedCount!=order.uniqueItems) {
+        _removeOrderFromOrderDatabase();
+        _removeOrderFromShopDatabase();
+        _removeOrderFromUserDatabase();
+        _setOrderToUserDatabase();
+        _setOrderToShopDatabase();
+        _setOrderToOrderDatabase();
+      }
+      else{
+        CancelOrder(order: order).cancelOrder();
+      }
+    });
+  }
 }

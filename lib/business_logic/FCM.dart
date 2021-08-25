@@ -31,6 +31,7 @@ class FCM {
     }
   }
 
+
   Future<void> _sendPushMessage({Notifications notifications}) async {
     if (notifications.receiverToken == null) {
       print('Unable to send FCM message, no token exists.');
@@ -60,6 +61,7 @@ class FCM {
       //   'via': 'FlutterFire Cloud Messaging!!!',
       //   'count': "5464",
       // },
+      "priority": "high",
       'notification': {
         'title': '${notifications.title}',
         'body': '${notifications.body}',

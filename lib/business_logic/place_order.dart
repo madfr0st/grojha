@@ -12,7 +12,7 @@ class PlaceOrder {
   Order order;
   int orderNumber;
 
-  PlaceOrder({Order this.order}) {
+  PlaceOrder({this.order}) {
     this.order.userId = uid;
   }
 
@@ -39,7 +39,7 @@ class PlaceOrder {
             notifications: new Notifications(
           title: "New order",
           body:
-              "New Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been is placed.",
+              "New Order with order id #${_sixDigitOrderNumber(orderNumber.toString())} worth ₹ ${order.grandTotal}/- has been placed.",
           senderId: order.userId,
           receiverId: order.shopId,
           receiverType: "shops",

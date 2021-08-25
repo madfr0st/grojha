@@ -5,7 +5,6 @@ import 'package:grojha/enums.dart';
 import 'package:grojha/size_config.dart';
 
 import 'components/body.dart';
-import 'components/body_all.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({Key key}) : super(key: key);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/icon_btn_with_counter.dart';
+import 'package:grojha/components/notification_btn_with_counter.dart';
 import 'package:grojha/screens/cart/cart_screen.dart';
+import 'package:grojha/screens/notification/notification_screen.dart';
 import 'package:grojha/screens/profile/profile_screen.dart';
 import 'package:grojha/screens/searched_data/searched_shop_data.dart';
 
@@ -29,12 +31,27 @@ class HomeHeader extends StatelessWidget {
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
+          NotificationBtnWithCounter(
+              icon: Icon(
+                Icons.notifications_outlined,
+                color: kSecondaryColor,
+              ),
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NotificationScreen(
+                          notifyHomeScreen: notifyHomeScreen,
+                        )));
+              }),
+          SizedBox(
+            width: getProportionateScreenWidth(10),
+          ),
           IconBtnWithCounter(
             icon: Icon(
               Icons.shopping_cart_outlined,
               color: kSecondaryColor,
             ),
-
             press: () {
               Navigator.push(
                   context,
@@ -67,7 +84,7 @@ class HomeSearchField extends StatelessWidget {
           context: context,
           delegate: SearchedShopData(notifyHomeScreen: notifyHomeScreen)),
       child: Container(
-        width: SizeConfig.screenWidth * 0.7,
+        width: SizeConfig.screenWidth * 0.55,
         padding: EdgeInsets.all(getProportionateScreenWidth(10)),
         decoration: BoxDecoration(
           color: kSecondaryColor.withOpacity(0.1),
@@ -85,7 +102,7 @@ class HomeSearchField extends StatelessWidget {
               width: getProportionateScreenWidth(5),
             ),
             Text(
-              "Search near by shops",
+              "Search shops",
               style: TextStyle(
                   fontSize: getProportionateScreenWidth(17), height: 1),
             ),

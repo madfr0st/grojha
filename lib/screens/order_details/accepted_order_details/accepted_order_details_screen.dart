@@ -23,7 +23,7 @@ class AcceptedOrderDetailsScreen extends StatelessWidget {
         elevation: 15,
         backgroundColor: kPrimaryColor,
       ),
-      body: Body(order: order,),
+      body: Body(order: order,notifyOrderScreen: notifyOrderScreen,),
     );
   }
 }

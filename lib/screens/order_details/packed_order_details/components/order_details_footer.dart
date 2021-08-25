@@ -3,7 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/cancel_order.dart';
 import 'package:grojha/components/default_button.dart';
+import 'package:grojha/components/event_status.dart';
 import 'package:grojha/components/grad_button.dart';
 
 import '../../../../constants.dart';
@@ -272,7 +274,8 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                               text: "Cancel Order",
                               press: () {
                                 if (areYouSure) {
-                                  _success();
+                                  CancelOrder(order: widget.order).cancelOrder(notifySeller: true);
+                                  EventStatus(popScreen: 3,context: context).success(notifyParent: widget.notifyOrderScreen);
                                 }
                               },
                             ),
@@ -286,67 +289,4 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         });
   }
 
-
-
-  void _error() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Some fields are empty",
-                color1: Colors.redAccent,
-                color2: Colors.redAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
-
-  void _success() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 16,
-          child: Container(
-            width: double.infinity,
-            height: getProportionateScreenWidth(100),
-            child: Center(
-              child: GradButton(
-                name: "Success",
-                color1: Colors.greenAccent,
-                color2: Colors.greenAccent,
-                press: () {},
-              ),
-            ),
-          ),
-        );
-      },
-    );
-    new Future.delayed(new Duration(seconds: 1), () {
-      Navigator.pop(context);
-      Navigator.pop(context);
-      Navigator.pop(context);
-      //pop dialog
-    });
-  }
 }

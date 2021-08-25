@@ -23,6 +23,7 @@ class ChangeOrderState {
       "secondaryOrderId": order.secondaryOrderId,
       "uniqueItems": order.uniqueItems,
       "orderImage": order.orderImage,
+      "deliveryPartnerId": order.deliveryPartnerId,
     });
   }
 }

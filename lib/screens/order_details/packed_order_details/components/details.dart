@@ -8,7 +8,8 @@ import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key key, this.order}) : super(key: key);
+  const Details({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
+  final Function notifyOrderScreen;
 
   final Order order;
 
@@ -51,7 +52,7 @@ class _DetailsState extends State<Details> {
                     notifyOrderScreen: _refresh,
                   ),
                 ),
-                OrderDetailsFooter(order: widget.order,),
+                OrderDetailsFooter(order: widget.order,notifyOrderScreen: widget.notifyOrderScreen,),
                 //SizedBox(height: getProportionateScreenHeight(10),),
               ],
             ),

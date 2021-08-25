@@ -29,6 +29,7 @@ class EventStatus {
         );
       },
     );
+
     new Future.delayed(new Duration(seconds: 1), () {
       for(int i=0;i<popScreen;i++){
         try {

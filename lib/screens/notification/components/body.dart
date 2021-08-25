@@ -3,13 +3,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/notifications.dart';
 import 'package:grojha/business_logic/FCM.dart';
+import 'package:grojha/business_logic/get_notifications.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/screens/notification/components/single_notification_card.dart';
 
 
 class Body extends StatefulWidget {
-  const Body({Key key}) : super(key: key);
-
+  const Body({Key key, this.notifyHomeScreen}) : super(key: key);
+  final Function notifyHomeScreen;
   @override
   _BodyState createState() => _BodyState();
 }
@@ -17,13 +18,12 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    List<Notifications> list = [];
 
     String uid = FirebaseAuth.instance.currentUser.uid;
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.reference().child("users/$uid/notifications");
 
-    int count =0;
+    int count = 0;
 
     return SafeArea(
         child: FutureBuilder(
@@ -32,9 +32,11 @@ class _BodyState extends State<Body> {
         if (snapShot.hasData) {
           try {
             Map<dynamic, dynamic> map = snapShot.data.value;
-            list.clear();
+            GetNotifications.notificationCount = 0;
+            GetNotifications.notificationList.clear();
             map.forEach((key, val) {
-              list.add(new Notifications(
+              GetNotifications.notificationCount++;
+              GetNotifications.notificationList.add(new Notifications(
                 title: val["title"],
                 body: val["body"],
                 time: val["time"],
@@ -45,14 +47,17 @@ class _BodyState extends State<Body> {
               child: Column(
                 children: [
                   ...List.generate(
-                      list.length, (index) => SingleNotificationCard(notifications: list[index],)),
+                      GetNotifications.notificationList.length, (index) => SingleNotificationCard(notifications: GetNotifications.notificationList[index],)),
                   Container(
                     padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: DefaultButton(
                       text: "Clear Notifications",
                       press: (){
                         databaseReference.set({});
+                        GetNotifications.notificationList.clear();
+                        GetNotifications.notificationCount = 0;
                         Navigator.pop(context);
+                        widget.notifyHomeScreen();
                       },
                     ),
                   )

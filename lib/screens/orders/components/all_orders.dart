@@ -22,6 +22,12 @@ class _AllOrdersState extends State<AllOrders> {
         .child(uid)
         .child("orders");
 
+    void _refresh(){
+      setState(() {
+
+      });
+    }
+
     return Expanded(
       child: SingleChildScrollView(
         child: FutureBuilder(
@@ -59,7 +65,7 @@ class _AllOrdersState extends State<AllOrders> {
                   return Column(children: [
                     ...List.generate(orderList.length, (index) {
                       return SingleOrderCard(
-                        order: orderList[index],
+                        order: orderList[index],notifyOrderScreen: _refresh,
                       );
                     })
                   ]);

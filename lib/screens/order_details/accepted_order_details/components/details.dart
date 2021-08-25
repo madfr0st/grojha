@@ -7,9 +7,10 @@ import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key key, this.order}) : super(key: key);
+  const Details({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
 
   final Order order;
+  final Function notifyOrderScreen;
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -17,6 +18,7 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   void _refresh() {
+    widget.notifyOrderScreen();
     setState(() {});
   }
 
@@ -43,7 +45,7 @@ class _DetailsState extends State<Details> {
                   ),
                 ),
                 OrderDetailsFooter(
-                  order: widget.order,
+                  order: widget.order,notifyOrderScreen: _refresh,
                 ),
               ],
             ),

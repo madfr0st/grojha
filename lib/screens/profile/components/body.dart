@@ -20,11 +20,6 @@ class Body extends StatelessWidget {
             },
           ),
           ProfileMenu(
-            text: "Notifications",
-            icon: "assets/icons/Bell.svg",
-            press: () { Navigator.pushNamed(context, NotificationScreen.routeName);},
-          ),
-          ProfileMenu(
             text: "Help Center",
             icon: "assets/icons/Question mark.svg",
             press: () {},
