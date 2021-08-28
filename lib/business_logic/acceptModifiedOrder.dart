@@ -158,13 +158,13 @@ class AcceptedModifiedOrder {
 
         FCM().sendNotification(
             notifications: new Notifications(
-          title: "Order Cancelled",
-          body:
-              "Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been cancelled.",
-          senderId: order.userId,
-          receiverId: order.shopId,
-          receiverType: "shops",
-          senderType: "users",
+              title: "New order",
+              body:
+              "New Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been placed.",
+              senderId: order.userId,
+              receiverId: order.shopId,
+              receiverType: "shops",
+              senderType: "users",
         ));
       } else {
         CancelOrder(order: order).cancelOrder();

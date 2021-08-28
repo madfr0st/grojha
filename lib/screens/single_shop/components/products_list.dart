@@ -171,21 +171,4 @@ class _ProductsListState extends State<ProductsList> {
           return Center(child: CircularProgressIndicator());
         });
   }
-
-  String calcPercentage(String num, String den) {
-    try {
-      var a = int.parse(num);
-      assert(a is int);
-      int b = int.parse(den);
-      assert(b is int);
-      int c = a * 100;
-      var d = (c / b);
-      c = d.toInt();
-      c = 100 - c;
-      return "$c";
-    } catch (e) {
-      //print("error while %");
-      return "0";
-    }
-  }
 }

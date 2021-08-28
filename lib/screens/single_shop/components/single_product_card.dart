@@ -317,7 +317,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
     try {
       int c = a * 100;
       var d = (c / b);
-      c = d.toInt();
+      c = d.ceil().toInt();
       c = 100 - c;
       return c;
     } catch (e) {
