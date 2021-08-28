@@ -101,7 +101,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                               fontSize: getProportionateScreenWidth(12)),
                         ),
                         Text(
-                          "₹ ${OrderDetailsVariables.delivery}",
+                          "₹ ${widget.order.deliveryCharge}",
                           style: TextStyle(
                               height: 1,
                               color: Colors.black,
