@@ -51,7 +51,7 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems - removedCount,
+      "uniqueItems": order.uniqueItems,
       "orderImage": order.orderImage,
     });
   }
@@ -87,7 +87,7 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems - removedCount,
+      "uniqueItems": order.uniqueItems,
       "orderImage": order.orderImage,
     });
   }
@@ -121,7 +121,7 @@ class AcceptedModifiedOrder {
       "userAddress": order.userAddress,
       "shopImage": order.shopImage,
       "secondaryOrderId": order.secondaryOrderId,
-      "uniqueItems": order.uniqueItems - removedCount,
+      "uniqueItems": order.uniqueItems,
       "orderImage": order.orderImage,
     });
   }
@@ -148,7 +148,7 @@ class AcceptedModifiedOrder {
           }
         });
       }
-      if (removedCount != order.uniqueItems) {
+      if (order.uniqueItems>0) {
         _removeOrderFromOrderDatabase();
         _removeOrderFromShopDatabase();
         _removeOrderFromUserDatabase();
