@@ -101,7 +101,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                               fontSize: getProportionateScreenWidth(12)),
                         ),
                         Text(
-                          "₹ ${OrderDetailsVariables.delivery}",
+                          "₹ ${widget.order.deliveryCharge}",
                           style: TextStyle(
                               height: 1,
                               color: Colors.black,
@@ -125,7 +125,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "₹ ${OrderDetailsVariables.itemTotal + OrderDetailsVariables.delivery}",
+                          "₹ ${OrderDetailsVariables.itemTotal + widget.order.deliveryCharge}",
                           style: TextStyle(
                               height: 1,
                               color: Colors.black,

@@ -5,8 +5,7 @@ import 'package:grojha/Objects/shop.dart';
 
 class OrderDetailsVariables {
   static int itemTotal = 0;
-  static int delivery = 20;
-  static int grandTotal = delivery+itemTotal;
+  static int grandTotal = 0;
   static BuildContext buildContext;
   static List<Product> list = [];
   static Shop shop;
