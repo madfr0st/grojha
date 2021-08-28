@@ -34,7 +34,7 @@ class NotificationBtnWithCounter extends StatelessWidget {
             ),
             child: icon,
           ),
-          if (CartItemCount.cartItemCount != 0)
+          if (GetNotifications.notificationCount != 0)
             Positioned(
               top: -3,
               right: 0,

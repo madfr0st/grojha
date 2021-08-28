@@ -43,6 +43,8 @@ class _BodyState extends State<Body> {
               ));
             });
 
+            GetNotifications.notificationList.sort((a,b)=> -a.time.compareTo(b.time));
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -68,24 +70,7 @@ class _BodyState extends State<Body> {
           } catch (e) {
             print(e);
             return Center(
-              child: DefaultButton(
-                text: "Send push Notification",
-                press: (){
-                  count++;
-                  Notifications noti = new Notifications(
-                    receiverToken: "fGfLkCITTkGpTTWzZxxHia:APA91bFootJbVTP7DK4uk7MZShdpI75NuoqxzYsQnmJu683LyC6fl4urinxcXRUGgecZCG5Va95TKzsrrmaF84Euau26292BqLAeU42OXA3oZZUYDZMsO4lojcR8t44vE04zJS2yLMnm",
-                    receiverType: "shops",
-                    receiverId:"LVFggWiBrfgR2ayPSdSQF7PGNY33",
-                    senderId: uid,
-                    senderType: "users",
-                    body: count.toString(),
-                    title: "Notification count",
-                  );
-
-                  FCM().sendNotification(notifications: noti);
-
-                },
-              ),
+              child: Text("Zero notifications"),
             );
           }
         }

@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:grojha/Objects/notifications.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/business_logic/cancel_order.dart';
+
+import 'FCM.dart';
 
 class AcceptedModifiedOrder {
   String uid = FirebaseAuth.instance.currentUser.uid;
@@ -127,7 +130,8 @@ class AcceptedModifiedOrder {
     DatabaseReference databaseReference = FirebaseDatabase.instance
         .reference()
         .child("orders")
-        .child(order.orderId).child("productList");
+        .child(order.orderId)
+        .child("productList");
 
     databaseReference.once().then((snapShot) {
       if (snapShot.value != null) {
@@ -144,17 +148,35 @@ class AcceptedModifiedOrder {
           }
         });
       }
-      if(removedCount!=order.uniqueItems) {
+      if (removedCount != order.uniqueItems) {
         _removeOrderFromOrderDatabase();
         _removeOrderFromShopDatabase();
         _removeOrderFromUserDatabase();
         _setOrderToUserDatabase();
         _setOrderToShopDatabase();
         _setOrderToOrderDatabase();
-      }
-      else{
+
+        FCM().sendNotification(
+            notifications: new Notifications(
+          title: "Order Cancelled",
+          body:
+              "Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been cancelled.",
+          senderId: order.userId,
+          receiverId: order.shopId,
+          receiverType: "shops",
+          senderType: "users",
+        ));
+      } else {
         CancelOrder(order: order).cancelOrder();
       }
     });
+  }
+
+  String _sixDigitOrderNumber(String string) {
+    int size = string.length;
+    for (int i = size; i < 6; i++) {
+      string = "0" + string;
+    }
+    return string;
   }
 }
