@@ -18,51 +18,83 @@ class NotificationBtnWithCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(100),
-      onTap: press,
-      child: Stack(
-        overflow: Overflow.visible,
-        children: [
-          Container(
-            padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-            height: getProportionateScreenWidth(46),
-            width: getProportionateScreenWidth(46),
+    return Stack(clipBehavior: Clip.none, children: [
+      Container(
+        padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+        height: getProportionateScreenWidth(45),
+        width: getProportionateScreenWidth(45),
+        decoration: BoxDecoration(
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.withOpacity(.3),
+          //     spreadRadius: 1,
+          //     blurRadius: 7,
+          //     offset: Offset(4, 4), // changes position of shadow
+          //   ),
+          // ],
+            shape: BoxShape.circle,
+            color: kPrimaryColor
+        ),
+        child: Container(
+            alignment: Alignment.center,
+            height: getProportionateScreenWidth(45),
+            width: getProportionateScreenWidth(45),
             decoration: BoxDecoration(
-              color: kSecondaryColor.withOpacity(0.1),
+              color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: icon,
-          ),
-          if (GetNotifications.notificationCount != 0)
-            Positioned(
-              top: -3,
-              right: 0,
-              child: Container(
-                height: getProportionateScreenWidth(16),
-                //width: getProportionateScreenWidth(16),
-                padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(3), 0,
-                    getProportionateScreenWidth(3), 0),
-                decoration: BoxDecoration(
-                  color: Color(0xFFFF4848),
-                  borderRadius: BorderRadius.circular(10000),
-                  border: Border.all(width: 1.5, color: Colors.white),
-                ),
-                child: Center(
-                  child: Text(
-                    "${GetNotifications.notificationCount}",
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(10),
-                      height: 1.2,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+            child: Material(
+              borderRadius: BorderRadius.circular(1000),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(1000),
+                onTap: press,
+                child: Container(
+                    alignment: Alignment.center,
+                    height: getProportionateScreenWidth(45),
+                    width: getProportionateScreenWidth(45),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(1000),
                     ),
-                  ),
+                    child: icon
                 ),
               ),
-            )
-        ],
+            )),
       ),
-    );
+      if (GetNotifications.notificationCount != 0)
+        Positioned(
+          top: -3,
+          right: 0,
+          child: Container(
+            height: getProportionateScreenWidth(16),
+            //width: getProportionateScreenWidth(16),
+            padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(3), 0,
+                getProportionateScreenWidth(3), 0),
+            decoration: BoxDecoration(
+              color: Color(0xFFFF4848),
+              borderRadius: BorderRadius.circular(10000),
+              border: Border.all(width: 1.5, color: Colors.white),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(.5),
+                  spreadRadius: 1,
+                  blurRadius: 7,
+                  offset: Offset(4, 4), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                "${GetNotifications.notificationCount}",
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(10),
+                  height: 1.2,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        )
+    ]);
   }
 }

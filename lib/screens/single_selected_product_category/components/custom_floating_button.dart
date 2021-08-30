@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/screens/searched_data/searched_product_data.dart';
 
+import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class CustomFloatingButton extends StatelessWidget {
@@ -41,8 +42,9 @@ class CustomFloatingButton extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.purple.withOpacity(1),
-              Colors.red.withOpacity(1),
+              Colors.greenAccent.withOpacity(1),
+              kPrimaryColor.withOpacity(1),
+              Color(0xff34783b),
             ],
           ),
           borderRadius: BorderRadius.circular(100),

@@ -19,8 +19,7 @@ class FailedOrderDetailsScreen extends StatelessWidget {
         title: Text("Failed Order Details",style: TextStyle(
             color: Colors.black
         ),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+
       ),
       body: Body(order: order,),
     );

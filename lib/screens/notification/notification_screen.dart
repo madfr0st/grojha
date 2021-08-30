@@ -16,8 +16,7 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Notifications", style: TextStyle(color: Colors.black,
             fontWeight: FontWeight.bold),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+
       ),
       body:Body(notifyHomeScreen: notifyHomeScreen,),
     );

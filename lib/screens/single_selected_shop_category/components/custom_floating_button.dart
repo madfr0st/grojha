@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grojha/constants.dart';
 import 'package:grojha/screens/searched_data/searched_shop_data.dart';
 
 import '../../../size_config.dart';
@@ -36,8 +37,9 @@ class CustomFloatingButton extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.purple.withOpacity(1),
-              Colors.red.withOpacity(1),
+              Colors.greenAccent.withOpacity(1),
+              kPrimaryColor.withOpacity(1),
+              Color(0xff34783b),
             ],
           ),
           borderRadius: BorderRadius.circular(100),

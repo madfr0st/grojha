@@ -57,8 +57,7 @@ class _BodyState extends State<Body> {
             color: Colors.black,
             fontWeight: FontWeight.bold
         ),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+
       ),
       body: Column(
         children: [

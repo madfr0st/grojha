@@ -45,19 +45,18 @@ class _SingleSelectedProductCategoryState extends State<SingleSelectedProductCat
             color: Colors.black,
             fontWeight: FontWeight.bold
         ),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+
         actions: [
           Container(
             margin:
-            EdgeInsets.fromLTRB(0, 0, getProportionateScreenWidth(20), 0),
+            EdgeInsets.fromLTRB(0, 0, getProportionateScreenWidth(10), 0),
             alignment: Alignment.center,
             decoration:
             BoxDecoration(shape: BoxShape.circle, color: Colors.white),
             child: IconBtnWithCounter(
               icon: Icon(
                 Icons.shopping_cart_outlined,
-                color: kSecondaryColor,
+                color: Colors.black,
               ),
 
               press: () {

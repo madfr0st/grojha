@@ -20,7 +20,7 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,15 +34,15 @@ class HomeHeader extends StatelessWidget {
           NotificationBtnWithCounter(
               icon: Icon(
                 Icons.notifications_outlined,
-                color: kSecondaryColor,
+                color: Colors.black,
               ),
               press: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => NotificationScreen(
-                          notifyHomeScreen: notifyHomeScreen,
-                        )));
+                              notifyHomeScreen: notifyHomeScreen,
+                            )));
               }),
           SizedBox(
             width: getProportionateScreenWidth(10),
@@ -50,7 +50,7 @@ class HomeHeader extends StatelessWidget {
           IconBtnWithCounter(
             icon: Icon(
               Icons.shopping_cart_outlined,
-              color: kSecondaryColor,
+              color: Colors.black,
             ),
             press: () {
               Navigator.push(
@@ -78,37 +78,53 @@ class HomeSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(15),
-      onTap: () => showSearch(
-          context: context,
-          delegate: SearchedShopData(notifyHomeScreen: notifyHomeScreen)),
-      child: Container(
-        width: SizeConfig.screenWidth * 0.55,
-        padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+    return Container(
+        width: SizeConfig.screenWidth * 0.6,
+        padding: EdgeInsets.all(getProportionateScreenWidth(2)),
         decoration: BoxDecoration(
-          color: kSecondaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(17),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.greenAccent.withOpacity(1),
+              kPrimaryColor.withOpacity(1),
+              Color(0xff34783b),
+            ],
+          ),
         ),
-        child: Container(
-            child: Row(
-          children: [
-            //SizedBox(width: getProportionateScreenWidth(10),),
-            Icon(
-              Icons.search_outlined,
-              color: kPrimaryColor,
+        child: Material(
+            borderRadius: BorderRadius.circular(15),
+            child: InkWell(
+          borderRadius: BorderRadius.circular(15),
+          onTap: () => showSearch(
+              context: context,
+              delegate: SearchedShopData(notifyHomeScreen: notifyHomeScreen)),
+          child: Container(
+            width: SizeConfig.screenWidth * 0.55,
+            padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
             ),
-            SizedBox(
-              width: getProportionateScreenWidth(5),
-            ),
-            Text(
-              "Search shops",
-              style: TextStyle(
-                  fontSize: getProportionateScreenWidth(17), height: 1),
-            ),
-          ],
-        )),
-      ),
-    );
+            child: Container(
+                child: Row(
+              children: [
+                Icon(
+                  Icons.search_outlined,
+                  color: kPrimaryColor,
+                ),
+                SizedBox(
+                  width: getProportionateScreenWidth(5),
+                ),
+                Text(
+                  "Search nearby shops",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(15), height: 1),
+                ),
+              ],
+            )),
+          ),
+        )));
   }
 }

@@ -17,8 +17,7 @@ class CartScreen extends StatelessWidget {
         color: Colors.black,
             fontWeight: FontWeight.bold
     ),),
-    elevation: 15,
-    backgroundColor: kPrimaryColor,
+
       ),
       body: Body(notifyHomeScreen: notifyHomeScreen,),
     );
