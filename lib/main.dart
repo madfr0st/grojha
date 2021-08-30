@@ -12,6 +12,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'constants.dart';
 import 'message.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -109,7 +110,10 @@ class _AppState extends State<App> {
                 channel.description,
                 // TODO add a proper drawable resource to android, for now using
                 //      one that already exists in example app.
-                icon: 'launch_background',
+                icon: 'applogo',
+                color: kPrimaryColor,
+                enableVibration: true,
+                playSound: true,
               ),
             ));
       }

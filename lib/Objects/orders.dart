@@ -16,6 +16,7 @@ class Order {
   int orderTime;
   String orderState;
   List<Product> productList;
+  int acceptanceCode;
   String orderImage;
   int secondaryOrderId;
   String deliveryPartnerId;

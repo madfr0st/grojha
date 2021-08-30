@@ -4,9 +4,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
    <application
-        android:label="grojha"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Grojha"
+        android:icon="@mipmap/applogo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/business_logic/check_order_state.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/screens/order_details/accepted_order_details/accepted_order_details_screen.dart';
 import 'package:grojha/screens/order_details/cancelled_order_details/cancelled_order_details_screen.dart';
@@ -334,87 +335,93 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     return time.toString();
   }
 
-  void orderDetailsPage() {
-    if (widget.order.orderState == "pending") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PendingOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
+  Future<void> orderDetailsPage() async {
+    bool orderState = await CheckOrderState(order: widget.order).check();
+    if (orderState) {
+      if (widget.order.orderState == "pending") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PendingOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "modified") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ModifiedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "accepted") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AcceptedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "packed") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PackedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "shipped") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ShippedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "delivered") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DeliveredOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "rejected") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RejectedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "cancelled") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CancelledOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+      if (widget.order.orderState == "failed") {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FailedOrderDetailsScreen(
+                  order: widget.order,
+                  notifyOrderScreen: widget.notifyOrderScreen,
+                )));
+      }
+    } else {
+      widget.notifyOrderScreen();
     }
-    if (widget.order.orderState == "modified") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ModifiedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "accepted") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AcceptedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "packed") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PackedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "shipped") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ShippedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "delivered") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DeliveredOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "rejected") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RejectedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "cancelled") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CancelledOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
-    if (widget.order.orderState == "failed") {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => FailedOrderDetailsScreen(
-                    order: widget.order,
-                    notifyOrderScreen: widget.notifyOrderScreen,
-                  )));
-    }
+
   }
 }

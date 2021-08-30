@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
@@ -172,8 +173,8 @@ class _SinglePlaceOrderProductCardState
               bottom: getProportionateScreenWidth(25),
               right: getProportionateScreenWidth(5),
               child: Container(
-                height: getProportionateScreenWidth(25),
-                width: getProportionateScreenWidth(75),
+                height: getProportionateScreenWidth(27),
+                width: getProportionateScreenWidth(81),
                 decoration: BoxDecoration(
                   color: Colors.redAccent,
                   borderRadius: BorderRadius.circular(7),
@@ -189,6 +190,7 @@ class _SinglePlaceOrderProductCardState
                           borderRadius: BorderRadius.circular(7),
                           onTap: () {
                             if (productCartCount > 0) {
+                              HapticFeedback.lightImpact();
                               productCartCount--;
                               setState(() {
                                 PlaceOrderVariables.itemTotal -=
@@ -210,8 +212,8 @@ class _SinglePlaceOrderProductCardState
                             }
                           },
                           child: Container(
-                            width: getProportionateScreenWidth(25),
-                            height: getProportionateScreenWidth(25),
+                            width: getProportionateScreenWidth(27),
+                            height: getProportionateScreenWidth(27),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(),
                             child: Icon(
@@ -223,8 +225,8 @@ class _SinglePlaceOrderProductCardState
                         ),
                       ),
                       Container(
-                        width: getProportionateScreenWidth(25),
-                        height: getProportionateScreenWidth(25),
+                        width: getProportionateScreenWidth(27),
+                        height: getProportionateScreenWidth(27),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -244,6 +246,7 @@ class _SinglePlaceOrderProductCardState
                           borderRadius: BorderRadius.circular(7),
                           onTap: () {
                             productCartCount++;
+                            HapticFeedback.lightImpact();
                             setState(() {
                               PlaceOrderVariables.itemTotal +=
                                   widget.product.productSellingPrice;
@@ -262,8 +265,8 @@ class _SinglePlaceOrderProductCardState
                             });
                           },
                           child: Container(
-                            width: getProportionateScreenWidth(25),
-                            height: getProportionateScreenWidth(25),
+                            width: getProportionateScreenWidth(27),
+                            height: getProportionateScreenWidth(27),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(),
                             child: Icon(

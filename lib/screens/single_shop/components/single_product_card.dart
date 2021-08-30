@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
+import 'package:grojha/constants.dart';
 import 'package:grojha/size_config.dart';
 
 class SingleProductCard extends StatefulWidget {
@@ -50,8 +52,8 @@ class _SingleProductCardState extends State<SingleProductCard> {
           .map[widget.shop.shopId + widget.product.productId];
     }
     return Container(
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      margin: EdgeInsets.all(getProportionateScreenWidth(10)),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
       height: getProportionateScreenWidth(140),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -173,8 +175,8 @@ class _SingleProductCardState extends State<SingleProductCard> {
             bottom: getProportionateScreenWidth(45),
             right: getProportionateScreenWidth(20),
             child: Container(
-              height: getProportionateScreenWidth(25),
-              width: getProportionateScreenWidth(75),
+              height: getProportionateScreenWidth(27),
+              width: getProportionateScreenWidth(81),
               decoration: BoxDecoration(
                 color: Colors.redAccent,
                 borderRadius: BorderRadius.circular(7),
@@ -190,6 +192,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
                         borderRadius: BorderRadius.circular(7),
                         onTap: () {
                           if (productCartCount > 0) {
+                            HapticFeedback.lightImpact();
                             productCartCount--;
                             setState(() {
                               CartItemCount.map[widget
@@ -209,8 +212,8 @@ class _SingleProductCardState extends State<SingleProductCard> {
                           }
                         },
                         child: Container(
-                          width: getProportionateScreenWidth(25),
-                          height: getProportionateScreenWidth(25),
+                          width: getProportionateScreenWidth(27),
+                          height: getProportionateScreenWidth(27),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(),
                           child: Icon(
@@ -222,8 +225,8 @@ class _SingleProductCardState extends State<SingleProductCard> {
                       ),
                     ),
                     Container(
-                      width: getProportionateScreenWidth(25),
-                      height: getProportionateScreenWidth(25),
+                      width: getProportionateScreenWidth(27),
+                      height: getProportionateScreenWidth(27),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -243,6 +246,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
                         borderRadius: BorderRadius.circular(7),
                         onTap: () {
                           productCartCount++;
+                          HapticFeedback.lightImpact();
                           setState(() {
                             AddProductToCart.addProductToCart(
                                 productCartCount: productCartCount,
@@ -260,8 +264,8 @@ class _SingleProductCardState extends State<SingleProductCard> {
 
                         },
                         child: Container(
-                          width: getProportionateScreenWidth(25),
-                          height: getProportionateScreenWidth(25),
+                          width: getProportionateScreenWidth(27),
+                          height: getProportionateScreenWidth(27),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(),
                           child: Icon(
@@ -285,24 +289,29 @@ class _SingleProductCardState extends State<SingleProductCard> {
   Positioned buildPositionedDisproductCartCountBanner() {
     if (productDiscountPercent > 0) {
       return Positioned(
-        bottom: -12.5,
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-          height: getProportionateScreenWidth(25),
-          width: getProportionateScreenWidth(80),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.lightGreen,
-          ),
-          child: Text(
-            "$productDiscountPercent% off",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: getProportionateScreenWidth(12), color: Colors.black),
-          ),
-        ),
-      );
+          bottom: -12.5,
+          child: Container(
+            alignment: Alignment.center,
+            height: getProportionateScreenWidth(25),
+            width: getProportionateScreenWidth(80),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12), color: kPrimaryColor),
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+              margin: EdgeInsets.all(getProportionateScreenWidth(2)),
+              height: getProportionateScreenWidth(25),
+              width: getProportionateScreenWidth(80),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: Text(
+                "$productDiscountPercent% off",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(12), color: Colors.black),
+              ),
+            ),
+          ));
     } else {
       return Positioned(
           bottom: -12.5,
