@@ -58,10 +58,12 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
     return GestureDetector(
         onTap: () => orderDetailsPage(),
         child: Container(
-            margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            height: getProportionateScreenWidth(141),
+            margin: EdgeInsets.symmetric(
+                vertical: getProportionateScreenWidth(5),
+                horizontal: getProportionateScreenWidth(10)),
+            height: getProportionateScreenWidth(135),
             width: double.infinity,
-            //color: Colors.redAccent,
+
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(.5),
@@ -73,8 +75,10 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
             child: Container(
                 height: getProportionateScreenWidth(141),
                 width: double.infinity,
-                margin: EdgeInsets.all(2),
-                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                margin: EdgeInsets.all(getProportionateScreenWidth(2)),
+                padding: EdgeInsets.symmetric(
+                    vertical: getProportionateScreenWidth(5),
+                    horizontal: getProportionateScreenWidth(15)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: Colors.white,
@@ -83,7 +87,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      height: getProportionateScreenWidth(28),
+                      height: getProportionateScreenWidth(25),
                       // color: Colors.tealAccent,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +104,8 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                 ),
                               ),
                               TextSpan(
-                                text: "#${_orderNumber(widget.order.secondaryOrderId.toString())}",
+                                text:
+                                    "#${_orderNumber(widget.order.secondaryOrderId.toString())}",
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w800,
@@ -142,16 +147,20 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                       ),
                     ),
                     Container(
-                      height: getProportionateScreenWidth(79),
-                      // color: Colors.tealAccent,
-                      padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                      height: getProportionateScreenWidth(75),
+                       //color: Colors.tealAccent,
+                      padding: EdgeInsets.fromLTRB(
+                          getProportionateScreenWidth(10),
+                          0,
+                          getProportionateScreenWidth(20),
+                          0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
                             height: getProportionateScreenWidth(79),
                             width: getProportionateScreenWidth(175),
-                            padding: EdgeInsets.fromLTRB(0, 9, 0, 0),
+                            padding: EdgeInsets.fromLTRB(0, getProportionateScreenWidth(9), 0, 0),
                             // color: Colors.red,
                             child: Row(children: [
                               Container(
@@ -274,10 +283,10 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 ))));
   }
 
-  String _orderNumber(String string){
+  String _orderNumber(String string) {
     int size = string.length;
-    for(int i=size;i<6;i++){
-      string = "0"+string;
+    for (int i = size; i < 6; i++) {
+      string = "0" + string;
     }
     return string;
   }
@@ -343,85 +352,84 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
             context,
             MaterialPageRoute(
                 builder: (context) => PendingOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "modified") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ModifiedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "accepted") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => AcceptedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "packed") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => PackedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "shipped") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ShippedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "delivered") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => DeliveredOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "rejected") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => RejectedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "cancelled") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => CancelledOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
       if (widget.order.orderState == "failed") {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => FailedOrderDetailsScreen(
-                  order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
-                )));
+                      order: widget.order,
+                      notifyOrderScreen: widget.notifyOrderScreen,
+                    )));
       }
     } else {
       widget.notifyOrderScreen();
     }
-
   }
 }
