@@ -7,7 +7,7 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import '../../../size_config.dart';
 import 'complete_profile_form.dart';
 import 'header.dart';
-
+import '../../../../constants.dart';
 
 class Body extends StatefulWidget {
   const Body({Key key}) : super(key: key);
@@ -43,8 +43,8 @@ class _BodyState extends State<Body> {
             builder: (context,snapShot){
 
               try{
-                if(snapShot.hasData){
-                  Map<dynamic,dynamic> map = snapShot.data.value;
+                if(snapShot.hasData) {
+                  Map<dynamic, dynamic> map = snapShot.data.value;
                   userName = map["userName"];
                   userPhoneNumber = map["userPhoneNumber"];
                   userAddress = map["userAddress"];
@@ -56,30 +56,23 @@ class _BodyState extends State<Body> {
                     userName: userName,
                     userImage: userImage,
                   );
-                  CompleteProfileScreen.userImage = Image.network(appUser.userImage);
+                  CompleteProfileScreen.userImage =
+                      Image.network(appUser.userImage);
 
-                }
-                else{
-                  appUser = new AppUser(
-                    userAddress: "Enter Your street address",
-                    userPhoneNumber: "Enter your contact number",
-                    userName: "Enter your name",
+
+                  //print(appUser);
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Header(appUser: appUser),
+                        SizedBox(height: getProportionateScreenWidth(20)),
+                        CompleteProfileForm(appUser: appUser),
+                        SizedBox(height: getProportionateScreenHeight(30)),
+                      ],
+                    ),
                   );
                 }
-
-               // print(appUser);
-
-                return  SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Header(appUser: appUser),
-                      SizedBox(height: getProportionateScreenWidth(20)),
-                      CompleteProfileForm(appUser: appUser),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                    ],
-                  ),
-                );
-
               }
               catch(e){
                 print(e);
@@ -96,7 +89,7 @@ class _BodyState extends State<Body> {
 
               }
               return Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: kPrimaryColor,),
               );
 
             },

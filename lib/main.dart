@@ -135,7 +135,7 @@ class _AppState extends State<App> {
         // Check for errors
         if (snapshot.hasError) {
           print("snapshot error");
-          return CircularProgressIndicator();
+          return CircularProgressIndicator(color: kPrimaryColor,);
         }
 
         // Once complete, show your application
@@ -153,7 +153,7 @@ class _AppState extends State<App> {
 
         // Otherwise, show something whilst waiting for initialization to complete
         print("loading");
-        return CircularProgressIndicator();
+        return CircularProgressIndicator(color: kPrimaryColor,);
       },
     );
   }

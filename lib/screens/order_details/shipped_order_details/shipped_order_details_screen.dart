@@ -23,7 +23,7 @@ class ShippedOrderDetailsScreen extends StatelessWidget {
         ),),
 
       ),
-      body: Body(order: order,),
+      body: Body(order: order,notifyOrderScreen: notifyOrderScreen,),
     );
   }
 }

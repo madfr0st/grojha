@@ -28,6 +28,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String userPhoneNumber = "";
   String userAddress = "";
 
+
   void _updateProfile() async {
     if (userName == null || userName.length == 0) {
       userName = widget.appUser.userName;
@@ -88,6 +89,16 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   }
   @override
   Widget build(BuildContext context) {
+    if(widget.appUser!=null){
+      userName = widget.appUser.userName;
+      userAddress = widget.appUser.userAddress;
+      userPhoneNumber = widget.appUser.userPhoneNumber;
+    }
+    setState(() {
+
+    });
+    print(widget.appUser.toString()+"----------------------------------");
+
     return Form(
       key: _formKey,
       child: Column(
@@ -129,13 +140,15 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildAddressFormField() {
     return TextFormField(
       maxLines: 8,
+      initialValue: userAddress.toString(),
       onSaved: (newValue) => userAddress = newValue,
       onChanged: (value) {
         userAddress = value;
+        return null;
       },
       decoration: InputDecoration(
         labelText: "Address",
-        hintText: "${widget.appUser.userAddress}",
+        hintText: "Enter your street address.",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -147,6 +160,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildUserNameFormField() {
     return TextFormField(
+      initialValue: userName,
       onSaved: (newValue) => userName = newValue,
       onChanged: (value) {
         userName = value;
@@ -154,7 +168,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       },
       decoration: InputDecoration(
           labelText: "Name",
-          hintText: "${widget.appUser.userName}",
+          hintText: "Enter your full name",
           // If  you are using latest version of flutter then lable text and hint text shown like this
           // if you r using flutter less then 1.20.* then maybe this is not working properly
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -164,6 +178,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
+      initialValue: userPhoneNumber,
       keyboardType: TextInputType.number,
       onSaved: (newValue) => userPhoneNumber = newValue,
       onChanged: (value) {
@@ -173,7 +188,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       //initialValue: widget.appUser.userPhoneNumber,
       decoration: InputDecoration(
           labelText: "Contact Number",
-          hintText: "${widget.appUser.userPhoneNumber}",
+          hintText: "Enter contact number",
           // If  you are using latest version of flutter then lable text and hint text shown like this
           // if you r using flutter less then 1.20.* then maybe this is not working properly
           floatingLabelBehavior: FloatingLabelBehavior.always,

@@ -59,60 +59,64 @@ class _BodyState extends State<Body> {
         ),),
 
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 40),
-            child: Center(
-              child: Text(
-                SizeConfig.phoneNumber,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Text(
+                    SizeConfig.phoneNumber,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(height: getProportionateScreenWidth(20),),
-          buildTimer(),
-          SizedBox(height: getProportionateScreenWidth(20),),
-          Padding(
-            padding: EdgeInsets.all(getProportionateScreenWidth(30)),
-            child: PinPut(
-              fieldsCount: 6,
-              //disabledDecoration: ,
-              textStyle: const TextStyle(
-                  fontSize: 25.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
-              eachFieldWidth: getProportionateScreenWidth(45),
-              eachFieldHeight: getProportionateScreenWidth(45),
-              focusNode: _pinPutFocusNode,
-              controller: _pinPutController,
-              submittedFieldDecoration: pinPutDecoration,
-              selectedFieldDecoration: selectedPinPutDecoration,
-              followingFieldDecoration: pinPutDecoration,
-              cursor: cursor,
-              withCursor: true,
-              pinAnimationType: PinAnimationType.fade,
-              onSubmit: (pin) async {
-                try {
-                  await FirebaseAuth.instance
-                      .signInWithCredential(PhoneAuthProvider.credential(
-                      verificationId: _verificationCode, smsCode: pin))
-                      .then((value) async {
-                    if (value.user != null) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) =>
-                              HomeScreen()), (Route<dynamic> route) => false);
+              SizedBox(height: getProportionateScreenWidth(20),),
+              buildTimer(),
+              SizedBox(height: getProportionateScreenWidth(20),),
+              Padding(
+                padding: EdgeInsets.all(getProportionateScreenWidth(30)),
+                child: PinPut(
+                  fieldsCount: 6,
+                  //disabledDecoration: ,
+                  textStyle: const TextStyle(
+                      fontSize: 25.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                  eachFieldWidth: getProportionateScreenWidth(45),
+                  eachFieldHeight: getProportionateScreenWidth(45),
+                  focusNode: _pinPutFocusNode,
+                  controller: _pinPutController,
+                  submittedFieldDecoration: pinPutDecoration,
+                  selectedFieldDecoration: selectedPinPutDecoration,
+                  followingFieldDecoration: pinPutDecoration,
+                  cursor: cursor,
+                  withCursor: true,
+                  pinAnimationType: PinAnimationType.fade,
+                  onSubmit: (pin) async {
+                    try {
+                      await FirebaseAuth.instance
+                          .signInWithCredential(PhoneAuthProvider.credential(
+                          verificationId: _verificationCode, smsCode: pin))
+                          .then((value) async {
+                        if (value.user != null) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) =>
+                                  HomeScreen()), (Route<dynamic> route) => false);
+                        }
+                      });
+                    } catch (e) {
+                      FocusScope.of(context).unfocus();
+                      _scaffoldkey.currentState
+                          .showSnackBar(SnackBar(content: Text('invalid OTP')));
                     }
-                  });
-                } catch (e) {
-                  FocusScope.of(context).unfocus();
-                  _scaffoldkey.currentState
-                      .showSnackBar(SnackBar(content: Text('invalid OTP')));
-                }
-              },
-            ),
-          )
-        ],
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

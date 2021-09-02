@@ -38,31 +38,35 @@ class _Body extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(getProportionateScreenWidth(20)),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SizedBox(
-                height: getProportionateScreenWidth(80),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(getProportionateScreenWidth(20)),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: getProportionateScreenWidth(80),
+                  ),
+                  buildPhoneNumberFormField(),
+                  SizedBox(
+                    height: getProportionateScreenWidth(40),
+                  ),
+                  DefaultButton(
+                    text: "continue",
+                    press: () {
+                      print(SizeConfig.phoneNumber);
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        SizeConfig.phoneNumber = "+91" + SizeConfig.phoneNumber;
+                        Navigator.pushNamed(context, OtpScreen.routeName);
+                      }
+                    },
+                  ),
+                ],
               ),
-              buildPhoneNumberFormField(),
-              SizedBox(
-                height: getProportionateScreenWidth(40),
-              ),
-              DefaultButton(
-                text: "continue",
-                press: () {
-                  print(SizeConfig.phoneNumber);
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save();
-                    SizeConfig.phoneNumber = "+91" + SizeConfig.phoneNumber;
-                    Navigator.pushNamed(context, OtpScreen.routeName);
-                  }
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),

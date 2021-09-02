@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 
+import '../../../../constants.dart';
 import 'details.dart';
 import '../../order_details_variables.dart';
 
 class Body extends StatelessWidget {
-  const Body({Key key, this.order}) : super(key: key);
+  const Body({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
 
   final Order order;
+  final Function notifyOrderScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class Body extends StatelessWidget {
               OrderDetailsVariables.list = productList;
 
               return Details(
-                order: order,
+                order: order,notifyOrderScreen: notifyOrderScreen,
               );
             }
           } catch (e) {
@@ -57,7 +59,7 @@ class Body extends StatelessWidget {
             return Center(child: Text("Some error Occured"));
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: kPrimaryColor,),
           );
         },
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grojha/constants.dart';
 
 import '../../../size_config.dart';
 
@@ -21,10 +22,10 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: getProportionateScreenWidth(5),),
-                    bannerHeading("Bug report?",Icon(Icons.bug_report_outlined)),
+                    bannerHeading("Bug report?",Icon(Icons.bug_report_outlined,color: kPrimaryColor,)),
                     SizedBox(height: getProportionateScreenWidth(10),),
                     bannerBody(
-                        "Take screenshot of that bug or ping us on +91 82096 62544 or mail us to suman.saurav@grojha.com. We will try to fix it in next update."),
+                        "You can mail any glitch, bug, suggestion or advice directly to us at admin@grojha.com."),
                     SizedBox(height: getProportionateScreenWidth(5),),
                   ],
                 ),
@@ -39,13 +40,13 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: getProportionateScreenWidth(5),),
-                    bannerHeading("Questions and Queries?",Icon(Icons.question_answer_outlined)),
+                    bannerHeading("Questions and Queries?",Icon(Icons.question_answer_outlined,color: kPrimaryColor,)),
                     SizedBox(height: getProportionateScreenWidth(10),),
                     bannerBody(
-                        "For business related questions and queries mail us to contactbj@grojha.com."),
-                    SizedBox(height: getProportionateScreenWidth(10),),
-                    bannerBody(
-                        "For tech/development related questions and queries mail us to suman.saurav@grojha.com."),
+                        "For business related questions and queries mail us at admin@grojha.com."),
+                    // SizedBox(height: getProportionateScreenWidth(10),),
+                    // bannerBody(
+                    //     "For tech/development related questions and queries mail us to suman.saurav@grojha.com."),
                     SizedBox(height: getProportionateScreenWidth(5),),
                   ],
                 ),
@@ -67,7 +68,7 @@ class Body extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: getProportionateScreenWidth(18),
-              color: Colors.black,
+              color: kPrimaryColor,
             ),
           )
         ],));

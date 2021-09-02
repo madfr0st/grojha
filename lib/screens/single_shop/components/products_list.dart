@@ -168,7 +168,7 @@ class _ProductsListState extends State<ProductsList> {
               child: Text("Zero products Added"),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
         });
   }
 }

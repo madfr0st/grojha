@@ -64,6 +64,10 @@ class Categories extends StatelessWidget {
       Colors.grey,
     ];
 
+    list.sort((a,b)=> a.compareTo(b));
+
+    int at = 0;
+
     return Container(
       padding: EdgeInsets.fromLTRB(10, 0, 10, 20),
       child: SingleChildScrollView(
@@ -72,7 +76,7 @@ class Categories extends StatelessWidget {
             ...List.generate(
                 8,
                 (index) => CategoryCardRow(
-                    index, 8 + index, 16 + index, list, colorList, context))
+                    at++, at++, at++, list, colorList, context))
           ],
         ),
       ),

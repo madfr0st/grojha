@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/cart_temp.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/screens/cart/components/single_shop_cart_card.dart';
-
+import '../../../../constants.dart';
 class AllShopCart extends StatefulWidget {
   const AllShopCart({Key key, this.notifyHomeScreen}) : super(key: key);
   final Function notifyHomeScreen;
@@ -89,7 +89,7 @@ class _AllShopCartState extends State<AllShopCart> {
                     return Center(child: Text("Cart is EMPTY!!!"));
                   }
                 }
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
               }),
         ),
       ],

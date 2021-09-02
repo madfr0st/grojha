@@ -28,9 +28,7 @@ class CancelOrder {
           notifications: new Notifications(
             title: "Order Cancelled",
             body:
-            "Order with order id #${_sixDigitOrderNumber(
-                order.secondaryOrderId.toString())} worth ₹ ${order
-                .grandTotal}/- has been cancelled.",
+            "Order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} has been cancelled by customer.",
             senderId: order.userId,
             receiverId: order.shopId,
             receiverType: "shops",

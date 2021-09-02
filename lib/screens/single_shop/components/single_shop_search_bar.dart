@@ -33,10 +33,17 @@ class _SingleShopSearchBarState extends State<SingleShopSearchBar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: getProportionateScreenWidth(10),
+              width: getProportionateScreenWidth(12),
+            ),
+            InkWell(
+              onTap: (){Navigator.pop(context);},
+              child: Icon(Icons.arrow_back_outlined,),
+            ),
+            SizedBox(
+              width: getProportionateScreenWidth(20),
             ),
             Container(
-                width: SizeConfig.screenWidth * 0.7,
+                width: SizeConfig.screenWidth * 0.65,
                 padding: EdgeInsets.all(getProportionateScreenWidth(2)),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(17),

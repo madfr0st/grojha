@@ -34,7 +34,7 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Instructions.orderStateBanner( "This order has been rejected by seller."),
+                Instructions.orderStateBanner( "Your order has been rejected by seller."),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
