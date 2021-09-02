@@ -17,7 +17,7 @@ class FailedOrderDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Failed Order Details",style: TextStyle(
-            color: Colors.black
+            color: Colors.black, fontWeight: FontWeight.bold
         ),),
 
       ),
