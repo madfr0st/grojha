@@ -10,7 +10,8 @@ class SingleShopCartCard extends StatelessWidget {
       this.cartTotalCost,
       this.index,
       this.cartUniqueProducts,
-      this.shop, this.notifyHomeScreen})
+      this.shop,
+      this.notifyHomeScreen})
       : super(key: key);
 
   final Shop shop;
@@ -50,13 +51,18 @@ class SingleShopCartCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlaceOrderScreen(shop: shop,notifyHomeScreen: notifyHomeScreen,),
+            builder: (context) => PlaceOrderScreen(
+              shop: shop,
+              notifyHomeScreen: notifyHomeScreen,
+            ),
           ),
         );
       },
       child: Container(
-        margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        height: getProportionateScreenWidth(141),
+        margin: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(5),
+            horizontal: getProportionateScreenWidth(10)),
+        height: getProportionateScreenWidth(135),
         width: double.infinity,
         //color: Colors.redAccent,
         decoration: BoxDecoration(boxShadow: [
@@ -70,8 +76,10 @@ class SingleShopCartCard extends StatelessWidget {
         child: Container(
           height: getProportionateScreenWidth(141),
           width: double.infinity,
-          margin: EdgeInsets.all(2),
-          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+          margin: EdgeInsets.all(getProportionateScreenWidth(2)),
+          padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenWidth(5),
+              horizontal: getProportionateScreenWidth(15)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Colors.white,
@@ -80,7 +88,7 @@ class SingleShopCartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: getProportionateScreenWidth(28),
+                height: getProportionateScreenWidth(25),
                 // color: Colors.tealAccent,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,16 +146,18 @@ class SingleShopCartCard extends StatelessWidget {
                 ),
               ),
               Container(
-                height: getProportionateScreenWidth(79),
-                // color: Colors.tealAccent,
-                padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                height: getProportionateScreenWidth(75),
+                //color: Colors.tealAccent,
+                padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(10), 0,
+                    getProportionateScreenWidth(20), 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       height: getProportionateScreenWidth(79),
                       width: getProportionateScreenWidth(175),
-                      padding: EdgeInsets.fromLTRB(0, 9, 0, 0),
+                      padding: EdgeInsets.fromLTRB(
+                          0, getProportionateScreenWidth(9), 0, 0),
                       // color: Colors.red,
                       child: Row(children: [
                         Container(
@@ -167,7 +177,9 @@ class SingleShopCartCard extends StatelessWidget {
                                 : Image.asset("assets/images/default.jpg"),
                           ),
                         ),
-                        SizedBox(width: getProportionateScreenWidth(10),),
+                        SizedBox(
+                          width: getProportionateScreenWidth(10),
+                        ),
                         Container(
                           //     color: Colors.redAccent,
                           height: getProportionateScreenWidth(50),
@@ -221,9 +233,10 @@ class SingleShopCartCard extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      PlaceOrderScreen(shop: shop,notifyHomeScreen: notifyHomeScreen,),
-
+                                  builder: (context) => PlaceOrderScreen(
+                                    shop: shop,
+                                    notifyHomeScreen: notifyHomeScreen,
+                                  ),
                                 ),
                               );
                             },

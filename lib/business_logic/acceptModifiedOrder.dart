@@ -160,7 +160,7 @@ class AcceptedModifiedOrder {
             notifications: new Notifications(
               title: "New order",
               body:
-              "New Order with order id #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} worth ₹ ${order.grandTotal}/- has been placed.",
+              "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
               senderId: order.userId,
               receiverId: order.shopId,
               receiverType: "shops",

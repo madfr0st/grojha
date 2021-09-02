@@ -39,7 +39,7 @@ class PlaceOrder {
             notifications: new Notifications(
           title: "New order",
           body:
-              "New Order with order id #${_sixDigitOrderNumber(orderNumber.toString())} worth ₹ ${order.grandTotal}/- has been placed.",
+              "You have received a new order #${_sixDigitOrderNumber(orderNumber.toString())} of value ${order.grandTotal}/-",
           senderId: order.userId,
           receiverId: order.shopId,
           receiverType: "shops",

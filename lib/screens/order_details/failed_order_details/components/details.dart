@@ -3,6 +3,7 @@ import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 
+import '../../Instructions.dart';
 import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
@@ -33,6 +34,8 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Instructions.orderStateBanner(
+                    "This order has been failed."),
                 SizedBox(height: getProportionateScreenHeight(10),),
                 ...List.generate(
                   OrderDetailsVariables.list.length,

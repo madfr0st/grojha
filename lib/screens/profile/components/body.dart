@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
+import 'package:grojha/screens/help_center/help_center_screen.dart';
 import 'package:grojha/screens/notification/notification_screen.dart';
 
 import 'profile_menu.dart';
@@ -22,7 +23,7 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Help Center",
             icon: "assets/icons/Question mark.svg",
-            press: () {},
+            press: () {Navigator.pushNamed(context, HelpCenterScreen.routeName);},
           ),
         ],
       ),

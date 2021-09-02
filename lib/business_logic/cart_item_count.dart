@@ -10,19 +10,25 @@ class CartItemCount {
 
     var event;
 
-    getCartItemCount();
+    getCartItemCount(once: true);
+
     String uid = FirebaseAuth.instance.currentUser.uid;
     DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("users/$uid/cart");
     event = await databaseReference.once().then((DataSnapshot dataSnapshot){
       if(dataSnapshot.value!=null){
         String shopId;
+        cartItemCount = 0;
         Map<dynamic,dynamic> map1 = dataSnapshot.value;
         map1.forEach((key, value) {
           shopId = key.toString();
           value.forEach((key,val){
             map[shopId+key] = val["productCartCount"];
+            cartItemCount++;
           });
         });
+      }
+      else{
+        cartItemCount = 0;
       }
       return true;
     });
@@ -62,12 +68,15 @@ class CartItemCount {
     });
   }
 
-  static int getCartItemCount({Function notifyHome}) {
+  static int getCartItemCount({Function notifyHome,bool once}) {
     String uid = FirebaseAuth.instance.currentUser.uid;
     DatabaseReference databaseReference =
     FirebaseDatabase.instance.reference().child("users/$uid/cartItemCount");
     databaseReference.runTransaction((MutableData transaction) async {
       transaction.value = (transaction.value ?? 0);
+      if(once){
+        transaction.value = cartItemCount;
+      }
       cartItemCount = transaction.value;
       if(notifyHome!=null){
         notifyHome();

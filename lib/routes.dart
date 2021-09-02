@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grojha/screens/cart/cart_screen.dart';
 import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
+import 'package:grojha/screens/help_center/help_center_screen.dart';
 import 'package:grojha/screens/home/components/categories.dart';
 import 'package:grojha/screens/home/home_screen.dart';
 import 'package:grojha/screens/notification/notification_screen.dart';
@@ -33,4 +34,5 @@ final Map<String, WidgetBuilder> routes = {
   SingleSelectedProductCategory.routeName: (context) =>
       SingleSelectedProductCategory(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
+  HelpCenterScreen.routeName: (context) => HelpCenterScreen(),
 };

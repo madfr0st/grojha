@@ -6,7 +6,7 @@ import 'package:grojha/business_logic/FCM.dart';
 import 'package:grojha/business_logic/get_notifications.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/screens/notification/components/single_notification_card.dart';
-
+import '../../../../constants.dart';
 
 class Body extends StatefulWidget {
   const Body({Key key, this.notifyHomeScreen}) : super(key: key);
@@ -75,7 +75,7 @@ class _BodyState extends State<Body> {
           }
         }
         return Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: kPrimaryColor,),
         );
       },
     ));

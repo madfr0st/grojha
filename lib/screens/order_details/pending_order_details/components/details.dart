@@ -34,7 +34,7 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Instructions.orderStateBanner( "Your order has been placed.\n Soon, the seller will accept it."),
+                Instructions.orderStateBanner( "Your order has been placed successfully"),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),

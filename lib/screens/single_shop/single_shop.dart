@@ -4,6 +4,8 @@ import 'package:grojha/screens/single_shop//components/body.dart';
 import 'package:grojha/screens/single_shop/components/product_categories.dart';
 import 'package:grojha/size_config.dart';
 
+import '../../constants.dart';
+
 class SingleShop extends StatefulWidget {
   final Shop shop;
   final Function notifyHomeScreen;
@@ -80,8 +82,9 @@ class CustomFloatingButton extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.purple.withOpacity(1),
-                  Colors.red.withOpacity(1),
+                  Colors.greenAccent.withOpacity(1),
+                  kPrimaryColor.withOpacity(1),
+                  Color(0xff34783b),
                 ],
               ),
               borderRadius: BorderRadius.circular(100),

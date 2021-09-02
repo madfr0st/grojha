@@ -471,7 +471,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                       );
                     }
                     // return Center(
-                    //   child: CircularProgressIndicator(),
+                    //   child: CircularProgressIndicator(color: kPrimaryColor,),
                     // );
                   }),
             );

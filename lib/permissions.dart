@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 /// Requests & displays the current user permissions for this device.
 class Permissions extends StatefulWidget {
   @override
@@ -50,7 +52,7 @@ class _Permissions extends State<Permissions> {
   @override
   Widget build(BuildContext context) {
     if (_fetching) {
-      return const CircularProgressIndicator();
+      return const CircularProgressIndicator(color: kPrimaryColor,);
     }
 
     if (!_requested) {

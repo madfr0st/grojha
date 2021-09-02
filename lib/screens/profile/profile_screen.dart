@@ -7,16 +7,15 @@ import 'components/body.dart';
 
 class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Profile",style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold
-        ),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+        title: Text(
+          "My Profile",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Body(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),

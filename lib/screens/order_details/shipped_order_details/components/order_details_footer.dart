@@ -16,9 +16,10 @@ import '../../order_details_variables.dart';
 class OrderDetailsFooter extends StatefulWidget {
   const OrderDetailsFooter({
     Key key,
-    this.notifyOrderScreen, this.order,
+    this.notifyOrderScreen,
+    this.order,
   }) : super(key: key);
-  final Function() notifyOrderScreen;
+  final Function notifyOrderScreen;
   final Order order;
 
   @override
@@ -150,7 +151,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
             height: getProportionateScreenWidth(60),
             width: double.infinity,
             //    color: Colors.lightGreenAccent,
-            child:  buildOTPContainer(context),
+            child: buildOTPContainer(context),
           ),
         ],
       ),
@@ -236,79 +237,28 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           actionOrderButton(kPrimaryColor, Colors.white, () {}, "$code"),
-          actionOrderButton(kPrimaryColor, kPrimaryColor, () {_refreshCode();}, "Refresh" )
+          actionOrderButton(kPrimaryColor, kPrimaryColor, () {
+            _refreshCode(context);
+          }, "Refresh")
         ],
       ),
     );
   }
 
-  void _refreshCode(){
+  void _refreshCode(BuildContext context) {
     setState(() {
       code = randomCode();
     });
-    RefreshCode(order: widget.order,code:code).refreshCode();
+    RefreshCode(
+      order: widget.order,
+      code: code,
+      context: context,
+    ).refreshCode(notifyParent: widget.notifyOrderScreen);
   }
 
-  int randomCode(){
+  int randomCode() {
     Random random = new Random();
-    int randomNumber = random.nextInt(900000)+100000;
+    int randomNumber = random.nextInt(900000) + 100000;
     return randomNumber;
-  }
-
-  void _rejectOrder() {
-    showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 16,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              width: double.infinity,
-              height: getProportionateScreenWidth(200),
-              child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CheckboxListTile(
-                        activeColor: kPrimaryColor,
-                        title: Text(
-                          "Are you sure",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: getProportionateScreenWidth(15),
-                            color: kPrimaryColor,
-                          ),
-                        ),
-                        value: areYouSure,
-                        onChanged: (newValue) {
-                          setState(() {
-                            areYouSure = newValue;
-                            print(areYouSure);
-                          });
-                        },
-                      ),
-                      Container(
-                        height: getProportionateScreenHeight(56),
-                        width: double.infinity,
-                        child: DefaultButton(
-                          text: "Reject Order",
-                          press: () {
-                            if (areYouSure) {
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ),
-          );
-        });
   }
 }

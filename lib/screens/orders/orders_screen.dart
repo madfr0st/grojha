@@ -19,8 +19,7 @@ class OrdersScreen extends StatelessWidget {
           color: Colors.black,
           fontWeight: FontWeight.bold
         ),),
-        elevation: 15,
-        backgroundColor: kPrimaryColor,
+
       ),
       body: Body(),
       bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.orders),

@@ -118,7 +118,7 @@ class CustomBottomNavBar extends StatelessWidget {
                             : inActiveIconColor,
                       ),
                       Text(
-                        "Orders",
+                        "My Orders",
                         style: TextStyle(
                             fontSize: getProportionateScreenWidth(10),
                             color: MenuState.orders == selectedMenu

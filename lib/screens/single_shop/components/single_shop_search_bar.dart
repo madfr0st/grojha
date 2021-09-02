@@ -26,56 +26,80 @@ class _SingleShopSearchBarState extends State<SingleShopSearchBar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: getProportionateScreenWidth(5),
-        ),
+        // SizedBox(
+        //   height: getProportionateScreenWidth(5),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: getProportionateScreenWidth(5),
+              width: getProportionateScreenWidth(12),
             ),
             InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () {
-                showSearch(
-                    context: context,
-                    delegate: SearchedProductData(
-                      shop: widget.shop,
-                      notifyHomeScreen: widget.notifyHomeScreen,
-                    ),);
-              },
-              child: Container(
-                width: SizeConfig.screenWidth * 0.7,
-                padding: EdgeInsets.all(getProportionateScreenWidth(10)),
-                decoration: BoxDecoration(
-                  color: kSecondaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Container(
-                    child: Row(
-                  children: [
-                    //SizedBox(width: getProportionateScreenWidth(10),),
-                    Icon(
-                      Icons.search_outlined,
-                      color: kPrimaryColor,
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(20),
-                    ),
-                    Text(
-                      "Search product",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(17), height: 1),
-                    ),
-                  ],
-                )),
-              ),
+              onTap: (){Navigator.pop(context);},
+              child: Icon(Icons.arrow_back_outlined,),
             ),
+            SizedBox(
+              width: getProportionateScreenWidth(20),
+            ),
+            Container(
+                width: SizeConfig.screenWidth * 0.65,
+                padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(17),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.greenAccent.withOpacity(1),
+                      kPrimaryColor.withOpacity(1),
+                      Color(0xff34783b),
+                    ],
+                  ),
+                ),
+                child: Material(
+                    borderRadius: BorderRadius.circular(15),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        showSearch(
+                          context: context,
+                          delegate: SearchedProductData(
+                            shop: widget.shop,
+                            notifyHomeScreen: widget.notifyHomeScreen,
+                          ),);
+                      },
+                      child: Container(
+                        width: SizeConfig.screenWidth * 0.55,
+                        padding: EdgeInsets.all(getProportionateScreenWidth(10)),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Container(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.search_outlined,
+                                  color: kPrimaryColor,
+                                ),
+                                SizedBox(
+                                  width: getProportionateScreenWidth(5),
+                                ),
+                                Text(
+                                  "Search products in this shop",
+                                  style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(14), height: 1),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ))),
+            Spacer(),
             IconBtnWithCounter(
               icon: Icon(
                 Icons.shopping_cart_outlined,
-                color: kSecondaryColor,
+                color: Colors.black,
               ),
 
               press: () {
@@ -90,13 +114,13 @@ class _SingleShopSearchBarState extends State<SingleShopSearchBar> {
               },
             ),
             SizedBox(
-              width: getProportionateScreenWidth(5),
+              width: getProportionateScreenWidth(10),
             ),
           ],
         ),
-        SizedBox(
-          height: getProportionateScreenWidth(5),
-        ),
+        // SizedBox(
+        //   height: getProportionateScreenWidth(5),
+        // ),
       ],
     );
   }

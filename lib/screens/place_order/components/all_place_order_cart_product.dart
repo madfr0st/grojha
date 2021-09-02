@@ -8,6 +8,8 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import 'package:grojha/screens/place_order/components/single_place_order_product_card.dart';
 import 'package:grojha/screens/single_shop/components/single_product_card.dart';
 
+import '../../../constants.dart';
+
 class AllPlaceOrderCartProduct extends StatefulWidget {
   const AllPlaceOrderCartProduct({
     Key key,
@@ -98,7 +100,7 @@ class _AllPlaceOrderCartProduct extends State<AllPlaceOrderCartProduct> {
                     return Center(child: Text("Cart is EMPTY!!!"));
                   }
                 }
-                return Center(child : CircularProgressIndicator());
+                return Center(child : CircularProgressIndicator(color: kPrimaryColor,));
               }),
         ),
       ],

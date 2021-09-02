@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/get_notifications.dart';
+import 'package:grojha/constants.dart';
 import 'package:grojha/global_variables/all_shop_data.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
@@ -21,7 +23,7 @@ class AllShops extends StatefulWidget {
 class _AllShopsState extends State<AllShops> {
   List<Shop> shops;
   DatabaseReference databaseReference =
-      FirebaseDatabase.instance.reference().child("pincode/700001/shops");
+  FirebaseDatabase.instance.reference().child("pincode/700001/shops");
 
   @override
   Widget build(BuildContext context) {
@@ -36,28 +38,9 @@ class _AllShopsState extends State<AllShops> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             try {
-              //print(snapshot.data.value);
-              Map<dynamic, dynamic> values = snapshot.data.value;
-              shops.clear();
-              values.forEach((key, value) {
-                try {
-                  if (value["info"]["shopName"] != null &&
-                      value["status"]["open"]) {
-                    shops.add(new Shop(
-                        shopName: value["info"]["shopName"],
-                        shopCategory: value["info"]["shopCategory"],
-                        shopId: key,
-                        shopAddress: value["info"]["shopAddress"],
-                        shopImage: value["info"]["shopImage"]));
-                  }
-                } catch (e) {
-                  print(e);
-                }
-              });
-              //print(shops);
+              _logic(snapshot.data);
 
-              AllShopData.list = shops;
-              return Column(children: [
+              return RefreshIndicator(child: Column(children: [
                 SizedBox(height: getProportionateScreenHeight(5)),
                 HomeHeader(
                   notifyHomeScreen: _refresh,
@@ -66,37 +49,70 @@ class _AllShopsState extends State<AllShops> {
                 Expanded(
                     child: SingleChildScrollView(
                         child: Column(children: [
-                  Categories(notifyHomeScreen: _refresh),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(20)),
-                    child: SectionTitle(
-                      title: "Shops near by",
-                      press: () {},
-                    ),
-                  ),
-                  ...List.generate(shops.length, (index) {
-                    return SingleShopCard(
-                        shop: shops[index],
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SingleShop(
-                                  shop: shops[index],
-                                  notifyHomeScreen: _refresh,
-                                ),
-                              ));
-                        });
-                  }),
-                ])))
-              ]);
+                          Categories(notifyHomeScreen: _refresh),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(20)),
+                            child: SectionTitle(
+                              title: "Shops near by",
+                              press: () {},
+                            ),
+                          ),
+                          ...List.generate(shops.length, (index) {
+                            return SingleShopCard(
+                                shop: shops[index],
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SingleShop(
+                                              shop: shops[index],
+                                              notifyHomeScreen: _refresh,
+                                            ),
+                                      ));
+                                });
+                          }),
+                        ])))
+              ]), color: kPrimaryColor,onRefresh: () {
+                return databaseReference.once().then((value) {
+                  _logic(value);
+                  setState(() {
+
+                  });
+                });
+              });
             } catch (e) {
               print(e);
               return Center(child: Text("Some Error Occured!!!"));
             }
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
         });
   }
+
+  void _logic(DataSnapshot snapshot) {
+    GetNotifications();
+    Map<dynamic, dynamic> values = snapshot.value;
+    shops.clear();
+    values.forEach((key, value) {
+      try {
+        if (value["info"]["shopName"] != null &&
+            value["status"]["open"]) {
+          shops.add(new Shop(
+              shopName: value["info"]["shopName"],
+              shopCategory: value["info"]["shopCategory"],
+              shopId: key,
+              shopAddress: value["info"]["shopAddress"],
+              shopImage: value["info"]["shopImage"]));
+        }
+      } catch (e) {
+        print(e);
+      }
+    });
+    //print(shops);
+
+    AllShopData.list = shops;
+  }
+
 }

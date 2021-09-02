@@ -9,9 +9,10 @@ import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key key, this.order}) : super(key: key);
+  const Details({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
 
   final Order order;
+  final Function notifyOrderScreen;
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -35,7 +36,7 @@ class _DetailsState extends State<Details> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Instructions.orderStateBanner( "Your order is out for delivery.\n Delivery partner will arrive soon ."),
+                Instructions.orderStateBanner( "Your order is out for delivery.\n Please be ready with the required cash or UPI payment "),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
@@ -51,7 +52,7 @@ class _DetailsState extends State<Details> {
                     notifyOrderScreen: _refresh,
                   ),
                 ),
-                OrderDetailsFooter(order: widget.order,),
+                OrderDetailsFooter(order: widget.order,notifyOrderScreen: widget.notifyOrderScreen,),
               ],
             ),
           ),

@@ -6,7 +6,7 @@ import 'package:grojha/Objects/product.dart';
 
 import 'details.dart';
 import '../../order_details_variables.dart';
-
+import '../../../../constants.dart';
 class Body extends StatelessWidget {
   const Body({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
 
@@ -58,7 +58,7 @@ class Body extends StatelessWidget {
             return Center(child: Text("Some error Occured"));
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: kPrimaryColor,),
           );
         },
       ),
