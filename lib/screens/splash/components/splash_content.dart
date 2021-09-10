@@ -16,13 +16,10 @@ class SplashContent extends StatelessWidget {
     return Column(
       children: <Widget>[
         Spacer(),
-        Text(
-          "GROJHA",
-          style: TextStyle(
-            fontSize: getProportionateScreenWidth(36),
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-          ),
+        Container(
+          height: SizeConfig.screenWidth * .4,
+          width: SizeConfig.screenWidth * .8,
+          child:  Image.asset("assets/images/grojhalogo big.png"),
         ),
         Text(
           text,

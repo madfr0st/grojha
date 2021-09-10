@@ -5,6 +5,7 @@ import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/help_center/help_center_screen.dart';
 import 'package:grojha/screens/home/components/categories.dart';
 import 'package:grojha/screens/home/home_screen.dart';
+import 'package:grojha/screens/new_update/new_update_screen.dart';
 import 'package:grojha/screens/notification/notification_screen.dart';
 import 'package:grojha/screens/orders/orders_screen.dart';
 import 'package:grojha/screens/otp/otp_screen.dart';
@@ -35,4 +36,5 @@ final Map<String, WidgetBuilder> routes = {
       SingleSelectedProductCategory(),
   NotificationScreen.routeName: (context) => NotificationScreen(),
   HelpCenterScreen.routeName: (context) => HelpCenterScreen(),
+  NewUpdateScreen.routeName:(context) => NewUpdateScreen(),
 };

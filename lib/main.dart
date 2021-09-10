@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/routes.dart';
 import 'package:grojha/screens/home/home_screen.dart';
+import 'package:grojha/screens/new_update/new_update_screen.dart';
 import 'package:grojha/screens/splash/splash_screen.dart';
+import 'package:grojha/size_config.dart';
 import 'package:grojha/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
@@ -159,7 +161,14 @@ class _AppState extends State<App> {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   User user = FirebaseAuth.instance.currentUser;
   String string = SplashScreen.routeName;
 
@@ -172,20 +181,74 @@ class MyApp extends StatelessWidget {
       print('User is currently null :(');
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: theme(),
-      // home: SplashScreen(),
-      // We use routeName so that we dont need to remember the name
-      initialRoute: string,
-      routes: routes,
-      builder: (context, child) {
-        return MediaQuery(
-          child: child,
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        );
-      },
-    );
+    DatabaseReference databaseReference =
+    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
+
+    return FutureBuilder(
+        future: databaseReference.once(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            try {
+              print(snapshot.data.value);
+              if (snapshot.data.value.toString() == SizeConfig.appVersion) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'Flutter Demo',
+                  theme: theme(),
+                  // home: SplashScreen(),
+                  // We use routeName so that we dont need to remember the name
+                  initialRoute: string,
+                  routes: routes,
+                  builder: (context, child) {
+                    return MediaQuery(
+                      child: child,
+                      data:
+                      MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    );
+                  },
+                );
+              } else {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'Flutter Demo',
+                  theme: theme(),
+                  // home: SplashScreen(),
+                  // We use routeName so that we dont need to remember the name
+                  initialRoute: NewUpdateScreen.routeName,
+                  routes: routes,
+                  builder: (context, child) {
+                    return MediaQuery(
+                      child: child,
+                      data:
+                      MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    );
+                  },
+                );
+              }
+            } catch (e) {
+              print(e);
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: theme(),
+                // home: SplashScreen(),
+                // We use routeName so that we dont need to remember the name
+                initialRoute: NewUpdateScreen.routeName,
+                routes: routes,
+                builder: (context, child) {
+                  return MediaQuery(
+                    child: child,
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  );
+                },
+              );
+            }
+          }
+          return Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
+          );
+        });
   }
 }

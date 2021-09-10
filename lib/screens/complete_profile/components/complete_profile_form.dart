@@ -128,7 +128,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
       alignment: Alignment.centerLeft,
       child: Text(
-        "We are currently active in Kolkata.\nCurrently default pincode will be 700001.",
+        "We are currently active in Kolkata.",
         style: TextStyle(
             color: Colors.black,
             fontSize: getProportionateScreenWidth(12),

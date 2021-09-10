@@ -1,34 +1,50 @@
 {
   "project_info": {
-    "project_number": "562771742657",
-    "firebase_url": "https://gro-jha-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "gro-jha",
-    "storage_bucket": "gro-jha.appspot.com"
+    "project_number": "1040727205354",
+    "firebase_url": "https://project-red-117-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "project-red-117",
+    "storage_bucket": "project-red-117.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:562771742657:android:99d60e44346ed36a63a940",
+        "mobilesdk_app_id": "1:1040727205354:android:3d2765c6fd66ffe3733e93",
         "android_client_info": {
           "package_name": "com.grojha.grojha"
         }
       },
       "oauth_client": [
         {
-          "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+          "client_id": "1040727205354-atflgh70j3d5e5mhunrtn2vc88ln0fpq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grojha.grojha",
+            "certificate_hash": "993bd82b7f1ec5cac55990068f0a5f98373dafd0"
+          }
+        },
+        {
+          "client_id": "1040727205354-l0o6ol69bsiirsh4bdpmab848ogn5c28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grojha.grojha",
+            "certificate_hash": "a897741790ee5df7c4859e0e315673f8107cec09"
+          }
+        },
+        {
+          "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByQ314doxypAPgP_rV4s0sPrvGqN6J9eA"
+          "current_key": "AIzaSyBQcOLGEosq-wT4b2xbOVWDVDP_QpWNc-k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+              "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -37,27 +53,35 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:562771742657:android:7952a6ececc9966563a940",
+        "mobilesdk_app_id": "1:1040727205354:android:69e58258cb1a8dc0733e93",
         "android_client_info": {
           "package_name": "com.grojha.grojha_delivery"
         }
       },
       "oauth_client": [
         {
-          "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+          "client_id": "1040727205354-l22hd4ijli75mql5ogsjr42k8ff49omk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grojha.grojha_delivery",
+            "certificate_hash": "993bd82b7f1ec5cac55990068f0a5f98373dafd0"
+          }
+        },
+        {
+          "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByQ314doxypAPgP_rV4s0sPrvGqN6J9eA"
+          "current_key": "AIzaSyBQcOLGEosq-wT4b2xbOVWDVDP_QpWNc-k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+              "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -66,27 +90,43 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:562771742657:android:1da4380aa7ce725563a940",
+        "mobilesdk_app_id": "1:1040727205354:android:f3ada8d291891208733e93",
         "android_client_info": {
           "package_name": "com.grojha.grojha_retails"
         }
       },
       "oauth_client": [
         {
-          "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+          "client_id": "1040727205354-21fevv01ttgnhutvaqoimgp739uefou1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grojha.grojha_retails",
+            "certificate_hash": "a897741790ee5df7c4859e0e315673f8107cec09"
+          }
+        },
+        {
+          "client_id": "1040727205354-k4h84bqleupask2ainu1i81knmsabl2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grojha.grojha_retails",
+            "certificate_hash": "993bd82b7f1ec5cac55990068f0a5f98373dafd0"
+          }
+        },
+        {
+          "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByQ314doxypAPgP_rV4s0sPrvGqN6J9eA"
+          "current_key": "AIzaSyBQcOLGEosq-wT4b2xbOVWDVDP_QpWNc-k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "562771742657-1itskrh2s6fa2o5oar0hlmht336ro3u4.apps.googleusercontent.com",
+              "client_id": "1040727205354-8mefjuotsh65nd5hh4q38ec11bvgalqa.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

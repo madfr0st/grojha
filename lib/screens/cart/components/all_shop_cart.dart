@@ -86,7 +86,7 @@ class _AllShopCartState extends State<AllShopCart> {
                     ]);
                   } catch (e) {
                     print(e);
-                    return Center(child: Text("Cart is EMPTY!!!"));
+                    return Center(child: Text("Your Cart is EMPTY!!!"));
                   }
                 }
                 return Center(child: CircularProgressIndicator(color: kPrimaryColor,));

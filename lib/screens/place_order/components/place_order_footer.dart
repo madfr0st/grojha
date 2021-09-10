@@ -16,7 +16,9 @@ import 'package:grojha/size_config.dart';
 class PlaceOrderFooter extends StatefulWidget {
   const PlaceOrderFooter({
     Key key,
-    this.notifyHome, this.product, this.uniqueItems,
+    this.notifyHome,
+    this.product,
+    this.uniqueItems,
   }) : super(key: key);
   final Function() notifyHome;
   final Product product;
@@ -143,14 +145,15 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                actionOrderButton(kPrimaryColor,
+                actionOrderButton(
+                  kPrimaryColor,
                   Colors.white,
                   () {
                     _clearCart();
                   },
                   "Clear Cart",
                 ),
-                actionOrderButton(kPrimaryColor,kPrimaryColor, () {
+                actionOrderButton(kPrimaryColor, kPrimaryColor, () {
                   placeOrder(context);
                 }, "Place Order")
               ],
@@ -236,10 +239,8 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
     );
 
     PlaceOrder(order: order).clearCart(shopUid: order.shopId);
-    EventStatus(context: context,popScreen: 3).success(notifyParent: widget.notifyHome);
-
-
-
+    EventStatus(context: context, popScreen: 3)
+        .success(notifyParent: widget.notifyHome);
   }
 
   void _pushOrder() {
@@ -259,11 +260,9 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
     );
 
     PlaceOrder(order: order).pushOrder();
-    EventStatus(context: context,popScreen: 3).success(notifyParent: widget.notifyHome);
-
-
+    EventStatus(context: context, popScreen: 3)
+        .success(notifyParent: widget.notifyHome);
   }
-
 
   void placeOrder(BuildContext context) {
     String uid = FirebaseAuth.instance.currentUser.uid;
@@ -280,7 +279,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: getProportionateScreenWidth(330),
+              height: getProportionateScreenWidth(350),
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               width: double.infinity,
               child: FutureBuilder(
@@ -305,19 +304,24 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              height: getProportionateScreenWidth(30),
+                              padding: EdgeInsets.all(
+                                  getProportionateScreenWidth(2)),
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      color.withOpacity(0.7),
-                                      color.withOpacity(0.1),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(
+                                      getProportionateScreenWidth(15))),
+                              //      color: Colors.grey,
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: getProportionateScreenWidth(7),
+                                    horizontal:getProportionateScreenWidth(7)),
+
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        getProportionateScreenWidth(13))),
                               child: Text(
                                 "Name : $userName",
                                 style: TextStyle(
@@ -326,21 +330,26 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
+                            ),),
                             Container(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              height: getProportionateScreenWidth(30),
+                              padding: EdgeInsets.all(
+                                  getProportionateScreenWidth(2)),
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      color.withOpacity(0.7),
-                                      color.withOpacity(0.1),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(
+                                      getProportionateScreenWidth(15))),
+                              //      color: Colors.grey,
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: getProportionateScreenWidth(7),
+                                    horizontal:getProportionateScreenWidth(7)),
+
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        getProportionateScreenWidth(13))),
                               child: Text(
                                 "Contact Number : $userPhoneNumber",
                                 style: TextStyle(
@@ -349,71 +358,78 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
+                            ),),
                             Container(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              height: getProportionateScreenWidth(60),
+                              padding: EdgeInsets.all(
+                                  getProportionateScreenWidth(2)),
                               alignment: Alignment.centerLeft,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      color.withOpacity(0.7),
-                                      color.withOpacity(0.1),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(
+                                      getProportionateScreenWidth(15))),
+                              //      color: Colors.grey,
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: getProportionateScreenWidth(7),
+                                    horizontal:getProportionateScreenWidth(7)),
+
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                        getProportionateScreenWidth(13))),
                               child: Text(
-                                "Adderss : $userAddress",
+                                "Adderss : $userAddress ",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: getProportionateScreenWidth(15),
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
+                            ),),
                             Container(
-                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                height: getProportionateScreenWidth(30),
-                                alignment: Alignment.centerLeft,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Colors.lightGreenAccent
-                                            .withOpacity(0.7),
-                                        Colors.lightGreenAccent
-                                            .withOpacity(0.1),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(20)),
-                                //      color: Colors.grey,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Grand Total : ",
-                                      style: TextStyle(
-                                          height: 1,
-                                          color: Colors.indigo,
-                                          fontSize:
-                                              getProportionateScreenWidth(20),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "₹ ${PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery}",
-                                      style: TextStyle(
-                                          height: 1,
-                                          color: Colors.indigo,
-                                          fontSize:
-                                              getProportionateScreenWidth(20),
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                )),
+                              padding: EdgeInsets.all(
+                                  getProportionateScreenWidth(2)),
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(
+                                      getProportionateScreenWidth(15))),
+                              //      color: Colors.grey,
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: getProportionateScreenWidth(7),
+                                      horizontal:getProportionateScreenWidth(7)),
+
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          getProportionateScreenWidth(13))),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Grand Total ",
+                                        style: TextStyle(
+                                            height: 1,
+                                            color: Colors.black,
+                                            fontSize:
+                                            getProportionateScreenWidth(20),
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "₹ ${PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery}",
+                                        style: TextStyle(
+                                            height: 1,
+                                            color: Colors.black,
+                                            fontSize:
+                                            getProportionateScreenWidth(20),
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  )),
+                            ),
                             CheckboxListTile(
                               activeColor: kPrimaryColor,
                               title: Text(
@@ -450,25 +466,30 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                     } catch (e) {
                       print(e);
                       return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("Your profile is empty.",style: TextStyle(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            "Your profile is empty.",
+                            style: TextStyle(
                               color: Colors.red,
                               fontSize: getProportionateScreenWidth(20),
                               fontWeight: FontWeight.bold,
-                            ),),
-                            SizedBox(height: getProportionateScreenWidth(30),),
-                            DefaultButton(
-                              text: "Complete Profile",
-                              press: (){
-                                Navigator.pop(context);
-                                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
-                              },
                             ),
-                          ],
-                        )
-                      );
+                          ),
+                          SizedBox(
+                            height: getProportionateScreenWidth(30),
+                          ),
+                          DefaultButton(
+                            text: "Complete Profile",
+                            press: () {
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context, CompleteProfileScreen.routeName);
+                            },
+                          ),
+                        ],
+                      ));
                     }
                     // return Center(
                     //   child: CircularProgressIndicator(color: kPrimaryColor,),
@@ -478,7 +499,6 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
           });
         });
   }
-
 
   Container actionOrderButton(
       Color borderColor, Color fillColor, GestureTapCallback press, name) {
@@ -549,6 +569,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       ),
     );
   }
+
   Container placeOrderButton(Color color, GestureTapCallback press, name) {
     return Container(
       height: getProportionateScreenWidth(50),
