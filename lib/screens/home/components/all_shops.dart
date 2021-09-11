@@ -23,7 +23,7 @@ class AllShops extends StatefulWidget {
 class _AllShopsState extends State<AllShops> {
   List<Shop> shops;
   DatabaseReference databaseReference =
-  FirebaseDatabase.instance.reference().child("pincode/700001/shops");
+      FirebaseDatabase.instance.reference().child("pincode/700001/shops");
 
   @override
   Widget build(BuildContext context) {
@@ -40,54 +40,57 @@ class _AllShopsState extends State<AllShops> {
             try {
               _logic(snapshot.data);
 
-              return RefreshIndicator(child: Column(children: [
-                SizedBox(height: getProportionateScreenHeight(5)),
-                HomeHeader(
-                  notifyHomeScreen: _refresh,
-                ),
-                SizedBox(height: getProportionateScreenWidth(5)),
-                Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(children: [
-                          Categories(notifyHomeScreen: _refresh),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: getProportionateScreenWidth(20)),
-                            child: SectionTitle(
-                              title: "Shops near by",
-                              press: () {},
-                            ),
-                          ),
-                          ...List.generate(shops.length, (index) {
-                            return SingleShopCard(
-                                shop: shops[index],
-                                press: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SingleShop(
-                                              shop: shops[index],
-                                              notifyHomeScreen: _refresh,
-                                            ),
-                                      ));
-                                });
-                          }),
-                        ])))
-              ]), color: kPrimaryColor,onRefresh: () {
-                return databaseReference.once().then((value) {
-                  _logic(value);
-                  setState(() {
-
+              return RefreshIndicator(
+                  child: Column(children: [
+                    SizedBox(height: getProportionateScreenHeight(5)),
+                    HomeHeader(
+                      notifyHomeScreen: _refresh,
+                    ),
+                    SizedBox(height: getProportionateScreenWidth(5)),
+                    Expanded(
+                        child: SingleChildScrollView(
+                            child: Column(children: [
+                      Categories(notifyHomeScreen: _refresh),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: getProportionateScreenWidth(20)),
+                        child: SectionTitle(
+                          title: "Shops near by",
+                          press: () {},
+                        ),
+                      ),
+                      ...List.generate(shops.length, (index) {
+                        return SingleShopCard(
+                            shop: shops[index],
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SingleShop(
+                                      shop: shops[index],
+                                      notifyHomeScreen: _refresh,
+                                    ),
+                                  ));
+                            });
+                      }),
+                    ])))
+                  ]),
+                  color: kPrimaryColor,
+                  onRefresh: () {
+                    return databaseReference.once().then((value) {
+                      _logic(value);
+                      setState(() {});
+                    });
                   });
-                });
-              });
             } catch (e) {
               print(e);
               return Center(child: Text("Some Error Occured!!!"));
             }
           }
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
+          return Center(
+              child: CircularProgressIndicator(
+            color: kPrimaryColor,
+          ));
         });
   }
 
@@ -97,8 +100,7 @@ class _AllShopsState extends State<AllShops> {
     shops.clear();
     values.forEach((key, value) {
       try {
-        if (value["info"]["shopName"] != null &&
-            value["status"]["open"]) {
+        if (value["info"]["shopName"] != null && value["status"]["open"]) {
           shops.add(new Shop(
               shopName: value["info"]["shopName"],
               shopCategory: value["info"]["shopCategory"],
@@ -114,5 +116,4 @@ class _AllShopsState extends State<AllShops> {
 
     AllShopData.list = shops;
   }
-
 }

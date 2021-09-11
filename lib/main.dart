@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     DatabaseReference databaseReference =
-    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
+    FirebaseDatabase.instance.reference().child("appVersion");
 
     return FutureBuilder(
         future: databaseReference.once(),

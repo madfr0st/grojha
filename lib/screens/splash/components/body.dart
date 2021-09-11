@@ -19,15 +19,15 @@ class _BodyState extends State<Body> {
       "text": "Welcome to Grojha, Let’s shop!",
       "image": "assets/images/splash_1.png"
     },
-    {
-      "text":
-          "We help people connect with store \naround Kolkata, India",
-      "image": "assets/images/splash_2.png"
-    },
-    {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
-      "image": "assets/images/splash_3.png"
-    },
+    // {
+    //   "text":
+    //       "We help people connect with store \naround Kolkata, India",
+    //   "image": "assets/images/splash_2.png"
+    // },
+    // {
+    //   "text": "We show the easy way to shop. \nJust stay at home with us",
+    //   "image": "assets/images/splash_3.png"
+    // },
   ];
   @override
   Widget build(BuildContext context) {
@@ -52,21 +52,21 @@ class _BodyState extends State<Body> {
               ),
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: <Widget>[
                     Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        splashData.length,
-                        (index) => buildDot(index: index),
-                      ),
-                    ),
-                    Spacer(flex: 3),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: List.generate(
+                    //     splashData.length,
+                    //     (index) => buildDot(index: index),
+                    //   ),
+                    // ),
+                    //Spacer(flex: 3),
                     DefaultButton(
                       text: "Continue",
                       press: () {
