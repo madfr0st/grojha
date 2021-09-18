@@ -182,7 +182,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     DatabaseReference databaseReference =
-    FirebaseDatabase.instance.reference().child("appVersion");
+    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
 
     return FutureBuilder(
         future: databaseReference.once(),
@@ -193,7 +193,7 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.data.value.toString() == SizeConfig.appVersion) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  title: 'Flutter Demo',
+                  title: 'Grojha',
                   theme: theme(),
                   // home: SplashScreen(),
                   // We use routeName so that we dont need to remember the name
@@ -210,7 +210,7 @@ class _MyAppState extends State<MyApp> {
               } else {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  title: 'Flutter Demo',
+                  title: 'Grojha',
                   theme: theme(),
                   // home: SplashScreen(),
                   // We use routeName so that we dont need to remember the name
@@ -229,7 +229,7 @@ class _MyAppState extends State<MyApp> {
               print(e);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
+                title: 'Grojha',
                 theme: theme(),
                 // home: SplashScreen(),
                 // We use routeName so that we dont need to remember the name
