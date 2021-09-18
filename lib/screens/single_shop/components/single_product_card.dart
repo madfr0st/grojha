@@ -7,6 +7,7 @@ import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
+import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/size_config.dart';
 
@@ -96,8 +97,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
                               color: Colors.white),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(9)),
-                            child: Image.network(widget.product.productImage,
-                                fit: BoxFit.fill),
+                            child: CachedImage(url: widget.product.productImage,),
                           )),
                     ),
                     buildPositionedDisproductCartCountBanner()
@@ -156,13 +156,14 @@ class _SingleProductCardState extends State<SingleProductCard> {
                           SizedBox(
                             width: getProportionateScreenWidth(10),
                           ),
-                          Text(
-                            "₹ ${widget.product.productMRP}",
-                            style: TextStyle(
-                              //color: Colors.black12,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          )
+                          (widget.product.productSellingPrice !=
+                              widget.product.productMRP)
+                              ? Text("₹ ${widget.product.productMRP}",
+                              style: TextStyle(
+                                //color: Colors.black12,
+                                decoration: TextDecoration.lineThrough,
+                              ))
+                              : Container(),
                         ],
                       ),
                     )

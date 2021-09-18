@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/constants.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -106,8 +107,7 @@ class _SingleOrderDetailsProductCardState
                             color: Colors.white),
                         child: ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(6)),
-                          child: Image.network(widget.product.productImage,
-                              fit: BoxFit.fill),
+                          child: CachedImage(url: widget.product.productImage,),
                         )),
                   ),
                 ),

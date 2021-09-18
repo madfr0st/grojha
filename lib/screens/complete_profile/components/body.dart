@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class _BodyState extends State<Body> {
                     userImage: userImage,
                   );
                   CompleteProfileScreen.userImage =
-                      Image.network(appUser.userImage);
+                      Image(image: CachedNetworkImageProvider(appUser.userImage));
 
 
                   //print(appUser);

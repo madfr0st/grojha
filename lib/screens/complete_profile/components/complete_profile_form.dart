@@ -71,7 +71,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         databaseReference.child("info").set({
         });
       } else {
-        downloadUrl = "https://picsum.photos/250?image=9";
+        downloadUrl = "https://firebasestorage.googleapis.com/v0/b/project-red-117.appspot.com/o/defaultImages%2FDefaultShopImage.png?alt=media&token=bb7b949f-fb1b-42a4-ae24-22f3d8bd22fd";
       }
       databaseReference.child("info").set({
         "userName": userName,

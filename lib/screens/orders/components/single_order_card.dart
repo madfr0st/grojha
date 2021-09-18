@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
@@ -63,7 +64,6 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 horizontal: getProportionateScreenWidth(10)),
             height: getProportionateScreenWidth(135),
             width: double.infinity,
-
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(.5),
@@ -148,7 +148,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                     ),
                     Container(
                       height: getProportionateScreenWidth(75),
-                       //color: Colors.tealAccent,
+                      //color: Colors.tealAccent,
                       padding: EdgeInsets.fromLTRB(
                           getProportionateScreenWidth(10),
                           0,
@@ -160,7 +160,8 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                           Container(
                             height: getProportionateScreenWidth(79),
                             width: getProportionateScreenWidth(175),
-                            padding: EdgeInsets.fromLTRB(0, getProportionateScreenWidth(9), 0, 0),
+                            padding: EdgeInsets.fromLTRB(
+                                0, getProportionateScreenWidth(9), 0, 0),
                             // color: Colors.red,
                             child: Row(children: [
                               Container(
@@ -176,7 +177,14 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: (widget.order.orderImage != null)
-                                      ? Image.network(widget.order.orderImage)
+                                      ? CachedNetworkImage(
+                                          imageUrl: widget.order.orderImage,
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(color: kPrimaryColor,),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                          fit: BoxFit.fill,
+                                        )
                                       : Image.asset(
                                           "assets/images/default.jpg"),
                                 ),

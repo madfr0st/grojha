@@ -27,7 +27,23 @@ class Product {
       bool this.productStatus,
       int this.productQuantity}) {
     if (this.productImage == null || this.productImage.length == 0)
-      this.productImage = "https://picsum.photos/250?image=9";
+      this.productImage = "https://firebasestorage.googleapis.com/v0/b/project-red-117.appspot.com/o/defaultImages%2FDefaultShopImage.png?alt=media&token=bb7b949f-fb1b-42a4-ae24-22f3d8bd22fd";
+
+    if (this.productName == null) {
+      this.productName = " ";
+    }
+    if (this.productSellingPrice == null) {
+      this.productSellingPrice = 999999999;
+    }
+    if (this.productMRP == null) {
+      this.productMRP = 999999999;
+    }
+    if (this.productQuantity == null) {
+      this.productQuantity = 0;
+    }
+    if (this.productId == null) {
+      this.productId = " ";
+    }
   }
 
   @override

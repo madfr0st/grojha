@@ -6,6 +6,7 @@ import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
+import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/screens/place_order/components/place_order_variables.dart';
 
 import '../../../size_config.dart';
@@ -90,8 +91,7 @@ class _SinglePlaceOrderProductCardState
                             color: Colors.white),
                         child: ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(6)),
-                          child: Image.network(widget.product.productImage,
-                              fit: BoxFit.fill),
+                          child: CachedImage(url:widget.product.productImage),
                         )),
                   ),
                 ),

@@ -9,7 +9,7 @@ class CartTemp {
   CartTemp(this.shopId,this.shopName,this.shopCategory, this.cartTotalProductCost, this.cartUniqueProducts,
       this.shopImage) {
     if (shopImage == null || shopImage.length == 0) {
-      shopImage = "https://picsum.photos/250?image=9";
+      shopImage = "https://firebasestorage.googleapis.com/v0/b/project-red-117.appspot.com/o/defaultImages%2FDefaultShopImage.png?alt=media&token=bb7b949f-fb1b-42a4-ae24-22f3d8bd22fd";
     }
   }
 }

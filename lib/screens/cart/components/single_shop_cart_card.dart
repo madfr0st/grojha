@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/screens/place_order/place_order_screen.dart';
 
 import '../../../size_config.dart';
@@ -173,7 +174,7 @@ class SingleShopCartCard extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: (shop.shopImage != null)
-                                ? Image.network(shop.shopImage)
+                                ? CachedImage(url: shop.shopImage,)
                                 : Image.asset("assets/images/default.jpg"),
                           ),
                         ),

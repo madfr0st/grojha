@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/constants.dart';
+import 'package:grojha/components/cached_image.dart';
 
 import '../../../size_config.dart';
 
@@ -61,7 +63,7 @@ class SingleShopCard extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(7),
-                        child: Image.network(shop.shopImage),
+                        child: CachedImage(url:shop.shopImage),
                       ),
                     ),
                   ),
