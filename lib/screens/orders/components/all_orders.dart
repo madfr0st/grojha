@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/screens/orders/components/single_order_card.dart';
 import 'package:grojha/size_config.dart';
@@ -15,6 +16,21 @@ class AllOrders extends StatefulWidget {
 
 class _AllOrdersState extends State<AllOrders> {
   List<Order> orderList = [];
+
+  final scrollController = ScrollController();
+
+  int _currentViewItem = 20;
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        _loadMore();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,23 +55,38 @@ class _AllOrdersState extends State<AllOrders> {
                 //print(snapshot.data.value);
                 _logic(snapshot.data);
                 return RefreshIndicator(
-                  color: kPrimaryColor,
+                    color: kPrimaryColor,
                     child: SingleChildScrollView(
+                        controller: scrollController,
                         child: Column(children: [
-                      Column(
-                        children: [
-                          ...List.generate(orderList.length, (index) {
-                            return SingleOrderCard(
-                              order: orderList[index],
-                              notifyOrderScreen: _refresh,
-                            );
-                          }),
-                          SizedBox(
-                            height: SizeConfig.screenHeight,
+                          Column(
+                            children: [
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  //controller: scrollController,
+                                  itemCount: _currentViewItem,
+                                  itemBuilder: (context, index) {
+                                    return SingleOrderCard(
+                                      order: orderList[index],
+                                      notifyOrderScreen: _refresh,
+                                    );
+                                  }),
+                              SizedBox(
+                                height: getProportionateScreenWidth(80),
+                              ),
+                              (_currentViewItem != orderList.length)
+                                  ? CircularProgressIndicator(
+                                      color: kPrimaryColor,
+                                    )
+                                  : Instructions.banner_1(
+                                      "That's all", kPrimaryColor),
+                              SizedBox(
+                                height: getProportionateScreenWidth(20),
+                              ),
+                            ],
                           )
-                        ],
-                      )
-                    ])),
+                        ])),
                     onRefresh: () {
                       return databaseReference.once().then((value) {
                         _logic(value);
@@ -64,10 +95,14 @@ class _AllOrdersState extends State<AllOrders> {
                     });
               } catch (e) {
                 print(e);
-                return Center(child: Text("Some Error Occurred!!!"));
+                return Center(
+                    child: Instructions.banner_1("Zero Orders", kPrimaryColor));
               }
             }
-            return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
+            return Center(
+                child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ));
           }),
     );
   }
@@ -98,5 +133,19 @@ class _AllOrdersState extends State<AllOrders> {
     }); //print(s// hops);
 
     orderList.sort((a, b) => -a.orderTime.compareTo(b.orderTime));
+
+    if (_currentViewItem > orderList.length) {
+      _currentViewItem = orderList.length;
+    }
+  }
+
+  void _loadMore() {
+    if (_currentViewItem < orderList.length) {
+      _currentViewItem += 20;
+    }
+    if (_currentViewItem > orderList.length) {
+      _currentViewItem = orderList.length;
+    }
+    setState(() {});
   }
 }

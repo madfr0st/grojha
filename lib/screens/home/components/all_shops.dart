@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/get_notifications.dart';
+import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/global_variables/all_shop_data.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
@@ -24,6 +25,21 @@ class _AllShopsState extends State<AllShops> {
   List<Shop> shops;
   DatabaseReference databaseReference =
       FirebaseDatabase.instance.reference().child("pincode/700001/shops");
+
+  final scrollController = ScrollController();
+
+  int _currentViewItem = 20;
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        _loadMore();
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,31 +65,42 @@ class _AllShopsState extends State<AllShops> {
                     SizedBox(height: getProportionateScreenWidth(5)),
                     Expanded(
                         child: SingleChildScrollView(
+                            controller: scrollController,
                             child: Column(children: [
-                      Categories(notifyHomeScreen: _refresh),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: getProportionateScreenWidth(20)),
-                        child: SectionTitle(
-                          title: "Shops near by",
-                          press: () {},
-                        ),
-                      ),
-                      ...List.generate(shops.length, (index) {
-                        return SingleShopCard(
-                            shop: shops[index],
-                            press: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SingleShop(
-                                      shop: shops[index],
-                                      notifyHomeScreen: _refresh,
-                                    ),
-                                  ));
-                            });
-                      }),
-                    ])))
+                              Categories(notifyHomeScreen: _refresh),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        getProportionateScreenWidth(20)),
+                                child: SectionTitle(
+                                  title: "Shops near by",
+                                  press: () {},
+                                ),
+                              ),
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  //controller: scrollController,
+                                  itemCount: _currentViewItem,
+                                  itemBuilder: (context, index) {
+                                    return SingleShopCard(
+                                        shop: shops[index],
+                                        press: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SingleShop(
+                                                  shop: shops[index],
+                                                  notifyHomeScreen: _refresh,
+                                                ),
+                                              ));
+                                        });
+                                  }),
+                              SizedBox(height: getProportionateScreenWidth(80),),
+                              (_currentViewItem!=AllShopData.list.length)?CircularProgressIndicator(color: kPrimaryColor,): Instructions.banner_1("That's all", kPrimaryColor),
+                              SizedBox(height: getProportionateScreenWidth(20),),
+                            ])))
                   ]),
                   color: kPrimaryColor,
                   onRefresh: () {
@@ -84,7 +111,7 @@ class _AllShopsState extends State<AllShops> {
                   });
             } catch (e) {
               print(e);
-              return Center(child: Text("Some Error Occured!!!"));
+              return Center(child: Text("Some Error Occurred!!!"));
             }
           }
           return Center(
@@ -115,5 +142,18 @@ class _AllShopsState extends State<AllShops> {
     //print(shops);
 
     AllShopData.list = shops;
+    if(_currentViewItem>shops.length){
+      _currentViewItem = shops.length;
+    }
+  }
+
+  void _loadMore() {
+    if (_currentViewItem < AllShopData.list.length) {
+      _currentViewItem += 20;
+    }
+    if (_currentViewItem > AllShopData.list.length) {
+      _currentViewItem = AllShopData.list.length;
+    }
+    setState(() {});
   }
 }

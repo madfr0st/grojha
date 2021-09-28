@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/app_user.dart';
+import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/place_order/components/place_order_variables.dart';
 import '../../../size_config.dart';
@@ -35,16 +36,12 @@ class _BodyState extends State<Body> {
 
     return SafeArea(
       child: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-          child:FutureBuilder(
+          width: double.infinity,
+          child: FutureBuilder(
             future: databaseReference.once(),
-            builder: (context,snapShot){
-
-              try{
-                if(snapShot.hasData) {
+            builder: (context, snapShot) {
+              if (snapShot.hasData) {
+                try {
                   Map<dynamic, dynamic> map = snapShot.data.value;
                   userName = map["userName"];
                   userPhoneNumber = map["userPhoneNumber"];
@@ -57,13 +54,16 @@ class _BodyState extends State<Body> {
                     userName: userName,
                     userImage: userImage,
                   );
-                  CompleteProfileScreen.userImage =
-                      Image(image: CachedNetworkImageProvider(appUser.userImage));
-
-
-                  //print(appUser);
-
-                  return SingleChildScrollView(
+                  CompleteProfileScreen.userImage = Image(
+                      image: CachedNetworkImageProvider(appUser.userImage));
+                } catch (e) {
+                  print(e);
+                  appUser = new AppUser();
+                }
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20)),
                     child: Column(
                       children: [
                         Header(appUser: appUser),
@@ -72,31 +72,16 @@ class _BodyState extends State<Body> {
                         SizedBox(height: getProportionateScreenHeight(30)),
                       ],
                     ),
-                  );
-                }
-              }
-              catch(e){
-                print(e);
-                return  SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Header(appUser: appUser),
-                      SizedBox(height: getProportionateScreenWidth(20)),
-                      CompleteProfileForm(appUser: appUser),
-                      SizedBox(height: getProportionateScreenHeight(30)),
-                    ],
                   ),
                 );
-
               }
               return Center(
-                child: CircularProgressIndicator(color: kPrimaryColor,),
+                child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                ),
               );
-
             },
-          )
-        ),
-      ),
+          )),
     );
   }
 }

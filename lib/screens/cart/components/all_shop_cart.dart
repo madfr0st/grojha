@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/cart_temp.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/screens/cart/components/single_shop_cart_card.dart';
 import '../../../../constants.dart';
 class AllShopCart extends StatefulWidget {
@@ -86,7 +87,7 @@ class _AllShopCartState extends State<AllShopCart> {
                     ]);
                   } catch (e) {
                     print(e);
-                    return Center(child: Text("Your Cart is EMPTY!!!"));
+                    return  Center( child: Instructions.banner_1("Cart is empty!!!", kPrimaryColor));
                   }
                 }
                 return Center(child: CircularProgressIndicator(color: kPrimaryColor,));

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
+import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/global_variables/all_product_data.dart';
 import 'package:grojha/screens/single_shop/components/single_product_card.dart';
@@ -32,10 +33,23 @@ class _ProductsListState extends State<ProductsList> {
   List<String> categoryList = [];
   Map<String, List<Product>> map = {};
   int count = 0;
+  final scrollController = ScrollController();
+
+  int _currentViewItem = 5;
 
   void _refresh() {
     widget.notifyHomeScreen();
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        _loadMore();
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -65,51 +79,13 @@ class _ProductsListState extends State<ProductsList> {
     ];
     final _random = new Random();
 
+
     return FutureBuilder(
         future: databaseReference.once(),
         builder: (context, snapshot) {
           try {
             if (snapshot.hasData) {
-              //print(snapshot.data.value);
-              Map<dynamic, dynamic> values = snapshot.data.value;
-              products.clear();
-              map.clear();
-              count = 0;
-              categoryList.clear();
-
-              values.forEach((key, value) {
-                try {
-                  if (value["productStatus"]) {
-                    Product product = new Product(
-                        productId: key,
-                        productName: value["productName"],
-                        productImage: value["productImage"],
-                        productCategory: value["productCategory"],
-                        productUnit: value["productUnit"],
-                        productSellingPrice: value["productSellingPrice"],
-                        productMRP: value["productMRP"],
-                        productStatus: value["productStatus"],
-                        productQuantity: value["productQuantity"]);
-
-                    if (map.containsKey(value["productCategory"])) {
-                      map[value["productCategory"]].add(product);
-                    } else {
-                      count++;
-                      map[value["productCategory"]] = [];
-                      map[value["productCategory"]].add(product);
-                      categoryList.add(value["productCategory"]);
-                    }
-
-                    products.add(product);
-                  }
-                } catch (e) {
-                  print(e);
-                }
-              });
-
-              AllProductData.categoryList = categoryList;
-              AllProductData.productList = products;
-
+              _logic(snapshot);
               return Column(
                 children: [
                   SizedBox(height: getProportionateScreenHeight(5)),
@@ -120,6 +96,7 @@ class _ProductsListState extends State<ProductsList> {
                   SizedBox(height: getProportionateScreenHeight(5)),
                   Expanded(
                     child: SingleChildScrollView(
+                      controller: scrollController,
                       child: Column(
                         children: [
                           MenuTitle(
@@ -129,10 +106,11 @@ class _ProductsListState extends State<ProductsList> {
                           ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: count,
+                              //controller: scrollController,
+                              itemCount: _currentViewItem,
                               itemBuilder: (context, i) {
                                 Color color = color_list[
-                                    _random.nextInt(color_list.length)];
+                                _random.nextInt(color_list.length)];
                                 return new ExpansionTile(
                                     title: MenuTitle(
                                       title: categoryList[i],
@@ -142,19 +120,25 @@ class _ProductsListState extends State<ProductsList> {
                                     iconColor: color.withOpacity(.7),
                                     collapsedIconColor: color,
                                     collapsedBackgroundColor:
-                                        color.withOpacity(0.05),
+                                    color.withOpacity(0.05),
                                     children: [
-                                      ...List.generate(
-                                          map[categoryList[i]].length, (index) {
-                                        return SingleProductCard(
-                                          product: map[categoryList[i]][index],
-                                          shop: widget.shop,
-                                          notifyHomeScreen: _refresh,
-                                        );
-                                      }),
+                                      ListView.builder(
+                                        physics: const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                       // controller: scrollController,
+                                        itemCount:map[categoryList[i]].length,
+                                        itemBuilder: (context, j) {
+                                          return SingleProductCard(
+                                            product: map[categoryList[i]][j],
+                                            shop: widget.shop,
+                                            notifyHomeScreen: _refresh,
+                                          );
+                                        },)
                                     ]);
                               }),
-                          SizedBox(height: SizeConfig.screenHeight*.4,),
+                          SizedBox(height: getProportionateScreenWidth(60),),
+                          (_currentViewItem!=count)?CircularProgressIndicator(color: kPrimaryColor,): Instructions.banner_1("That's all", kPrimaryColor),
+                          SizedBox(height: getProportionateScreenWidth(60),),
                         ],
                       ),
                     ),
@@ -168,7 +152,74 @@ class _ProductsListState extends State<ProductsList> {
               child: Text("Zero products Added"),
             );
           }
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor,));
+          return Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ));
         });
+  }
+
+  void _loadMore(){
+    if(_currentViewItem<count){
+      _currentViewItem+=5;
+    }
+    if(_currentViewItem>count){
+      _currentViewItem = count;
+    }
+    setState(() {
+
+    });
+  }
+
+  void _logic(AsyncSnapshot snapshot) {
+    if (snapshot.hasData) {
+      //print(snapshot.data.value);
+      Map<dynamic, dynamic> values = snapshot.data.value;
+      products.clear();
+      map.clear();
+      count = 0;
+      categoryList.clear();
+
+      values.forEach((key, value) {
+        try {
+          if (value["productStatus"]) {
+            Product product = new Product(
+                productId: key,
+                productName: value["productName"],
+                productImage: value["productImage"],
+                productCategory: value["productCategory"],
+                productUnit: value["productUnit"],
+                productSellingPrice: value["productSellingPrice"],
+                productMRP: value["productMRP"],
+                productStatus: value["productStatus"],
+                productQuantity: value["productQuantity"]);
+
+            if (map.containsKey(value["productCategory"])) {
+              map[value["productCategory"]].add(product);
+            } else {
+              count++;
+              map[value["productCategory"]] = [];
+              map[value["productCategory"]].add(product);
+              categoryList.add(value["productCategory"]);
+            }
+
+            products.add(product);
+          }
+        } catch (e) {
+          print(e);
+        }
+      });
+
+      AllProductData.categoryList = categoryList;
+      AllProductData.categoryList
+          .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+      AllProductData.productList = products;
+      AllProductData.productList.sort((a, b) =>
+          a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+
+      if(_currentViewItem>count){
+        _currentViewItem = count;
+      }
+    }
   }
 }

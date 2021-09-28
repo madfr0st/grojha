@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grojha/constants.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:grojha/Objects/app_user.dart';
@@ -37,7 +38,11 @@ class _HeaderState extends State<Header> {
                 decoration: BoxDecoration(
                   color: Colors.grey,
                 ),
-                child: CompleteProfileScreen.userImage,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: ()=>_getFromGallery(),
+                  child:  CompleteProfileScreen.userImage,
+                ),
               )),
           SizedBox(
             width: getProportionateScreenWidth(20),
@@ -49,14 +54,14 @@ class _HeaderState extends State<Header> {
               children: [
                 GradButton(
                   name: "Open Camera",
-                  color1: Colors.greenAccent,
-                  color2: Colors.lightBlue,
+                  color1: kPrimaryColor,
+                  color2:kPrimaryColor,
                   press: _getFromCamera,
                 ),
                 GradButton(
                   name: "Open Galary",
-                  color1: Colors.redAccent,
-                  color2: Colors.pinkAccent,
+                  color1: kPrimaryColor,
+                  color2:kPrimaryColor,
                   press: _getFromGallery,
                 )
               ],

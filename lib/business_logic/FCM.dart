@@ -8,9 +8,13 @@ import 'package:http/http.dart' as http;
 class FCM {
   String token = "";
 
-
+  // sandbox key
   String serverKey =
       "AAAA8lAs5eo:APA91bGCBJY7vfNH0OMEQ4U0wf7c90WNnMpQITNX60wGT_GLnTV4gnMnh3CfsLHTKhk02QFPAI1ZySVZanTNlqyMUpJVOL-N3UPRCSni5nYwmSSvVl4c0YnXJc8DtXySXwVLZv7QwB7q";
+
+  // String serverKey =
+  //     "AAAAgwfPT8E:APA91bG9lIaiQu0VJhB-80BNtCc4-Ycf2koLunnCP2qzfHB4NXNslPgE6lZrVTKUtRgJhRoiShJtuW9Sj5sVde7p39pSrHEkHLyknAsWxJKLBAnsAT2_8s5kFZxFG2FT1-n1a2WarVnd";
+
 
   void sendNotification({Notifications notifications}) {
     if (notifications.receiverToken == null) {
@@ -58,10 +62,10 @@ class FCM {
   String _constructFCMPayload({Notifications notifications}) {
     return jsonEncode({
       'to': notifications.receiverToken,
-      // 'data': {
-      //   'via': 'FlutterFire Cloud Messaging!!!',
-      //   'count': "5464",
-      // },
+      'data': {
+        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+        "screen": "/orders_screen"
+      },
       "priority": "high",
       'notification': {
         'title': '${notifications.title}',

@@ -180,17 +180,15 @@ class _MyAppState extends State<MyApp> {
     } else {
       print('User is currently null :(');
     }
-
-    DatabaseReference databaseReference =
-    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
+    
 
     return FutureBuilder(
-        future: databaseReference.once(),
+        future: _logic(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print(snapshot.data);
             try {
-              print(snapshot.data.value);
-              if (snapshot.data.value.toString() == SizeConfig.appVersion) {
+              if (snapshot.data) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Grojha',
@@ -250,5 +248,22 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         });
+  }
+
+  Future<bool> _logic() async {
+    await FirebaseDatabase.instance.setPersistenceEnabled(true);
+    await FirebaseDatabase.instance.reference().keepSynced(true);
+    await FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
+    DatabaseReference databaseReference =
+    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
+
+    return databaseReference.once().then((value){
+      print(value.value);
+      if(value.value<=SizeConfig.appVersion){
+        return true;
+      }
+      return false;
+    });
+
   }
 }

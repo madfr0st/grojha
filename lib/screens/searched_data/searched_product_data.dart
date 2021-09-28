@@ -31,8 +31,7 @@ class SearchedProductData extends SearchDelegate<String> {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.arrow_back_outlined)
-    );
+        icon: Icon(Icons.arrow_back_outlined));
   }
 
   @override

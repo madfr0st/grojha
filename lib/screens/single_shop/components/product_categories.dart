@@ -16,6 +16,7 @@ class ProductCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> list = [];
     list = AllProductData.categoryList;
+    list.sort((a,b)=>a.toLowerCase().compareTo(b.toLowerCase()));
     List<Color> color_list = [
       Colors.green,
       Colors.orange,

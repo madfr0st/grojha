@@ -42,14 +42,17 @@ class SearchedShopData extends SearchDelegate<String> {
         ? []
         : AllShopData.list.where((element) {
             if (element.shopName
-                .toLowerCase()
-                .startsWith(query.toLowerCase())) {
+                    .toLowerCase()
+                    .startsWith(query.toLowerCase()) ||
+                element.shopCategory
+                    .toLowerCase()
+                    .startsWith(query.toLowerCase())) {
               return true;
             }
-            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
-              return true;
-            }
-            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
+            if (element.shopName.toLowerCase().contains(query.toLowerCase()) ||
+                element.shopCategory
+                    .toLowerCase()
+                    .contains(query.toLowerCase())) {
               return true;
             }
 
@@ -84,14 +87,17 @@ class SearchedShopData extends SearchDelegate<String> {
         ? []
         : AllShopData.list.where((element) {
             if (element.shopName
-                .toLowerCase()
-                .startsWith(query.toLowerCase())) {
+                    .toLowerCase()
+                    .startsWith(query.toLowerCase()) ||
+                element.shopCategory
+                    .toLowerCase()
+                    .startsWith(query.toLowerCase())) {
               return true;
             }
-            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
-              return true;
-            }
-            if (element.shopName.toLowerCase().contains(query.toLowerCase())) {
+            if (element.shopName.toLowerCase().contains(query.toLowerCase()) ||
+                element.shopCategory
+                    .toLowerCase()
+                    .contains(query.toLowerCase())) {
               return true;
             }
 
