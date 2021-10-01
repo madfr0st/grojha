@@ -3,6 +3,7 @@ import 'package:grojha/components/coustom_bottom_nav_bar.dart';
 import 'package:grojha/enums.dart';
 
 import '../../constants.dart';
+import '../../size_config.dart';
 import 'components/body.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
