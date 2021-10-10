@@ -13,12 +13,14 @@ class Product {
   int productQuantity;
   int productCartCount;
   int productTotalCartCost;
+  int productDiscountPercentage;
 
   Product(
       {String this.productId,
       String this.productName,
       String this.productImage,
       String this.productCategory,
+        this.productDiscountPercentage,
       String this.productUnit,
       int this.productSellingPrice,
       this.productCartCount,

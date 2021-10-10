@@ -54,7 +54,7 @@ class Body extends StatelessWidget {
             }
           } catch (e) {
             print(e);
-            return Center(child: Text("Some error Occured"));
+            return Center(child: Text("Some error Occurred"));
           }
           return Center(
             child: CircularProgressIndicator(color: kPrimaryColor,),

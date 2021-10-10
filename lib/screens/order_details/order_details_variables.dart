@@ -12,6 +12,6 @@ class OrderDetailsVariables {
   static String userName;
   static String userPhoneNumber;
   static String userAddress;
-  static Set<String> boolSet = {};
+ // static Set<String> boolSet = {};
 
 }

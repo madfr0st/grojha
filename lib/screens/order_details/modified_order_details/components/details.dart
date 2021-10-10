@@ -50,6 +50,7 @@ class _DetailsState extends State<Details> {
                     product: OrderDetailsVariables.list[index],
                     order: widget.order,
                     notifyOrderScreen: _refresh,
+                    productNumber: index+1,
                   ),
                 ),
                 OrderDetailsFooter(

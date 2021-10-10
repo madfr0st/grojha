@@ -25,12 +25,7 @@ class OrderDetailsFooter extends StatefulWidget {
 }
 
 class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
-  bool correctInfo = false;
-  String userName;
-  String userPhoneNumber;
-  String userAddress;
   bool areYouSure = false;
-
 
   @override
   Widget build(BuildContext context) {

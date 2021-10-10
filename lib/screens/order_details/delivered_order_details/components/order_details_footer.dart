@@ -19,22 +19,10 @@ class OrderDetailsFooter extends StatefulWidget {
 }
 
 class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
-  bool correctInfo = false;
-  String userName;
-  String userPhoneNumber;
-  String userAddress;
-  bool areYouSure = false;
-  String orderButtonStatus = "Accept Order";
-  String acceptOrder = "Accept Order";
-  String modifyOrder = "Modify Order";
 
   @override
   Widget build(BuildContext context) {
-    if (OrderDetailsVariables.boolSet.isNotEmpty) {
-      orderButtonStatus = modifyOrder;
-    } else {
-      orderButtonStatus = acceptOrder;
-    }
+
     return Container(
       height: getProportionateScreenWidth(100),
       margin: EdgeInsets.fromLTRB(5, 20, 5, 40),
