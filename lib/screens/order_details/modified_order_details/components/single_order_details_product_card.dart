@@ -51,7 +51,9 @@ class _SingleOrderDetailsProductCardState
     if (widget.product.productStatus != null && !widget.product.productStatus) {
       productStatus = false;
       stock = outOffStock;
-      OrderDetailsVariables.boolSet.add(widget.product.productId);
+
+      //OrderDetailsVariables.boolSet.add(widget.product.productId);
+
       stockColor = outOffStockColor;
     } else {
       OrderDetailsVariables.itemTotal += widget.product.productTotalCartCost;

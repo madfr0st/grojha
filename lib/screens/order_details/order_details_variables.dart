@@ -13,5 +13,6 @@ class OrderDetailsVariables {
   static String userPhoneNumber;
   static String userAddress;
  // static Set<String> boolSet = {};
+  static List<Product> modifiedAddedProductList = [];
 
 }

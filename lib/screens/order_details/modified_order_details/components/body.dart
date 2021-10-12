@@ -30,7 +30,8 @@ class Body extends StatelessWidget {
             if (snapShot.hasData) {
               Map<dynamic, dynamic> map = snapShot.data.value;
               productList.clear();
-              OrderDetailsVariables.boolSet.clear();
+
+              //OrderDetailsVariables.boolSet.clear();
 
               map.forEach((key, value) {
                 productList.add(new Product(
