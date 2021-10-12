@@ -30,22 +30,24 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
             if (snapshot.data) {
               return Column(
                 children: [
-                  Container(child: Instructions.banner_2(
-                      "Recommended replacement that is in stock",
-                      kPrimaryColor,
-                      13,
-                      2),),
+                  Container(
+                    child: Instructions.banner_2(
+                        "Recommended replacement that is in stock",
+                        kPrimaryColor,
+                        13,
+                        2),
+                  ),
                   ...List.generate(
                       list.length,
                       (index) => SingleProductCardOrderSelect(
                             product: list[index],
                             function: widget.notifyScreen,
+                            orderId: widget.orderId,
                           ))
                 ],
               );
             } else {
-              return Center(
-              );
+              return Center();
             }
           }
           return Center(

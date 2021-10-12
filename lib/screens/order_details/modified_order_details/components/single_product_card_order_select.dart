@@ -3,19 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/components/custom_button.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
+import '../../order_details_variables.dart';
 
 class SingleProductCardOrderSelect extends StatefulWidget {
-  const SingleProductCardOrderSelect({Key key, this.product, this.function})
+  const SingleProductCardOrderSelect({Key key, this.product, this.function, this.orderId})
       : super(key: key);
   final Product product;
   final Function function;
+  final String orderId;
 
   @override
   _SingleProductCardOrderSelectState createState() =>
@@ -24,24 +28,14 @@ class SingleProductCardOrderSelect extends StatefulWidget {
 
 class _SingleProductCardOrderSelectState
     extends State<SingleProductCardOrderSelect> {
-  String inStock = "In stock";
-  String outOffStock = "Out of stock";
-  String stock = "In stock";
-  bool productStatus;
-  Color inStockColor = Colors.green;
-  Color outOffStockColor = Colors.red;
-  Color stockColor = Colors.green;
+
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    productStatus = widget.product.productStatus;
-    if (!productStatus) {
-      stock = outOffStock;
-      stockColor = outOffStockColor;
-    } else {
-      stock = inStock;
-      stockColor = inStockColor;
+
+    if(OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId] == null){
+      OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId] = 0;
     }
 
     return Container(
@@ -195,25 +189,14 @@ class _SingleProductCardOrderSelectState
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(7),
                                     onTap: () {
-                                      // if (productCartCount > 0) {
-                                      //   HapticFeedback.lightImpact();
-                                      //   productCartCount--;
-                                      //   setState(() {
-                                      //     CartItemCount.map[widget
-                                      //         .shop.shopId +
-                                      //         widget.product.productId] = productCartCount;
-                                      //     AddProductToCart.addProductToCart(
-                                      //         productCartCount: productCartCount,
-                                      //         shop: widget.shop,
-                                      //         product: widget.product);
-                                      //     if (productCartCount == 0) {
-                                      //       CartItemCount.decreaseItemCount(itemCount: 1);
-                                      //       CartItemCount.cartItemCount--;
-                                      //       widget.notifyHomeScreen();
-                                      //     }
-                                      //   });
-                                      //
-                                      // }
+                                      if (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId] > 0) {
+                                        HapticFeedback.lightImpact();
+                                        OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId]--;
+                                        OrderDetailsVariables.itemTotal-=widget.product.productSellingPrice;
+                                        setState(() {
+                                            widget.function();
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       width: getProportionateScreenWidth(27),
@@ -236,7 +219,7 @@ class _SingleProductCardOrderSelectState
                                     color: Colors.white,
                                   ),
                                   child: Text(
-                                    "0",
+                                    OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId].toString(),
                                     style: TextStyle(
                                         fontSize:
                                             getProportionateScreenWidth(12),
@@ -250,22 +233,13 @@ class _SingleProductCardOrderSelectState
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(7),
                                     onTap: () {
-                                      // productCartCount++;
-                                      // HapticFeedback.lightImpact();
-                                      // setState(() {
-                                      //   AddProductToCart.addProductToCart(
-                                      //       productCartCount: productCartCount,
-                                      //       shop: widget.shop,
-                                      //       product: widget.product);
-                                      //   CartItemCount.map[widget
-                                      //       .shop.shopId +
-                                      //       widget.product.productId] = productCartCount;
-                                      //   if (productCartCount == 1) {
-                                      //     CartItemCount.increaseItemCount(itemCount: 1);
-                                      //     CartItemCount.cartItemCount++;
-                                      //     widget.notifyHomeScreen();
-                                      //   }
-                                      // });
+                                      OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId+" "+widget.product.productId]++;
+                                      OrderDetailsVariables.modifiedProductSet.add(widget.product);
+                                      HapticFeedback.lightImpact();
+                                      OrderDetailsVariables.itemTotal+=widget.product.productSellingPrice;
+                                      setState(() {
+                                          widget.function();
+                                      });
                                     },
                                     child: Container(
                                       width: getProportionateScreenWidth(27),

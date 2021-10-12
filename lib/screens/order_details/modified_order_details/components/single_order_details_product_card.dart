@@ -18,7 +18,7 @@ class SingleOrderDetailsProductCard extends StatefulWidget {
 
   final Shop shop;
   final Product product;
-  final Function() notifyOrderScreen;
+  final Function notifyOrderScreen;
   final Order order;
   final int productNumber;
 
@@ -55,8 +55,6 @@ class _SingleOrderDetailsProductCardState
       //OrderDetailsVariables.boolSet.add(widget.product.productId);
 
       stockColor = outOffStockColor;
-    } else {
-      OrderDetailsVariables.itemTotal += widget.product.productTotalCartCost;
     }
 
     return Container(

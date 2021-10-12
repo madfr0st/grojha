@@ -20,13 +20,12 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   void _refresh() {
+    widget.notifyOrderScreen();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    OrderDetailsVariables.grandTotal = 0;
-    OrderDetailsVariables.itemTotal = 0;
     return Column(
       children: [
         Expanded(
@@ -55,7 +54,7 @@ class _DetailsState extends State<Details> {
                 ),
                 OrderDetailsFooter(
                   order: widget.order,
-                  notifyOrderScreen: widget.notifyOrderScreen,
+                  notifyOrderScreen:_refresh,
                 ),
               ],
             ),

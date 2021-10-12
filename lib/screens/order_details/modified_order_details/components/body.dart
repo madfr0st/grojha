@@ -30,10 +30,14 @@ class Body extends StatelessWidget {
             if (snapShot.hasData) {
               Map<dynamic, dynamic> map = snapShot.data.value;
               productList.clear();
+              OrderDetailsVariables.grandTotal = 0;
+              OrderDetailsVariables.itemTotal = 0;
 
-              //OrderDetailsVariables.boolSet.clear();
 
               map.forEach((key, value) {
+                if (value["productStatus"] != null && value["productStatus"]) {
+                  OrderDetailsVariables.itemTotal += value["productTotalCartCost"];
+                }
                 productList.add(new Product(
                     productId: key,
                     productName: value["productName"],
@@ -50,16 +54,16 @@ class Body extends StatelessWidget {
               OrderDetailsVariables.list = productList;
 
               return Details(
-                order: order,
-                  notifyOrderScreen: notifyOrderScreen
-              );
+                  order: order, notifyOrderScreen: notifyOrderScreen);
             }
           } catch (e) {
             print(e);
             return Center(child: Text("Some error Occurred"));
           }
           return Center(
-            child: CircularProgressIndicator(color: kPrimaryColor,),
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
           );
         },
       ),
