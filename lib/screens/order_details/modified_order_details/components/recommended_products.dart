@@ -82,7 +82,6 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                 productDiscountPercentage: calcPercentage(
                     value["productSellingPrice"], value["productMRP"])));
           });
-          print(list);
           return true;
         } catch (e) {
           print(e);

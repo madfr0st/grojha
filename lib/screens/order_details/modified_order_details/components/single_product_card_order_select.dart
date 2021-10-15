@@ -275,12 +275,11 @@ class _SingleProductCardOrderSelectState
                                               BorderRadius.circular(7),
                                           onTap: () {
                                             if (OrderDetailsVariables
-                                                            .modifiedAddedProductCartCount[
-                                                        widget.orderId +
-                                                            " " +
-                                                            widget.product
-                                                                .productId] +
-                                                    1 <
+                                                        .modifiedAddedProductCartCount[
+                                                    widget.orderId +
+                                                        " " +
+                                                        widget.product
+                                                            .productId] <
                                                 widget
                                                     .product.productCartCount) {
                                               OrderDetailsVariables
@@ -313,16 +312,15 @@ class _SingleProductCardOrderSelectState
                                               size: getProportionateScreenWidth(
                                                   18),
                                               color: (OrderDetailsVariables
-                                                              .modifiedAddedProductCartCount[widget
-                                                                  .orderId +
+                                                              .modifiedAddedProductCartCount[
+                                                          widget.orderId +
                                                               " " +
                                                               widget.product
-                                                                  .productId] +
-                                                          1 <
+                                                                  .productId] <
                                                       widget.product
                                                           .productCartCount)
                                                   ? Colors.white
-                                                  : Colors.accents,
+                                                  : Colors.redAccent,
                                             ),
                                           ),
                                         ),
