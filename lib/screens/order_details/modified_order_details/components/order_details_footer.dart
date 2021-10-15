@@ -16,7 +16,8 @@ import '../../order_details_variables.dart';
 class OrderDetailsFooter extends StatefulWidget {
   const OrderDetailsFooter({
     Key key,
-    this.order, this.notifyOrderScreen,
+    this.order,
+    this.notifyOrderScreen,
   }) : super(key: key);
 
   final Order order;
@@ -32,7 +33,6 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   String userPhoneNumber;
   String userAddress;
   bool areYouSure = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +242,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         builder: (BuildContext context) {
           return Dialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             elevation: 16,
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -250,50 +250,52 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
               height: getProportionateScreenWidth(200),
               child: StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CheckboxListTile(
-                            activeColor: kPrimaryColor,
-                            title: Text(
-                              "Are you sure",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: getProportionateScreenWidth(15),
-                                color: kPrimaryColor,
-                              ),
-                            ),
-                            value: areYouSure,
-                            onChanged: (newValue) {
-                              setState(() {
-                                areYouSure = newValue;
-                                print(areYouSure);
-                              });
-                            },
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CheckboxListTile(
+                        activeColor: kPrimaryColor,
+                        title: Text(
+                          "Are you sure",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: getProportionateScreenWidth(15),
+                            color: kPrimaryColor,
                           ),
-                          Container(
-                            height: getProportionateScreenHeight(56),
-                            width: double.infinity,
-                            child: DefaultButton(
-                              text: "Cancel Order",
-                              press: () {
-                                if (areYouSure) {
-                                  CancelOrder(order: widget.order).cancelOrder(notifySeller: true);
-                                  EventStatus(popScreen: 3,context: context).success(notifyParent: widget.notifyOrderScreen);
-                                }
-                              },
-                            ),
-                          ),
-                        ],
+                        ),
+                        value: areYouSure,
+                        onChanged: (newValue) {
+                          setState(() {
+                            areYouSure = newValue;
+                            print(areYouSure);
+                          });
+                        },
                       ),
-                    );
-                  }),
+                      Container(
+                        height: getProportionateScreenHeight(56),
+                        width: double.infinity,
+                        child: DefaultButton(
+                          text: "Cancel Order",
+                          press: () {
+                            if (areYouSure) {
+                              CancelOrder(order: widget.order)
+                                  .cancelOrder(notifySeller: true);
+                              EventStatus(popScreen: 3, context: context)
+                                  .success(
+                                      notifyParent: widget.notifyOrderScreen);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           );
         });
   }
-
 
   void _placeModifiedOrder(BuildContext context) {
     showModalBottomSheet(
@@ -372,9 +374,18 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                         text: "Place Modified Order",
                         press: () {
                           if (correctInfo) {
-                            AcceptedModifiedOrder(order: widget.order).acceptModifiedOrder();
-                            EventStatus(popScreen: 3,context: context).success(notifyParent: widget.notifyOrderScreen);
-
+                            AcceptedModifiedOrder(
+                                    order: widget.order,
+                                    modifiedAddedProductCartCount:
+                                        OrderDetailsVariables
+                                            .modifiedAddedProductCartCount,
+                                    modifiedProductSet: OrderDetailsVariables
+                                        .modifiedProductSet,
+                                    orderedProductList: OrderDetailsVariables
+                                        .orderedProductList)
+                                .acceptModifiedOrder();
+                            EventStatus(popScreen: 3, context: context).success(
+                                notifyParent: widget.notifyOrderScreen);
                           }
                         },
                       ),

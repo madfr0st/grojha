@@ -279,7 +279,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: getProportionateScreenWidth(350),
+              height: getProportionateScreenWidth(400),
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               width: double.infinity,
               child: FutureBuilder(
@@ -304,89 +304,33 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              padding: EdgeInsets.all(
-                                  getProportionateScreenWidth(2)),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(
-                                      getProportionateScreenWidth(15))),
-                              //      color: Colors.grey,
-                              child: Container(
                                 width: double.infinity,
+                                margin: EdgeInsets.all(getProportionateScreenWidth(2)),
                                 padding: EdgeInsets.symmetric(
-                                    vertical: getProportionateScreenWidth(7),
-                                    horizontal:getProportionateScreenWidth(7)),
-
+                                    vertical: getProportionateScreenWidth(5),
+                                    horizontal: getProportionateScreenWidth(15)),
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(13))),
-                              child: Text(
-                                "Name : $userName",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(15),
-                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.grey.shade100,
                                 ),
-                              ),
-                            ),),
-                            Container(
-                              padding: EdgeInsets.all(
-                                  getProportionateScreenWidth(2)),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(
-                                      getProportionateScreenWidth(15))),
-                              //      color: Colors.grey,
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: getProportionateScreenWidth(7),
-                                    horizontal:getProportionateScreenWidth(7)),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: getProportionateScreenWidth(3),),
+                                    Text("Contact Details", style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: getProportionateScreenWidth(18),
+                                        color: Colors.black,
+                                        height: 1
+                                    ),),
+                                    SizedBox(height: getProportionateScreenWidth(10),),
+                                    singleInfoRow(title: "Name",text: userName),
+                                    SizedBox(height: getProportionateScreenWidth(3),),
+                                    singleInfoRow(title: "Contact Number",text: userPhoneNumber),
+                                    SizedBox(height: getProportionateScreenWidth(3),),
+                                    singleInfoRow(title: "Address",text: userAddress),
 
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(13))),
-                              child: Text(
-                                "Contact Number : $userPhoneNumber",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(15),
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),),
-                            Container(
-                              padding: EdgeInsets.all(
-                                  getProportionateScreenWidth(2)),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(
-                                      getProportionateScreenWidth(15))),
-                              //      color: Colors.grey,
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: getProportionateScreenWidth(7),
-                                    horizontal:getProportionateScreenWidth(7)),
-
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(
-                                        getProportionateScreenWidth(13))),
-                              child: Text(
-                                "Adderss : $userAddress ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(15),
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),),
+                                  ],
+                                )),
                             Container(
                               padding: EdgeInsets.all(
                                   getProportionateScreenWidth(2)),
@@ -638,4 +582,46 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       ),
     );
   }
+  Container singleInfoRow({String title,String text}) {
+    title = title+" : ";
+    return Container(
+      padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        //color: Colors.grey.shade200,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(3, 3), // changes position of shadow
+            ),
+          ],
+          borderRadius: BorderRadius.circular(getProportionateScreenWidth(15))),
+      //      color: Colors.grey,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenWidth(5),
+            horizontal: getProportionateScreenWidth(10)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius:
+            BorderRadius.circular(getProportionateScreenWidth(13))),
+        child: Text.rich(TextSpan(
+            children: [
+              TextSpan(text: title ,style: TextStyle(fontWeight: FontWeight.bold)),
+              TextSpan(text: text)
+            ]
+        ), style: TextStyle(
+          //fontWeight: FontWeight.bold,
+            fontSize: getProportionateScreenWidth(15),
+            color: Colors.black,
+            height: 1.1
+        ),
+        ),
+      ),
+    );
+  }
+
 }

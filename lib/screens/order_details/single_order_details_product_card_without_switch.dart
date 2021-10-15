@@ -11,13 +11,14 @@ import 'order_details_variables.dart';
 
 class SingleOrderDetailsProductcardWithoutSwitch extends StatefulWidget {
   const SingleOrderDetailsProductcardWithoutSwitch(
-      {Key key, this.shop, this.product, this.notifyOrderScreen, this.order})
+      {Key key, this.shop, this.product, this.notifyOrderScreen, this.order, this.productNumber})
       : super(key: key);
 
   final Shop shop;
   final Product product;
   final Function notifyOrderScreen;
   final Order order;
+  final int productNumber;
 
   @override
   _SingleOrderDetailsProductcardWithoutSwitchState createState() =>
@@ -69,6 +70,7 @@ class _SingleOrderDetailsProductcardWithoutSwitchState
         ),
         child: Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -169,6 +171,16 @@ class _SingleOrderDetailsProductcardWithoutSwitchState
                 ),
               ],
             ),
+            Positioned(
+                left: getProportionateScreenWidth(-3),
+                top: getProportionateScreenWidth(-3),
+                child: Text(
+                  "${widget.productNumber}",
+                  style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: getProportionateScreenWidth(12),
+                      fontWeight: FontWeight.bold),
+                )),
           ],
         ),
       ),

@@ -8,9 +8,11 @@ class Instructions {
   static Container orderStateBanner(String string) {
     return Container(
       alignment: Alignment.center,
+      margin: EdgeInsets.all(getProportionateScreenWidth(10)),
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(getProportionateScreenWidth(8))
       ),
       child: Text(
         string,

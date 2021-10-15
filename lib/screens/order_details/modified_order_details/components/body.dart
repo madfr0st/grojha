@@ -51,7 +51,8 @@ class Body extends StatelessWidget {
                     productTotalCartCost: value["productTotalCartCost"]));
               });
 
-              OrderDetailsVariables.list = productList;
+              productList.sort((a,b)=>a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+              OrderDetailsVariables.orderedProductList = productList;
 
               return Details(
                   order: order, notifyOrderScreen: notifyOrderScreen);

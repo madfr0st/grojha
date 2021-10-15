@@ -164,7 +164,7 @@ class PlaceOrder {
         .reference()
         .child("orders/${this.order.orderId}/productList");
     for (int i = 0; i < order.productList.length; i++) {
-      databaseReference.push().set({
+      databaseReference.child(order.productList[i].productId).set({
         "productId": order.productList[i].productId,
         "productImage": order.productList[i].productImage,
         "productUnit": order.productList[i].productUnit,

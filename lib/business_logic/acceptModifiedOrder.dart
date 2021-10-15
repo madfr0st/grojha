@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/notifications.dart';
 import 'package:grojha/Objects/orders.dart';
+import 'package:grojha/Objects/product.dart';
 import 'package:grojha/business_logic/cancel_order.dart';
 
 import 'FCM.dart';
@@ -11,9 +12,51 @@ class AcceptedModifiedOrder {
 
   Order order;
   int removedCount = 0;
+  List<Product> orderedProductList;
+  Set<Product> modifiedProductSet;
+  Map<String, int> modifiedAddedProductCartCount;
 
-  AcceptedModifiedOrder({this.order}) {
+  List<Product> processedList = [];
+  int uniqueProducts = 0;
+  int totalCartCost = 0;
+
+  AcceptedModifiedOrder(
+      {this.order,
+      this.modifiedAddedProductCartCount,
+      this.modifiedProductSet,
+      this.orderedProductList}) {
     this.order.userId = uid;
+    try {
+      Iterator<Product> iterator = modifiedProductSet.iterator;
+      while (iterator.moveNext()) {
+        Product product = iterator.current;
+        if (modifiedAddedProductCartCount[
+                    order.orderId + " " + product.productId] !=
+                null &&
+            modifiedAddedProductCartCount[
+                    order.orderId + " " + product.productId] >
+                0) {
+          product.productCartCount = modifiedAddedProductCartCount[
+              order.orderId + " " + product.productId];
+          product.productTotalCartCost = modifiedAddedProductCartCount[
+                  order.orderId + " " + product.productId] *
+              product.productSellingPrice;
+          processedList.add(product);
+          totalCartCost += product.productTotalCartCost;
+        }
+      }
+      for (int i = 0; i < orderedProductList.length; i++) {
+        if (orderedProductList[i].productStatus) {
+          processedList.add(orderedProductList[i]);
+          totalCartCost += orderedProductList[i].productTotalCartCost;
+        }
+      }
+      order.grandTotal = totalCartCost + order.deliveryCharge;
+      order.uniqueItems = processedList.length;
+      print(processedList);
+    } catch (e) {
+      print(e);
+    }
   }
 
   void acceptModifiedOrder() {
@@ -133,43 +176,62 @@ class AcceptedModifiedOrder {
         .child(order.orderId)
         .child("productList");
 
-    databaseReference.once().then((snapShot) {
-      if (snapShot.value != null) {
-        Map<dynamic, dynamic> map = snapShot.value;
+    databaseReference.set({});
 
-        print(map);
+    for (int i = 0; i < processedList.length; i++) {
+      databaseReference.push().set({
+        "productId": processedList[i].productId,
+        "productImage": processedList[i].productImage,
+        "productUnit": processedList[i].productUnit,
+        "productQuantity": processedList[i].productQuantity,
+        "productName": processedList[i].productName,
+        "productTotalCartCost": processedList[i].productTotalCartCost,
+        "productCartCount": processedList[i].productCartCount,
+        "productMRP": processedList[i].productMRP,
+        "productSellingPrice": processedList[i].productSellingPrice,
+        "productStatus": true,
+      });
+    }
 
-        map.forEach((key, value) {
-          print(value);
-          print(value["productStatus"]);
-          if (value["productStatus"] != null && !value["productStatus"]) {
-            databaseReference.child(key.toString()).set({});
-            removedCount++;
-          }
-        });
-      }
-      if (order.uniqueItems>0) {
-        _removeOrderFromOrderDatabase();
-        _removeOrderFromShopDatabase();
-        _removeOrderFromUserDatabase();
-        _setOrderToUserDatabase();
-        _setOrderToShopDatabase();
-        _setOrderToOrderDatabase();
+    if (order.uniqueItems > 0) {
+      _removeOrderFromOrderDatabase();
+      _removeOrderFromShopDatabase();
+      _removeOrderFromUserDatabase();
+      _setOrderToUserDatabase();
+      _setOrderToShopDatabase();
+      _setOrderToOrderDatabase();
 
-        FCM().sendNotification(
-            notifications: new Notifications(
-              title: "New order",
-              body:
-              "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
-              senderId: order.userId,
-              receiverId: order.shopId,
-              receiverType: "shops",
-              senderType: "users",
-        ));
-      } else {
-        CancelOrder(order: order).cancelOrder();
-      }
-    });
+      FCM().sendNotification(
+          notifications: new Notifications(
+        title: "New order",
+        body:
+            "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
+        senderId: order.userId,
+        receiverId: order.shopId,
+        receiverType: "shops",
+        senderType: "users",
+      ));
+    } else {
+      CancelOrder(order: order).cancelOrder();
+    }
+
+    // databaseReference.once().then((snapShot) {
+    //   if (snapShot.value != null) {
+    //     Map<dynamic, dynamic> map = snapShot.value;
+    //
+    //     print(map);
+    //
+    //     map.forEach((key, value) {
+    //       print(value);
+    //       print(value["productStatus"]);
+    //       if (value["productStatus"] != null && !value["productStatus"]) {
+    //         databaseReference.child(key.toString()).set({});
+    //         removedCount++;
+    //       }
+    //     });
+    //   }
+    //
+    // });
   }
 
   String _sixDigitOrderNumber(String string) {

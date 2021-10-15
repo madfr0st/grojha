@@ -66,6 +66,7 @@ class _AllPlaceOrderCartProduct extends State<AllPlaceOrderCartProduct> {
                           productSellingPrice: value["productSellingPrice"],
                           productQuantity: value["productQuantity"],
                           productCartCount: value["productCartCount"],
+                          productMRP: value["productMRP"],
                           productTotalCartCost: value["productTotalCartCost"]));
                     });
                     PlaceOrderVariables.list = list;

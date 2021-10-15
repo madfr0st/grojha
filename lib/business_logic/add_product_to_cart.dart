@@ -27,6 +27,7 @@ class AddProductToCart {
         "productQuantity": product.productQuantity,
         "productSellingPrice": product.productSellingPrice,
         "productUnit": product.productUnit,
+        "productMRP":product.productMRP,
       });
     }
   }

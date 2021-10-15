@@ -41,9 +41,10 @@ class _DetailsState extends State<Details> {
                 Instructions.orderNumberBanner(widget.order.secondaryOrderId.toString()),
                 SizedBox(height: getProportionateScreenHeight(10),),
                 ...List.generate(
-                  OrderDetailsVariables.list.length,
+                  OrderDetailsVariables.orderedProductList.length,
                   (index) => SingleOrderDetailsProductcardWithoutSwitch(
-                    product: OrderDetailsVariables.list[index],
+                    productNumber: index+1,
+                    product: OrderDetailsVariables.orderedProductList[index],
                     order: widget.order,
                     notifyOrderScreen: _refresh,
                   ),

@@ -44,9 +44,9 @@ class _DetailsState extends State<Details> {
                   height: getProportionateScreenHeight(10),
                 ),
                 ...List.generate(
-                  OrderDetailsVariables.list.length,
+                  OrderDetailsVariables.orderedProductList.length,
                   (index) => SingleOrderDetailsProductCard(
-                    product: OrderDetailsVariables.list[index],
+                    product: OrderDetailsVariables.orderedProductList[index],
                     order: widget.order,
                     notifyOrderScreen: _refresh,
                     productNumber: index+1,

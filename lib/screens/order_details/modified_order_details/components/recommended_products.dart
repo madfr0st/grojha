@@ -78,6 +78,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                 productMRP: value["productMRP"],
                 productStatus: value["productStatus"],
                 productQuantity: value["productQuantity"],
+                productCartCount: value["productCartCount"],
                 productDiscountPercentage: calcPercentage(
                     value["productSellingPrice"], value["productMRP"])));
           });

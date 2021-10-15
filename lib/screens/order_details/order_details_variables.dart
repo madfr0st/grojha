@@ -8,7 +8,7 @@ class OrderDetailsVariables {
   static int grandTotal = 0;
   static int deliveryCharge = 0;
   static BuildContext buildContext;
-  static List<Product> list = [];
+  static List<Product> orderedProductList = [];
   static Shop shop;
   static String userName;
   static String userPhoneNumber;
