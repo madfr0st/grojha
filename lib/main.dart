@@ -257,7 +257,7 @@ class _MyAppState extends State<MyApp> {
     DatabaseReference databaseReference =
     FirebaseDatabase.instance.reference().child("grojhaAppVersion");
 
-    return databaseReference.once().then((value){
+    return await databaseReference.once().then((value){
       print(value.value);
       if(value.value<=SizeConfig.appVersion){
         return true;
