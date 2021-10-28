@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/components/cached_image.dart';
 
@@ -20,14 +21,16 @@ class SingleShopCard extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
       height: getProportionateScreenWidth(141),
       width: double.infinity,
-      decoration: BoxDecoration(boxShadow: [
+      decoration: BoxDecoration(
+          boxShadow: [
         BoxShadow(
           color: Colors.grey.withOpacity(.5),
           spreadRadius: 2,
           blurRadius: 5,
           offset: Offset(3, 3), // changes position of shadow
         ),
-      ], color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
+      ],
+          color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
       child: Container(
         height: getProportionateScreenWidth(141),
         width: double.infinity,
@@ -58,12 +61,12 @@ class SingleShopCard extends StatelessWidget {
                       height: getProportionateScreenWidth(100),
                       width: getProportionateScreenWidth(100),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(5),
                         color: Colors.white,
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(7),
-                        child: CachedImage(url:shop.shopImage),
+                        borderRadius: BorderRadius.circular(5),
+                        child: CachedImage(url: shop.shopImage),
                       ),
                     ),
                   ),
@@ -83,7 +86,7 @@ class SingleShopCard extends StatelessWidget {
                           height: getProportionateScreenWidth(40),
                           //color: Colors.green,
                           child: Text(
-                            shop.shopName,
+                            CamelCase.convert(shop.shopName),
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w800,
@@ -99,7 +102,7 @@ class SingleShopCard extends StatelessWidget {
                             child: Text(
                               shop.shopCategory,
                               style: TextStyle(
-                                  color: Colors.blueAccent,
+                                  color: kPrimaryColor,
                                   fontWeight: FontWeight.bold,
                                   height: 1,
                                   fontSize: getProportionateScreenWidth(15)),
@@ -110,7 +113,7 @@ class SingleShopCard extends StatelessWidget {
                             height: getProportionateScreenWidth(32),
                             //color: Colors.green,
                             child: Text(
-                              shop.shopAddress,
+                                CamelCase.convert(shop.shopAddress),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   height: 1,

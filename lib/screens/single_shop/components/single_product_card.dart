@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/constants.dart';
@@ -53,14 +54,14 @@ class _SingleProductCardState extends State<SingleProductCard> {
           .map[widget.shop.shopId + widget.product.productId];
     }
     return Container(
-      margin: EdgeInsets.all(getProportionateScreenWidth(10)),
+      margin: EdgeInsets.symmetric(horizontal:getProportionateScreenWidth(10),vertical: getProportionateScreenWidth(5)),
       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
       height: getProportionateScreenWidth(140),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(.5),
+            color: Colors.grey.withOpacity(.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: Offset(3, 3), // changes position of shadow
@@ -118,7 +119,7 @@ class _SingleProductCardState extends State<SingleProductCard> {
                       // color: Colors.white,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "${widget.product.productName}",
+                        CamelCase.convert(widget.product.productName),
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Colors.black,

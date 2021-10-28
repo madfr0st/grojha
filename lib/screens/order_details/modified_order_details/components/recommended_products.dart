@@ -5,13 +5,13 @@ import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/screens/order_details/modified_order_details/components/single_product_card_order_select.dart';
 
+import '../../../../size_config.dart';
+
 class RecommendedProducts extends StatefulWidget {
-  const RecommendedProducts(
-      {Key key, this.orderId, this.productId, this.notifyScreen})
-      : super(key: key);
+  const RecommendedProducts({Key key, this.orderId, this.notifyScreen, this.parentProduct}) : super(key: key);
 
   final String orderId;
-  final String productId;
+  final Product parentProduct;
   final Function notifyScreen;
 
   @override
@@ -20,6 +20,9 @@ class RecommendedProducts extends StatefulWidget {
 
 class _RecommendedProductsState extends State<RecommendedProducts> {
   List<Product> list = [];
+  Product aboveProduct;
+  bool priceChanged = false;
+  bool limitedStock = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +31,53 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data) {
+              for (int i = 0; i < list.length; i++) {
+                if (widget.parentProduct.productId == list[i].productId) {
+                  aboveProduct = list[i];
+                  list.removeAt(i);
+                  if (aboveProduct.productSellingPrice != widget.parentProduct.productSellingPrice) {
+                    priceChanged = true;
+                  }
+                  if (aboveProduct.productCartCount != null && aboveProduct.productCartCount != 0 && aboveProduct.productCartCount != 99999999) {
+                    limitedStock = true;
+                  }
+                }
+              }
+
               return Column(
                 children: [
-                  Container(
-                    child: Instructions.banner_2(
-                        "Recommended replacement that is in stock",
-                        kPrimaryColor,
-                        13,
-                        2),
-                  ),
-                  ...List.generate(
-                      list.length,
-                      (index) => SingleProductCardOrderSelect(
-                            product: list[index],
+                  if (aboveProduct != null)
+                    Container(
+                      child: Column(
+                        children: [
+                          SizedBox(height: getProportionateScreenWidth(10),),
+                          modifiedProductHeading(),
+                          SizedBox(height: getProportionateScreenWidth(10),),
+                          SingleProductCardOrderSelect(
+                            product: aboveProduct,
                             function: widget.notifyScreen,
                             orderId: widget.orderId,
-                          ))
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (list.length > 0)
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Instructions.banner_2("Recommenced replacement that is in stock.", Colors.black, getProportionateScreenWidth(12), 2),
+                          ),
+                          ...List.generate(
+                              list.length,
+                              (index) => SingleProductCardOrderSelect(
+                                    product: list[index],
+                                    function: widget.notifyScreen,
+                                    orderId: widget.orderId,
+                                  ))
+                        ],
+                      ),
+                    )
                 ],
               );
             } else {
@@ -59,9 +93,8 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
   }
 
   Future<bool> _logic() async {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("modifiedOrderDetails/${widget.orderId}/${widget.productId}");
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("modifiedOrderDetails/${widget.orderId}/${widget.parentProduct.productId}");
     return await databaseReference.once().then((snapshot) {
       if (snapshot.value != null) {
         try {
@@ -79,8 +112,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                 productStatus: value["productStatus"],
                 productQuantity: value["productQuantity"],
                 productCartCount: value["productCartCount"],
-                productDiscountPercentage: calcPercentage(
-                    value["productSellingPrice"], value["productMRP"])));
+                productDiscountPercentage: calcPercentage(value["productSellingPrice"], value["productMRP"])));
           });
           return true;
         } catch (e) {
@@ -112,5 +144,96 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
     } catch (e) {
       return 0;
     }
+  }
+
+  Container modifiedProductHeading() {
+    if (priceChanged && !limitedStock) {
+      return Container(
+        child: Text.rich(
+          TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: getProportionateScreenWidth(12),
+            ),
+            children: [
+              TextSpan(text: 'Sorry, selling price of above product changed from '),
+              TextSpan(
+                text: '₹ ${widget.parentProduct.productSellingPrice} ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: 'to ',
+              ),
+              TextSpan(
+                text: '₹ ${aboveProduct.productSellingPrice}.',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (!priceChanged && limitedStock) {
+      return Container(
+        child: Text.rich(
+          TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: getProportionateScreenWidth(12),
+            ),
+            children: [
+              TextSpan(text: 'Sorry, only '),
+              TextSpan(
+                text: '${aboveProduct.productCartCount} ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: 'quantity of '),
+              TextSpan(
+                text: '${aboveProduct.productName} ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: 'left.'),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      child: Text.rich(
+        TextSpan(
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: getProportionateScreenWidth(12),
+          ),
+          children: [
+            TextSpan(text: 'Sorry, selling price of above product changed from '),
+            TextSpan(
+              text: '₹ ${widget.parentProduct.productSellingPrice} ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: 'to ',
+            ),
+            TextSpan(
+              text: '₹ ${aboveProduct.productSellingPrice} ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: 'and only '),
+            TextSpan(
+              text: '${aboveProduct.productCartCount} ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: 'quantity of '),
+            TextSpan(
+              text: '${aboveProduct.productName} ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: 'left.'),
+          ],
+        ),
+      ),
+    );
   }
 }

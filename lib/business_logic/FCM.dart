@@ -16,7 +16,7 @@ class FCM {
       "AAAAgwfPT8E:APA91bG9lIaiQu0VJhB-80BNtCc4-Ycf2koLunnCP2qzfHB4NXNslPgE6lZrVTKUtRgJhRoiShJtuW9Sj5sVde7p39pSrHEkHLyknAsWxJKLBAnsAT2_8s5kFZxFG2FT1-n1a2WarVnd";
 
 
-  void sendNotification({Notifications notifications}) {
+  Future<void> sendNotification({Notifications notifications}) async {
     if (notifications.receiverToken == null) {
       DatabaseReference databaseReference = FirebaseDatabase.instance
           .reference()
@@ -24,15 +24,15 @@ class FCM {
           .child(notifications.receiverId)
           .child("deviceToken");
 
-      databaseReference.once().then((value) {
+      await databaseReference.once().then((value) async {
         if (value.value != null) {
           notifications.receiverToken = value.value;
-          _sendPushMessage(notifications: notifications);
+          await _sendPushMessage(notifications: notifications);
         }
       });
     }
     else{
-      _sendPushMessage(notifications: notifications);
+      await _sendPushMessage(notifications: notifications);
     }
   }
 

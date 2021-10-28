@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
@@ -45,7 +46,8 @@ class _ProductsListState extends State<ProductsList> {
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
         _loadMore();
       }
     });
@@ -76,9 +78,12 @@ class _ProductsListState extends State<ProductsList> {
       Colors.green.shade700,
       Colors.red.shade700,
       Colors.blue,
+      Colors.lightGreen,
+      Colors.deepOrange,
+      Colors.amber,
+      Colors.amberAccent
     ];
     final _random = new Random();
-
 
     return FutureBuilder(
         future: databaseReference.once(),
@@ -110,35 +115,53 @@ class _ProductsListState extends State<ProductsList> {
                               itemCount: _currentViewItem,
                               itemBuilder: (context, i) {
                                 Color color = color_list[
-                                _random.nextInt(color_list.length)];
+                                    _random.nextInt(color_list.length)];
                                 return new ExpansionTile(
-                                    title: MenuTitle(
-                                      title: categoryList[i],
-                                      color: color,
+                                    title: Text(
+                                        CamelCase.convert(categoryList[i]),
+                                      style: TextStyle(
+                                        color: color,
+                                        fontSize:
+                                            getProportionateScreenWidth(15),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    //backgroundColor: Colors.grey.shade200,
+                                    childrenPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                     initiallyExpanded: true,
                                     iconColor: color.withOpacity(.7),
                                     collapsedIconColor: color,
                                     collapsedBackgroundColor:
-                                    color.withOpacity(0.05),
+                                        color.withOpacity(0.1),
                                     children: [
                                       ListView.builder(
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                       // controller: scrollController,
-                                        itemCount:map[categoryList[i]].length,
+                                        // controller: scrollController,
+                                        itemCount: map[categoryList[i]].length,
                                         itemBuilder: (context, j) {
                                           return SingleProductCard(
                                             product: map[categoryList[i]][j],
                                             shop: widget.shop,
                                             notifyHomeScreen: _refresh,
                                           );
-                                        },)
+                                        },
+                                      )
                                     ]);
                               }),
-                          SizedBox(height: getProportionateScreenWidth(60),),
-                          (_currentViewItem!=count)?CircularProgressIndicator(color: kPrimaryColor,): Instructions.banner_1("That's all", kPrimaryColor),
-                          SizedBox(height: getProportionateScreenWidth(60),),
+                          SizedBox(
+                            height: getProportionateScreenWidth(60),
+                          ),
+                          (_currentViewItem != count)
+                              ? CircularProgressIndicator(
+                                  color: kPrimaryColor,
+                                )
+                              : Instructions.banner_1(
+                                  "That's all", kPrimaryColor),
+                          SizedBox(
+                            height: getProportionateScreenWidth(60),
+                          ),
                         ],
                       ),
                     ),
@@ -154,21 +177,19 @@ class _ProductsListState extends State<ProductsList> {
           }
           return Center(
               child: CircularProgressIndicator(
-                color: kPrimaryColor,
-              ));
+            color: kPrimaryColor,
+          ));
         });
   }
 
-  void _loadMore(){
-    if(_currentViewItem<count){
-      _currentViewItem+=5;
+  void _loadMore() {
+    if (_currentViewItem < count) {
+      _currentViewItem += 5;
     }
-    if(_currentViewItem>count){
+    if (_currentViewItem > count) {
       _currentViewItem = count;
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   void _logic(AsyncSnapshot snapshot) {
@@ -179,6 +200,8 @@ class _ProductsListState extends State<ProductsList> {
       map.clear();
       count = 0;
       categoryList.clear();
+
+      AllProductData.categoryImageMap.clear();
 
       values.forEach((key, value) {
         try {
@@ -201,6 +224,7 @@ class _ProductsListState extends State<ProductsList> {
               map[value["productCategory"]] = [];
               map[value["productCategory"]].add(product);
               categoryList.add(value["productCategory"]);
+              AllProductData.categoryImageMap[value["productCategory"]] = value["productImage"];
             }
 
             products.add(product);
@@ -217,7 +241,7 @@ class _ProductsListState extends State<ProductsList> {
       AllProductData.productList.sort((a, b) =>
           a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
 
-      if(_currentViewItem>count){
+      if (_currentViewItem > count) {
         _currentViewItem = count;
       }
     }

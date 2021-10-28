@@ -279,8 +279,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-              height: getProportionateScreenWidth(400),
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+              height: SizeConfig.screenHeight*.7,
               width: double.infinity,
               child: FutureBuilder(
                   future: databaseReference.once(),
@@ -297,115 +296,145 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                         // print(userPhoneNumber);
 
                       }
-                      return Container(
-                        alignment: Alignment.center,
-                        // color: Colors.lightGreenAccent,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.all(getProportionateScreenWidth(2)),
-                                padding: EdgeInsets.symmetric(
-                                    vertical: getProportionateScreenWidth(5),
-                                    horizontal: getProportionateScreenWidth(15)),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.grey.shade100,
-                                ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: getProportionateScreenWidth(3),),
-                                    Text("Contact Details", style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: getProportionateScreenWidth(18),
-                                        color: Colors.black,
-                                        height: 1
-                                    ),),
-                                    SizedBox(height: getProportionateScreenWidth(10),),
-                                    singleInfoRow(title: "Name",text: userName),
-                                    SizedBox(height: getProportionateScreenWidth(3),),
-                                    singleInfoRow(title: "Contact Number",text: userPhoneNumber),
-                                    SizedBox(height: getProportionateScreenWidth(3),),
-                                    singleInfoRow(title: "Address",text: userAddress),
+                      return SingleChildScrollView(
+                          child:Container(
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                            alignment: Alignment.center,
+                            // color: Colors.lightGreenAccent,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                    width: double.infinity,
+                                    margin: EdgeInsets.all(getProportionateScreenWidth(2)),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: getProportionateScreenWidth(5),
+                                        horizontal: getProportionateScreenWidth(15)),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.grey.shade100,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: getProportionateScreenWidth(3),),
+                                        Text("Contact Details", style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: getProportionateScreenWidth(18),
+                                            color: Colors.black,
+                                            height: 1
+                                        ),),
+                                        SizedBox(height: getProportionateScreenWidth(10),),
+                                        singleInfoRow(title: "Name",text: userName),
+                                        SizedBox(height: getProportionateScreenWidth(3),),
+                                        singleInfoRow(title: "Contact Number",text: userPhoneNumber),
+                                        SizedBox(height: getProportionateScreenWidth(3),),
+                                        singleInfoRow(title: "Address",text: userAddress),
 
-                                  ],
-                                )),
-                            Container(
-                              padding: EdgeInsets.all(
-                                  getProportionateScreenWidth(2)),
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(
-                                      getProportionateScreenWidth(15))),
-                              //      color: Colors.grey,
-                              child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: getProportionateScreenWidth(7),
-                                      horizontal:getProportionateScreenWidth(7)),
-
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(
-                                          getProportionateScreenWidth(13))),
+                                      ],
+                                    )),
+                                SizedBox(height: getProportionateScreenWidth(10),),
+                                Container(
                                   child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        "Grand Total ",
+                                        "Payment Mode : ",
                                         style: TextStyle(
                                             height: 1,
                                             color: Colors.black,
                                             fontSize:
-                                            getProportionateScreenWidth(20),
+                                            getProportionateScreenWidth(16),
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "₹ ${PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery}",
+                                        "Cash On Delivery",
                                         style: TextStyle(
-                                            height: 1,
-                                            color: Colors.black,
-                                            fontSize:
-                                            getProportionateScreenWidth(20),
-                                            fontWeight: FontWeight.bold),
-                                      )
+                                          height: 1,
+                                          color: Colors.black,
+                                          fontSize:
+                                          getProportionateScreenWidth(16),),
+                                      ),
                                     ],
-                                  )),
-                            ),
-                            CheckboxListTile(
-                              activeColor: kPrimaryColor,
-                              title: Text(
-                                "Confirm Details ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: getProportionateScreenWidth(15),
-                                  color: kPrimaryColor,
+                                  ),
                                 ),
-                              ),
-                              value: correctInfo,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  correctInfo = newValue;
-                                  print(correctInfo);
-                                });
-                              },
+                                SizedBox(height: getProportionateScreenWidth(10),),
+                                Container(
+                                  padding: EdgeInsets.all(
+                                      getProportionateScreenWidth(2)),
+                                  alignment: Alignment.centerLeft,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          getProportionateScreenWidth(12))),
+                                  //      color: Colors.grey,
+                                  child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: getProportionateScreenWidth(7),
+                                          horizontal:getProportionateScreenWidth(20)),
+
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(
+                                              getProportionateScreenWidth(10))),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Grand Total ",
+                                            style: TextStyle(
+                                                height: 1.1,
+                                                color: Colors.black,
+                                                fontSize:
+                                                getProportionateScreenWidth(20),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "₹ ${PlaceOrderVariables.itemTotal + PlaceOrderVariables.delivery}",
+                                            style: TextStyle(
+                                                height: 1.1,
+                                                color: Colors.black,
+                                                fontSize:
+                                                getProportionateScreenWidth(20),
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      )),
+                                ),
+                                SizedBox(height: getProportionateScreenWidth(10),),
+                                CheckboxListTile(
+                                  activeColor: kPrimaryColor,
+                                  title: Text(
+                                    "Confirm Details :",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: getProportionateScreenWidth(16),
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
+                                  value: correctInfo,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      correctInfo = newValue;
+                                    });
+                                  },
+                                ),
+                                Container(
+                                  height: getProportionateScreenHeight(56),
+                                  width: double.infinity,
+                                  child: DefaultButton(
+                                    text: "Place Order",
+                                    press: () {
+                                      if (correctInfo) {
+                                        _pushOrder();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: getProportionateScreenWidth(20),),
+                              ],
                             ),
-                            Container(
-                              height: getProportionateScreenHeight(56),
-                              width: double.infinity,
-                              child: DefaultButton(
-                                text: "Place Order",
-                                press: () {
-                                  if (correctInfo) {
-                                    _pushOrder();
-                                  }
-                                },
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
                       );
                     } catch (e) {
                       print(e);
@@ -589,14 +618,14 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         //color: Colors.grey.shade200,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(.2),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(3, 3), // changes position of shadow
-            ),
-          ],
+        //   boxShadow: [
+        //     BoxShadow(
+        //       color: Colors.grey.withOpacity(.2),
+        //       spreadRadius: 2,
+        //       blurRadius: 5,
+        //       offset: Offset(3, 3), // changes position of shadow
+        //     ),
+        //   ],
           borderRadius: BorderRadius.circular(getProportionateScreenWidth(15))),
       //      color: Colors.grey,
       child: Container(

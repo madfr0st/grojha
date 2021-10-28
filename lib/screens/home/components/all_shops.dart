@@ -8,6 +8,7 @@ import 'package:grojha/constants.dart';
 import 'package:grojha/global_variables/all_shop_data.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
+import 'package:new_version/new_version.dart';
 
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -16,7 +17,7 @@ import 'section_title.dart';
 
 class AllShops extends StatefulWidget {
   const AllShops({Key key}) : super(key: key);
-
+  static bool showUpdate = true;
   @override
   _AllShopsState createState() => _AllShopsState();
 }
@@ -49,6 +50,14 @@ class _AllShopsState extends State<AllShops> {
       setState(() {});
     }
 
+    if(AllShops.showUpdate) {
+      NewVersion(
+        context: context,
+        androidId: 'com.grojha.grojha',
+      ).showAlertIfNecessary();
+      AllShops.showUpdate = false;
+    }
+
     return FutureBuilder(
         future: databaseReference.once(),
         builder: (context, snapshot) {
@@ -77,6 +86,7 @@ class _AllShopsState extends State<AllShops> {
                                   press: () {},
                                 ),
                               ),
+                              SizedBox(height: getProportionateScreenWidth(10)),
                               ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,

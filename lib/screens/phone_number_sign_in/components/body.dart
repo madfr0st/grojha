@@ -91,6 +91,7 @@ class _Body extends State<Body> {
         }
         return null;
       },
+      maxLength: 10,
       decoration: InputDecoration(
         labelText: "Phone Number",
         //hintText: "Enter your phone number",

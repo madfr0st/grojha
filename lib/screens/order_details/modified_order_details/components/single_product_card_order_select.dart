@@ -1,14 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_switch/flutter_switch.dart';
-import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/components/cached_image.dart';
-import 'package:grojha/components/custom_button.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -121,7 +117,7 @@ class _SingleProductCardOrderSelectState
                             // color: Colors.white,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              widget.product.productName,
+                              CamelCase.convert(widget.product.productName),
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Colors.black,

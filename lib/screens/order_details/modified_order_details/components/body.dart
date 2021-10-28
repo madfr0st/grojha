@@ -47,6 +47,7 @@ class Body extends StatelessWidget {
                     productSellingPrice: value["productSellingPrice"],
                     productQuantity: value["productQuantity"],
                     productCartCount: value["productCartCount"],
+                    productMRP: value["productMRP"],
                     productStatus: value["productStatus"],
                     productTotalCartCost: value["productTotalCartCost"]));
               });

@@ -8,6 +8,7 @@ import 'package:grojha/screens/home/home_screen.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import '../../../theme.dart';
 
 class Body extends StatefulWidget {
   final String phone = SizeConfig.phoneNumber;
@@ -77,7 +78,16 @@ class _BodyState extends State<Body> {
               SizedBox(height: getProportionateScreenWidth(20),),
               Padding(
                 padding: EdgeInsets.all(getProportionateScreenWidth(30)),
-                child: PinPut(
+                child: new Theme(
+                  data: ThemeData(
+                    scaffoldBackgroundColor: Colors.white,
+                    fontFamily: "Muli",
+                    appBarTheme: appBarTheme(),
+                    textTheme: textTheme(),
+                    //inputDecorationTheme: inputDecorationTheme(),
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
+                  ),
+                  child: PinPut(
                   fieldsCount: 6,
                   //disabledDecoration: ,
                   textStyle: const TextStyle(
@@ -112,6 +122,7 @@ class _BodyState extends State<Body> {
                           .showSnackBar(SnackBar(content: Text('invalid OTP')));
                     }
                   },
+                ),
                 ),
               )
             ],

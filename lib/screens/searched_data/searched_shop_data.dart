@@ -61,7 +61,7 @@ class SearchedShopData extends SearchDelegate<String> {
 
     return SingleChildScrollView(
       child: Column(children: [
-        ...List.generate(suggestionList.length, (index) {
+        ...List.generate((suggestionList.length>100)?100:suggestionList.length, (index) {
           return SingleShopCard(
             notifyHomeScreen: notifyHomeScreen,
             shop: suggestionList[index],
@@ -106,7 +106,7 @@ class SearchedShopData extends SearchDelegate<String> {
 
     return SingleChildScrollView(
       child: Column(children: [
-        ...List.generate(suggestionList.length, (index) {
+        ...List.generate((suggestionList.length>100)?100:suggestionList.length, (index) {
           return SingleShopCard(
             notifyHomeScreen: notifyHomeScreen,
             shop: suggestionList[index],

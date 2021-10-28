@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/components/cached_image.dart';
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -114,7 +115,7 @@ class _SingleOrderDetailsProductcardWithoutSwitchState
                         //   color: Colors.white,
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${widget.product.productName}",
+                          CamelCase.convert(widget.product.productName),
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               color: Colors.black,

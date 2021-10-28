@@ -69,4 +69,104 @@ class CustomButton {
       ),
     );
   }
+
+  Container button_2() {
+    return Container(
+      height: height,
+      width: width,
+      child: Container(
+        padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(.2),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(3, 3), // changes position of shadow
+              ),
+            ],
+            // gradient: LinearGradient(
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            //   colors: [
+            //     color1.withOpacity(1),
+            //     color2.withOpacity(0.5),
+            //   ],
+            // ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20)),
+        child: Material(
+            color: color1,
+            borderRadius: BorderRadius.circular(20),
+            child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: press,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  //height: getProportionateScreenWidth(50),
+                  decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: color2),
+                  ),
+                ))),
+      ),
+    );
+  }
+
+  Container button_3() {
+    return Container(
+      height: height,
+      width: width,
+      child: Container(
+        padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(.2),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(3, 3), // changes position of shadow
+              ),
+            ],
+            // gradient: LinearGradient(
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            //   colors: [
+            //     color1.withOpacity(1),
+            //     color2.withOpacity(0.5),
+            //   ],
+            // ),
+            color: kPrimaryColor,
+            borderRadius: BorderRadius.circular(20)),
+        child: Material(
+            color: color1,
+            borderRadius: BorderRadius.circular(20),
+            child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: press,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  //height: getProportionateScreenWidth(50),
+                  decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: color2),
+                  ),
+                ))),
+      ),
+    );
+  }
 }

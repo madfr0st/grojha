@@ -34,3 +34,35 @@ class CachedImage extends StatelessWidget {
     );
   }
 }
+
+
+class CachedImage_1 extends StatelessWidget {
+  final String url;
+
+  const CachedImage_1({
+    Key key, this.url,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: CachedNetworkImage(
+        imageUrl: url,
+        progressIndicatorBuilder:
+            (context, url, downloadProgress) =>
+            Container(
+              height: getProportionateScreenWidth(20),
+              width: getProportionateScreenWidth(20),
+              child: Center(child: CircularProgressIndicator(
+                  color: kPrimaryColor,
+                  value: downloadProgress.progress),
+              ),),
+        errorWidget: (context, url, error) => Icon(
+          Icons.error,
+          color: kPrimaryColor,
+        ),
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+}

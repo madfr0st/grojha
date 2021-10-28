@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/screens/order_details/modified_order_details/components/recommended_products.dart';
@@ -12,9 +13,7 @@ import '../../../../size_config.dart';
 import '../../order_details_variables.dart';
 
 class SingleOrderDetailsProductCard extends StatefulWidget {
-  const SingleOrderDetailsProductCard(
-      {Key key, this.shop, this.product, this.notifyOrderScreen, this.order, this.productNumber})
-      : super(key: key);
+  const SingleOrderDetailsProductCard({Key key, this.shop, this.product, this.notifyOrderScreen, this.order, this.productNumber}) : super(key: key);
 
   final Shop shop;
   final Product product;
@@ -23,12 +22,10 @@ class SingleOrderDetailsProductCard extends StatefulWidget {
   final int productNumber;
 
   @override
-  _SingleOrderDetailsProductCardState createState() =>
-      _SingleOrderDetailsProductCardState();
+  _SingleOrderDetailsProductCardState createState() => _SingleOrderDetailsProductCardState();
 }
 
-class _SingleOrderDetailsProductCardState
-    extends State<SingleOrderDetailsProductCard> {
+class _SingleOrderDetailsProductCardState extends State<SingleOrderDetailsProductCard> {
   int productCartCount;
 
   int productTotalCartCost;
@@ -98,17 +95,12 @@ class _SingleOrderDetailsProductCardState
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.grey.shade300),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.grey.shade300),
                         child: Container(
                             margin: EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: Colors.white),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.white),
                             child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(6)),
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
                               child: CachedImage(
                                 url: widget.product.productImage,
                               ),
@@ -132,13 +124,9 @@ class _SingleOrderDetailsProductCardState
                             //   color: Colors.white,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "${widget.product.productName}",
+                              CamelCase.convert(widget.product.productName),
                               textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getProportionateScreenWidth(13),
-                                  height: 1.1,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.black, fontSize: getProportionateScreenWidth(13), height: 1.1, fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
@@ -148,10 +136,7 @@ class _SingleOrderDetailsProductCardState
                               child: Text(
                                 "per ${widget.product.productQuantity} ${widget.product.productUnit}",
                                 textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: getProportionateScreenWidth(12),
-                                    height: 1),
+                                style: TextStyle(color: Colors.black54, fontSize: getProportionateScreenWidth(12), height: 1),
                               )),
                           Container(
                             height: getProportionateScreenWidth(20),
@@ -163,10 +148,12 @@ class _SingleOrderDetailsProductCardState
                                 Text(
                                   "₹ ${widget.product.productSellingPrice}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: (!productStatus) ? Colors.black54 : Colors.black,
                                     fontWeight: FontWeight.w800,
                                     fontSize: getProportionateScreenWidth(16),
                                     height: 1,
+                                    decoration: (!productStatus) ? TextDecoration.lineThrough : null,
+                                    decorationThickness: getProportionateScreenWidth(2),
                                   ),
                                 ),
                                 SizedBox(
@@ -175,10 +162,12 @@ class _SingleOrderDetailsProductCardState
                                 Text(
                                   "x $productCartCount = ₹ ${productCartCount * widget.product.productSellingPrice}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: (!productStatus) ? Colors.black54 : Colors.black,
                                     fontWeight: FontWeight.w800,
                                     fontSize: getProportionateScreenWidth(16),
                                     height: 1,
+                                    decoration: (!productStatus) ? TextDecoration.lineThrough : null,
+                                    decorationThickness: getProportionateScreenWidth(2),
                                   ),
                                 )
                               ],
@@ -194,10 +183,7 @@ class _SingleOrderDetailsProductCardState
                     top: getProportionateScreenWidth(-3),
                     child: Text(
                       "${widget.productNumber}",
-                      style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: getProportionateScreenWidth(12),
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(color: kPrimaryColor, fontSize: getProportionateScreenWidth(12), fontWeight: FontWeight.bold),
                     )),
                 Positioned(
                   bottom: getProportionateScreenWidth(25),
@@ -208,10 +194,7 @@ class _SingleOrderDetailsProductCardState
                       Container(
                         child: Text(
                           stock,
-                          style: TextStyle(
-                              color: stockColor,
-                              fontSize: getProportionateScreenWidth(12),
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: stockColor, fontSize: getProportionateScreenWidth(12), fontWeight: FontWeight.bold),
                         ),
                       )
                     ],
@@ -223,7 +206,7 @@ class _SingleOrderDetailsProductCardState
               Container(
                 child: RecommendedProducts(
                   notifyScreen: widget.notifyOrderScreen,
-                  productId: widget.product.productId,
+                  parentProduct: widget.product,
                   orderId: widget.order.orderId,
                 ),
               )

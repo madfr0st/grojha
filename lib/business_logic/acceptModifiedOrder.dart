@@ -20,27 +20,16 @@ class AcceptedModifiedOrder {
   int uniqueProducts = 0;
   int totalCartCost = 0;
 
-  AcceptedModifiedOrder(
-      {this.order,
-      this.modifiedAddedProductCartCount,
-      this.modifiedProductSet,
-      this.orderedProductList}) {
+  AcceptedModifiedOrder({this.order, this.modifiedAddedProductCartCount, this.modifiedProductSet, this.orderedProductList}) {
     this.order.userId = uid;
     try {
       Iterator<Product> iterator = modifiedProductSet.iterator;
       while (iterator.moveNext()) {
         Product product = iterator.current;
-        if (modifiedAddedProductCartCount[
-                    order.orderId + " " + product.productId] !=
-                null &&
-            modifiedAddedProductCartCount[
-                    order.orderId + " " + product.productId] >
-                0) {
-          product.productCartCount = modifiedAddedProductCartCount[
-              order.orderId + " " + product.productId];
-          product.productTotalCartCost = modifiedAddedProductCartCount[
-                  order.orderId + " " + product.productId] *
-              product.productSellingPrice;
+        if (modifiedAddedProductCartCount[order.orderId + " " + product.productId] != null &&
+            modifiedAddedProductCartCount[order.orderId + " " + product.productId] > 0) {
+          product.productCartCount = modifiedAddedProductCartCount[order.orderId + " " + product.productId];
+          product.productTotalCartCost = modifiedAddedProductCartCount[order.orderId + " " + product.productId] * product.productSellingPrice;
           processedList.add(product);
           totalCartCost += product.productTotalCartCost;
         }
@@ -61,25 +50,18 @@ class AcceptedModifiedOrder {
 
   void acceptModifiedOrder() {
     _removeOutOfStockProducts();
+    _clearModifiedData();
   }
 
   void _removeOrderFromUserDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(order.userId)
-        .child("orders/${order.orderState}")
-        .child(order.orderId);
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("users").child(order.userId).child("orders/${order.orderState}").child(order.orderId);
     databaseReference.set({});
   }
 
   void _setOrderToUserDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("users")
-        .child(order.userId)
-        .child("orders/pending")
-        .child(order.orderId);
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("users").child(order.userId).child("orders/pending").child(order.orderId);
     databaseReference.set({
       "orderId": order.orderId,
       "orderState": "pending",
@@ -100,22 +82,14 @@ class AcceptedModifiedOrder {
   }
 
   void _removeOrderFromShopDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("shops")
-        .child(order.shopId)
-        .child("orders/${order.orderState}")
-        .child(order.orderId);
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("shops").child(order.shopId).child("orders/${order.orderState}").child(order.orderId);
     databaseReference.set({});
   }
 
   void _setOrderToShopDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("shops")
-        .child(order.shopId)
-        .child("orders/pending")
-        .child(order.orderId);
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("shops").child(order.shopId).child("orders/pending").child(order.orderId);
     databaseReference.set({
       "orderId": order.orderId,
       "orderState": "pending",
@@ -136,20 +110,13 @@ class AcceptedModifiedOrder {
   }
 
   void _removeOrderFromOrderDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("pincode/700001")
-        .child("orders/${order.orderState}")
-        .child(order.orderId);
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("pincode/700001").child("orders/${order.orderState}").child(order.orderId);
     databaseReference.set({});
   }
 
   void _setOrderToOrderDatabase() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("pincode/700001")
-        .child("orders/pending")
-        .child(order.orderId);
+    DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("pincode/700001").child("orders/pending").child(order.orderId);
     databaseReference.set({
       "orderId": order.orderId,
       "orderState": "pending",
@@ -170,16 +137,12 @@ class AcceptedModifiedOrder {
   }
 
   void _removeOutOfStockProducts() {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("orders")
-        .child(order.orderId)
-        .child("productList");
+    DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("orders").child(order.orderId).child("productList");
 
     databaseReference.set({});
 
     for (int i = 0; i < processedList.length; i++) {
-      databaseReference.push().set({
+      databaseReference.child(processedList[i].productId).set({
         "productId": processedList[i].productId,
         "productImage": processedList[i].productImage,
         "productUnit": processedList[i].productUnit,
@@ -204,8 +167,7 @@ class AcceptedModifiedOrder {
       FCM().sendNotification(
           notifications: new Notifications(
         title: "New order",
-        body:
-            "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
+        body: "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
         senderId: order.userId,
         receiverId: order.shopId,
         receiverType: "shops",
@@ -240,5 +202,10 @@ class AcceptedModifiedOrder {
       string = "0" + string;
     }
     return string;
+  }
+
+  void _clearModifiedData() {
+    DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("modifiedOrderDetails/${order.orderId}");
+    databaseReference.set({});
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/add_product_to_cart.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/screens/place_order/components/place_order_variables.dart';
@@ -12,21 +13,17 @@ import 'package:grojha/screens/place_order/components/place_order_variables.dart
 import '../../../size_config.dart';
 
 class SinglePlaceOrderProductCard extends StatefulWidget {
-  const SinglePlaceOrderProductCard(
-      {Key key, this.shop, this.product, this.notifyHomeScreen})
-      : super(key: key);
+  const SinglePlaceOrderProductCard({Key key, this.shop, this.product, this.notifyHomeScreen}) : super(key: key);
 
   final Shop shop;
   final Product product;
   final Function notifyHomeScreen;
 
   @override
-  _SinglePlaceOrderProductCardState createState() =>
-      _SinglePlaceOrderProductCardState();
+  _SinglePlaceOrderProductCardState createState() => _SinglePlaceOrderProductCardState();
 }
 
-class _SinglePlaceOrderProductCardState
-    extends State<SinglePlaceOrderProductCard> {
+class _SinglePlaceOrderProductCardState extends State<SinglePlaceOrderProductCard> {
   int productCartCount;
   int productTotalCartCost;
 
@@ -37,10 +34,8 @@ class _SinglePlaceOrderProductCardState
 
   @override
   Widget build(BuildContext context) {
-    productCartCount = CartItemCount
-        .map[widget.shop.shopId + widget.product.productId];
-    productTotalCartCost =
-        productCartCount * widget.product.productSellingPrice;
+    productCartCount = CartItemCount.map[widget.shop.shopId + widget.product.productId];
+    productTotalCartCost = productCartCount * widget.product.productSellingPrice;
     return Container(
       margin: EdgeInsets.fromLTRB(10, 3, 10, 3),
       height: getProportionateScreenWidth(96),
@@ -81,17 +76,13 @@ class _SinglePlaceOrderProductCardState
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Colors.grey.shade300),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.grey.shade300),
                     child: Container(
                         margin: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.white),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: Colors.white),
                         child: ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(6)),
-                          child: CachedImage(url:widget.product.productImage),
+                          child: CachedImage(url: widget.product.productImage),
                         )),
                   ),
                 ),
@@ -112,13 +103,9 @@ class _SinglePlaceOrderProductCardState
                         //   color: Colors.white,
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "${widget.product.productName}",
+                          CamelCase.convert(widget.product.productName),
                           textAlign: TextAlign.left,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(13),
-                              height: 1.1,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black, fontSize: getProportionateScreenWidth(13), height: 1.1, fontWeight: FontWeight.bold),
                         ),
                       ),
                       Container(
@@ -128,10 +115,7 @@ class _SinglePlaceOrderProductCardState
                           child: Text(
                             "per ${widget.product.productQuantity} ${widget.product.productUnit}",
                             textAlign: TextAlign.left,
-                            style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: getProportionateScreenWidth(12),
-                                height: 1),
+                            style: TextStyle(color: Colors.black45, fontSize: getProportionateScreenWidth(12), height: 1),
                           )),
                       Container(
                         height: getProportionateScreenWidth(20),
@@ -193,16 +177,9 @@ class _SinglePlaceOrderProductCardState
                               HapticFeedback.lightImpact();
                               productCartCount--;
                               setState(() {
-                                PlaceOrderVariables.itemTotal -=
-                                    widget.product.productSellingPrice;
-                                CartItemCount.map[
-                                        widget.shop.shopId +
-                                            widget.product.productId] =
-                                    productCartCount;
-                                AddProductToCart.addProductToCart(
-                                    productCartCount: productCartCount,
-                                    shop: widget.shop,
-                                    product: widget.product);
+                                PlaceOrderVariables.itemTotal -= widget.product.productSellingPrice;
+                                CartItemCount.map[widget.shop.shopId + widget.product.productId] = productCartCount;
+                                AddProductToCart.addProductToCart(productCartCount: productCartCount, shop: widget.shop, product: widget.product);
                                 if (productCartCount == 0) {
                                   CartItemCount.decreaseItemCount(itemCount: 1);
                                   CartItemCount.cartItemCount--;
@@ -233,10 +210,7 @@ class _SinglePlaceOrderProductCardState
                         ),
                         child: Text(
                           "$productCartCount",
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12),
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800),
+                          style: TextStyle(fontSize: getProportionateScreenWidth(12), color: Colors.black, fontWeight: FontWeight.w800),
                         ),
                       ),
                       Material(
@@ -248,15 +222,9 @@ class _SinglePlaceOrderProductCardState
                             productCartCount++;
                             HapticFeedback.lightImpact();
                             setState(() {
-                              PlaceOrderVariables.itemTotal +=
-                                  widget.product.productSellingPrice;
-                              CartItemCount.map[widget
-                                      .shop.shopId +
-                                  widget.product.productId] = productCartCount;
-                              AddProductToCart.addProductToCart(
-                                  productCartCount: productCartCount,
-                                  shop: widget.shop,
-                                  product: widget.product);
+                              PlaceOrderVariables.itemTotal += widget.product.productSellingPrice;
+                              CartItemCount.map[widget.shop.shopId + widget.product.productId] = productCartCount;
+                              AddProductToCart.addProductToCart(productCartCount: productCartCount, shop: widget.shop, product: widget.product);
                               if (productCartCount == 0) {
                                 CartItemCount.increaseItemCount(itemCount: 1);
                                 CartItemCount.cartItemCount++;

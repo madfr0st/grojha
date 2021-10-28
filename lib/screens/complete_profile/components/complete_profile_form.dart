@@ -101,6 +101,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         }
         return null;
       },
+      maxLength: 1000,
       decoration: InputDecoration(
         labelText: "Address",
         hintText: "Enter your address.",
@@ -131,6 +132,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         }
         return null;
       },
+      maxLength: 100,
       decoration: InputDecoration(
           labelText: "Name",
           hintText: "Enter your full name",
@@ -168,6 +170,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         }
         return null;
       },
+      maxLength: 10,
       decoration: InputDecoration(
           labelText: "Contact Number",
           hintText: "Enter contact number",

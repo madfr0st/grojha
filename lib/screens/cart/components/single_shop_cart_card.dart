@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/components/cached_image.dart';
 import 'package:grojha/screens/place_order/place_order_screen.dart';
 
 import '../../../size_config.dart';
 
 class SingleShopCartCard extends StatelessWidget {
-  const SingleShopCartCard(
-      {Key key,
-      this.cartTotalCost,
-      this.index,
-      this.cartUniqueProducts,
-      this.shop,
-      this.notifyHomeScreen})
-      : super(key: key);
+  const SingleShopCartCard({Key key, this.cartTotalCost, this.index, this.cartUniqueProducts, this.shop, this.notifyHomeScreen}) : super(key: key);
 
   final Shop shop;
   final int cartUniqueProducts;
@@ -60,9 +54,7 @@ class SingleShopCartCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(
-            vertical: getProportionateScreenWidth(5),
-            horizontal: getProportionateScreenWidth(10)),
+        margin: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(5), horizontal: getProportionateScreenWidth(10)),
         height: getProportionateScreenWidth(135),
         width: double.infinity,
         //color: Colors.redAccent,
@@ -78,9 +70,7 @@ class SingleShopCartCard extends StatelessWidget {
           height: getProportionateScreenWidth(141),
           width: double.infinity,
           margin: EdgeInsets.all(getProportionateScreenWidth(2)),
-          padding: EdgeInsets.symmetric(
-              vertical: getProportionateScreenWidth(5),
-              horizontal: getProportionateScreenWidth(15)),
+          padding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(5), horizontal: getProportionateScreenWidth(15)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Colors.white,
@@ -95,7 +85,7 @@ class SingleShopCartCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${shop.shopName}",
+                      CamelCase.convert(shop.shopName),
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w800,
@@ -149,23 +139,20 @@ class SingleShopCartCard extends StatelessWidget {
               Container(
                 height: getProportionateScreenWidth(75),
                 //color: Colors.tealAccent,
-                padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(10), 0,
-                    getProportionateScreenWidth(20), 0),
+                padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(10), 0, getProportionateScreenWidth(20), 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       height: getProportionateScreenWidth(79),
                       width: getProportionateScreenWidth(175),
-                      padding: EdgeInsets.fromLTRB(
-                          0, getProportionateScreenWidth(9), 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, getProportionateScreenWidth(9), 0, 0),
                       // color: Colors.red,
                       child: Row(children: [
                         Container(
                           height: getProportionateScreenWidth(62),
                           width: getProportionateScreenWidth(62),
-                          padding:
-                              EdgeInsets.all(getProportionateScreenWidth(1)),
+                          padding: EdgeInsets.all(getProportionateScreenWidth(1)),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(6),
@@ -174,7 +161,9 @@ class SingleShopCartCard extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: (shop.shopImage != null)
-                                ? CachedImage(url: shop.shopImage,)
+                                ? CachedImage(
+                                    url: shop.shopImage,
+                                  )
                                 : Image.asset("assets/images/default.jpg"),
                           ),
                         ),
@@ -192,10 +181,7 @@ class SingleShopCartCard extends StatelessWidget {
                               Text("$cartUniqueProducts Item"),
                               Text(
                                 "₹ $cartTotalCost",
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: getProportionateScreenWidth(15)),
+                                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: getProportionateScreenWidth(15)),
                               )
                             ],
                           ),
@@ -207,18 +193,14 @@ class SingleShopCartCard extends StatelessWidget {
                       height: getProportionateScreenWidth(33),
                       alignment: Alignment.center,
                       //padding: EdgeInsets.all(getProportionateScreenWidth(2)),
-                      decoration: BoxDecoration(
-                          color: color,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(.5),
-                              spreadRadius: 2,
-                              blurRadius: 8,
-                              offset:
-                                  Offset(3, 3), // changes position of shadow
-                            ),
-                          ]),
+                      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(8), boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(.5),
+                          spreadRadius: 2,
+                          blurRadius: 8,
+                          offset: Offset(3, 3), // changes position of shadow
+                        ),
+                      ]),
                       child: Container(
                         width: getProportionateScreenWidth(112),
                         height: getProportionateScreenWidth(30),
@@ -246,11 +228,7 @@ class SingleShopCartCard extends StatelessWidget {
                               children: [
                                 Text(
                                   "Order Details",
-                                  style: TextStyle(
-                                      fontSize: getProportionateScreenWidth(13),
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.1),
+                                  style: TextStyle(fontSize: getProportionateScreenWidth(13), color: Colors.black, fontWeight: FontWeight.bold, height: 1.1),
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,

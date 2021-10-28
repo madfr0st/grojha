@@ -61,10 +61,10 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: getProportionateScreenWidth(5),),
-                    bannerHeading("App not working?",Icon(Icons.report_problem_outlined,color: kPrimaryColor,)),
+                    bannerHeading("On-field Support?",Icon(Icons.support_agent_outlined,color: kPrimaryColor,)),
                     SizedBox(height: getProportionateScreenWidth(10),),
                     bannerBody(
-                        "In case of emergency tech support like app not working or major bug. Email us on admin@grojha.com or ping us on +91 77135 10615."),
+                        "In case of emergency field support. Like orders/delivery related issues. Email us on admin@grojha.com or ping us on +91 74398 52955."),
                     // SizedBox(height: getProportionateScreenWidth(10),),
                     // bannerBody(
                     //     "For tech/development related questions and queries mail us to suman.saurav@grojha.com."),
@@ -82,10 +82,10 @@ class Body extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: getProportionateScreenWidth(5),),
-                    bannerHeading("On-field Support?",Icon(Icons.support_agent_outlined,color: kPrimaryColor,)),
+                    bannerHeading("App not working?",Icon(Icons.report_problem_outlined,color: kPrimaryColor,)),
                     SizedBox(height: getProportionateScreenWidth(10),),
                     bannerBody(
-                        "In case of emergency field support like business related issues. Email us on admin@grojha.com or ping us on +91 74398 52955."),
+                        "In case of emergency tech support like app not working or major bug. Email us on admin@grojha.com or ping us on +91 77135 10615."),
                     // SizedBox(height: getProportionateScreenWidth(10),),
                     // bannerBody(
                     //     "For tech/development related questions and queries mail us to suman.saurav@grojha.com."),
