@@ -219,9 +219,10 @@ class AcceptedModifiedOrder {
 
     await databaseReference.once().then((value) {
       if(value.value!=null){
-        Map<dynamic,dynamic> map = value.value;
-        map.forEach((key, value) async {
-          String id = value;
+        List<dynamic> list = value.value;
+
+        list.forEach((val) async {
+          String id = val;
           await FCM().sendNotification(
               notifications: new Notifications(
                 title: "Hey Admin!!!",

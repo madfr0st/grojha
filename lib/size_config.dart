@@ -7,7 +7,7 @@ class SizeConfig {
   static double defaultSize;
   static Orientation orientation;
   static String phoneNumber = "";
-  static int appVersion = 5;
+  static int appVersion = 6;
 
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context).copyWith(textScaleFactor: 1.0);
