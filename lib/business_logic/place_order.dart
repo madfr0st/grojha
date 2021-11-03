@@ -28,18 +28,18 @@ class PlaceOrder {
       transaction.value = (transaction.value ?? 0) + 1;
       orderNumber = transaction.value;
       return transaction;
-    }).then((value) {
+    }).then((value) async {
       if (orderNumber != null) {
         this.order.orderId = _getOrderKey();
         _setOrderInOrders();
         _setOrderInShopAccount();
         _setOrderInUserAccount();
         _setProductList();
-        FCM().sendNotification(
+        await FCM().sendNotification(
             notifications: new Notifications(
           title: "New order",
           body:
-              "You have received a new order #${_sixDigitOrderNumber(orderNumber.toString())} of value ${order.grandTotal}/-",
+              "You have received a new order #${_sixDigitOrderNumber(orderNumber.toString())} of value ${order.grandTotal-order.deliveryCharge}/-",
           senderId: order.userId,
           receiverId: order.shopId,
           receiverType: "shops",

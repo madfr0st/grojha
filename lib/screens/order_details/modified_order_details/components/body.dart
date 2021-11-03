@@ -7,6 +7,7 @@ import '../../../../constants.dart';
 import 'details.dart';
 import '../../order_details_variables.dart';
 
+
 class Body extends StatelessWidget {
   const Body({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
   final Function notifyOrderScreen;
@@ -22,6 +23,7 @@ class Body extends StatelessWidget {
         .child(order.orderId)
         .child("productList");
 
+
     return SafeArea(
       child: FutureBuilder(
         future: databaseReference.once(),
@@ -31,6 +33,7 @@ class Body extends StatelessWidget {
               Map<dynamic, dynamic> map = snapShot.data.value;
               productList.clear();
               OrderDetailsVariables.grandTotal = 0;
+
               OrderDetailsVariables.itemTotal = 0;
 
 

@@ -71,7 +71,7 @@ class _PlaceOrderFooterState extends State<PlaceOrderFooter> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Item Total",
+                        "Total",
                         style: TextStyle(
                             height: 1,
                             color: Colors.black,

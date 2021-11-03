@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:grojha/business_logic/camel_case.dart';
 
 import 'package:grojha/size_config.dart';
 
@@ -27,9 +28,9 @@ class MenuTitle extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title,
+              CamelCase.convert(title),
               style: TextStyle(
-                fontSize: getProportionateScreenWidth(18),
+                fontSize: getProportionateScreenWidth(17),
                 color: color,
                 fontWeight: FontWeight.w800,
               ),

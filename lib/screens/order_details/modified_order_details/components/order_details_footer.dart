@@ -8,6 +8,7 @@ import 'package:grojha/business_logic/cancel_order.dart';
 import 'package:grojha/components/default_button.dart';
 import 'package:grojha/components/event_status.dart';
 import 'package:grojha/components/grad_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
@@ -36,6 +37,19 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
 
   @override
   Widget build(BuildContext context) {
+
+    for (int i = 0; i < OrderDetailsVariables.modifiedProductIdList.length; i++) {
+      if (OrderDetailsVariables.modifiedProductIdList[i].productCartCount == null || OrderDetailsVariables.modifiedProductIdList[i].productCartCount == 0) {
+        OrderDetailsVariables.modifiedProductIdList[i].productCartCount = 99999999;
+      }
+      if (OrderDetailsVariables.modifiedAddedProductCartCount[widget.order.orderId + " " + OrderDetailsVariables.modifiedProductIdList[i].productId] == null) {
+        OrderDetailsVariables.modifiedAddedProductCartCount[widget.order.orderId + " " + OrderDetailsVariables.modifiedProductIdList[i].productId] = 0;
+      } else {
+        OrderDetailsVariables.modifiedOrderItemTotal[widget.order.orderId] +=
+            OrderDetailsVariables.modifiedAddedProductCartCount[widget.order.orderId + " " + OrderDetailsVariables.modifiedProductIdList[i].productId] * OrderDetailsVariables.modifiedProductIdList[i].productSellingPrice;
+      }
+    }
+
     return Container(
       height: getProportionateScreenWidth(150),
       margin: EdgeInsets.fromLTRB(5, 20, 5, 40),
@@ -72,18 +86,12 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Item Total",
-                        style: TextStyle(
-                            height: 1,
-                            color: Colors.black,
-                            fontSize: getProportionateScreenWidth(12)),
+                        "Total",
+                        style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(12)),
                       ),
                       Text(
-                        "₹ ${OrderDetailsVariables.itemTotal}",
-                        style: TextStyle(
-                            height: 1,
-                            color: Colors.black,
-                            fontSize: getProportionateScreenWidth(12)),
+                        "₹ ${OrderDetailsVariables.modifiedOrderItemTotal[widget.order.orderId]}",
+                        style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(12)),
                       )
                     ],
                   ),
@@ -97,17 +105,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                       children: [
                         Text(
                           "Delivery",
-                          style: TextStyle(
-                              height: 1,
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(12)),
+                          style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(12)),
                         ),
                         Text(
                           "₹ ${widget.order.deliveryCharge}",
-                          style: TextStyle(
-                              height: 1,
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(12)),
+                          style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(12)),
                         )
                       ],
                     )),
@@ -120,19 +122,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                       children: [
                         Text(
                           "Grand Total",
-                          style: TextStyle(
-                              height: 1,
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(14),
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(14), fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "₹ ${OrderDetailsVariables.itemTotal + widget.order.deliveryCharge}",
-                          style: TextStyle(
-                              height: 1,
-                              color: Colors.black,
-                              fontSize: getProportionateScreenWidth(14),
-                              fontWeight: FontWeight.bold),
+                          "₹ ${OrderDetailsVariables.modifiedOrderItemTotal[widget.order.orderId] + widget.order.deliveryCharge}",
+                          style: TextStyle(height: 1, color: Colors.black, fontSize: getProportionateScreenWidth(14), fontWeight: FontWeight.bold),
                         )
                       ],
                     ))
@@ -165,8 +159,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
     );
   }
 
-  Container actionOrderButton(
-      Color borderColor, Color fillColor, GestureTapCallback press, name) {
+  Container actionOrderButton(Color borderColor, Color fillColor, GestureTapCallback press, name) {
     return Container(
       height: getProportionateScreenWidth(50),
       width: SizeConfig.screenWidth * .45,
@@ -222,11 +215,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
               ),
               child: Text(
                 "$name",
-                style: TextStyle(
-                    fontSize: getProportionateScreenWidth(17),
-                    fontWeight: FontWeight.bold,
-                    height: 1,
-                    color: Colors.black),
+                style: TextStyle(fontSize: getProportionateScreenWidth(17), fontWeight: FontWeight.bold, height: 1, color: Colors.black),
               ),
             ),
           ),
@@ -241,15 +230,13 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             elevation: 16,
             child: Container(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               width: double.infinity,
               height: getProportionateScreenWidth(200),
-              child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
+              child: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -279,11 +266,8 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                           text: "Cancel Order",
                           press: () {
                             if (areYouSure) {
-                              CancelOrder(order: widget.order)
-                                  .cancelOrder(notifySeller: true);
-                              EventStatus(popScreen: 3, context: context)
-                                  .success(
-                                      notifyParent: widget.notifyOrderScreen);
+                              CancelOrder(order: widget.order).cancelOrder(notifySeller: true);
+                              EventStatus(popScreen: 3, context: context).success(notifyParent: widget.notifyOrderScreen);
                             }
                           },
                         ),
@@ -301,8 +285,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
+          return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
             return Container(
               height: getProportionateScreenWidth(250),
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
@@ -333,19 +316,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                           children: [
                             Text(
                               "Grand Total ",
-                              style: TextStyle(
-                                  height: 1,
-                                  color: Colors.indigo,
-                                  fontSize: getProportionateScreenWidth(20),
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(height: 1, color: Colors.indigo, fontSize: getProportionateScreenWidth(20), fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${OrderDetailsVariables.itemTotal + widget.order.deliveryCharge}",
-                              style: TextStyle(
-                                  height: 1,
-                                  color: Colors.indigo,
-                                  fontSize: getProportionateScreenWidth(20),
-                                  fontWeight: FontWeight.bold),
+                              "₹ ${OrderDetailsVariables.modifiedOrderItemTotal[widget.order.orderId] + widget.order.deliveryCharge}",
+                              style: TextStyle(height: 1, color: Colors.indigo, fontSize: getProportionateScreenWidth(20), fontWeight: FontWeight.bold),
                             )
                           ],
                         )),
@@ -376,16 +351,11 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                           if (correctInfo) {
                             AcceptedModifiedOrder(
                                     order: widget.order,
-                                    modifiedAddedProductCartCount:
-                                        OrderDetailsVariables
-                                            .modifiedAddedProductCartCount,
-                                    modifiedProductSet: OrderDetailsVariables
-                                        .modifiedProductSet,
-                                    orderedProductList: OrderDetailsVariables
-                                        .orderedProductList)
+                                    modifiedAddedProductCartCount: OrderDetailsVariables.modifiedAddedProductCartCount,
+                                    modifiedProductSet: OrderDetailsVariables.modifiedProductSet,
+                                    orderedProductList: OrderDetailsVariables.orderedProductList)
                                 .acceptModifiedOrder();
-                            EventStatus(popScreen: 3, context: context).success(
-                                notifyParent: widget.notifyOrderScreen);
+                            EventStatus(popScreen: 3, context: context).success(notifyParent: widget.notifyOrderScreen);
                           }
                         },
                       ),

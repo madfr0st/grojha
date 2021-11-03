@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grojha/routes.dart';
 import 'package:grojha/screens/home/home_screen.dart';
 import 'package:grojha/screens/new_update/new_update_screen.dart';
+import 'package:grojha/screens/order_details/order_details_variables.dart';
 import 'package:grojha/screens/splash/splash_screen.dart';
 import 'package:grojha/size_config.dart';
 import 'package:grojha/theme.dart';
@@ -14,6 +15,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'message.dart';
 
@@ -63,7 +65,15 @@ Future<void> main() async {
     );
   }
 
-  runApp(App());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<OrderDetailsVariables>(create: (context) => OrderDetailsVariables()),
+        //ChangeNotifierProvider<>(create: (context) => SomeOtherClass()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 /// The API endpoint here accepts a raw FCM payload for demonstration purposes.

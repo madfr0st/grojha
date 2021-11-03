@@ -33,7 +33,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getProportionateScreenWidth(150),
+      height: getProportionateScreenWidth(100),
       margin: EdgeInsets.fromLTRB(5, 20, 5, 40),
       padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
       width: double.infinity,
@@ -51,7 +51,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             height: getProportionateScreenWidth(65),
@@ -68,7 +68,7 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Item Total",
+                        "Total",
                         style: TextStyle(
                             height: 1,
                             color: Colors.black,
@@ -134,12 +134,6 @@ class _OrderDetailsFooterState extends State<OrderDetailsFooter> {
                     ))
               ],
             ),
-          ),
-          Container(
-            height: getProportionateScreenWidth(60),
-            width: double.infinity,
-            //    color: Colors.lightGreenAccent,
-            child: buildOTPContainer(context),
           ),
         ],
       ),

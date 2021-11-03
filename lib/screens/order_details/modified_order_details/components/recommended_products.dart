@@ -4,8 +4,10 @@ import 'package:grojha/Objects/product.dart';
 import 'package:grojha/components/Instructions.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/screens/order_details/modified_order_details/components/single_product_card_order_select.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../size_config.dart';
+import '../../order_details_variables.dart';
 
 class RecommendedProducts extends StatefulWidget {
   const RecommendedProducts({Key key, this.orderId, this.notifyScreen, this.parentProduct}) : super(key: key);
@@ -23,6 +25,11 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
   Product aboveProduct;
   bool priceChanged = false;
   bool limitedStock = false;
+
+  void _refresh() {
+    widget.notifyScreen();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +57,16 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                     Container(
                       child: Column(
                         children: [
-                          SizedBox(height: getProportionateScreenWidth(10),),
+                          SizedBox(
+                            height: getProportionateScreenWidth(10),
+                          ),
                           modifiedProductHeading(),
-                          SizedBox(height: getProportionateScreenWidth(10),),
+                          SizedBox(
+                            height: getProportionateScreenWidth(10),
+                          ),
                           SingleProductCardOrderSelect(
                             product: aboveProduct,
-                            function: widget.notifyScreen,
+                            function: _refresh,
                             orderId: widget.orderId,
                           ),
                         ],
@@ -66,7 +77,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                       child: Column(
                         children: [
                           Container(
-                            child: Instructions.banner_2("Recommenced replacement that is in stock.", Colors.black, getProportionateScreenWidth(12), 2),
+                            child: Instructions.banner_2("Recommended replacement that is in stock.", Colors.black, getProportionateScreenWidth(12), 2),
                           ),
                           ...List.generate(
                               list.length,
@@ -99,8 +110,22 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
       if (snapshot.value != null) {
         try {
           list.clear();
+          OrderDetailsVariables.modifiedProductIdList.clear();
           Map<dynamic, dynamic> map = snapshot.value;
           map.forEach((key, value) {
+            OrderDetailsVariables.modifiedProductIdList.add(Product(
+                productId: key,
+                productName: value["productName"],
+                productImage: value["productImage"],
+                productCategory: value["productCategory"],
+                productUnit: value["productUnit"],
+                productSellingPrice: value["productSellingPrice"],
+                productMRP: value["productMRP"],
+                productStatus: value["productStatus"],
+                productQuantity: value["productQuantity"],
+                productCartCount: value["productCartCount"],
+                productDiscountPercentage: calcPercentage(value["productSellingPrice"], value["productMRP"])));
+
             list.add(new Product(
                 productId: key,
                 productName: value["productName"],
@@ -114,6 +139,19 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                 productCartCount: value["productCartCount"],
                 productDiscountPercentage: calcPercentage(value["productSellingPrice"], value["productMRP"])));
           });
+
+          for (int i = 0; i < list.length; i++) {
+            if (list[i].productCartCount == null || list[i].productCartCount == 0) {
+              list[i].productCartCount = 99999999;
+            }
+            if (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + list[i].productId] == null) {
+              OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + list[i].productId] = 0;
+              // if(list[i].productCartCount!=99999999){
+              //   OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + list[i].productId] = list[i].productCartCount;
+              // }
+            }
+          }
+
           return true;
         } catch (e) {
           print(e);
@@ -183,7 +221,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
               fontSize: getProportionateScreenWidth(12),
             ),
             children: [
-              TextSpan(text: 'Sorry, only '),
+              TextSpan(text: 'Sorry, for now only '),
               TextSpan(
                 text: '${aboveProduct.productCartCount} ',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -193,7 +231,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                 text: '${aboveProduct.productName} ',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              TextSpan(text: 'left.'),
+              TextSpan(text: 'left with seller.'),
             ],
           ),
         ),
@@ -220,7 +258,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
               text: '₹ ${aboveProduct.productSellingPrice} ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            TextSpan(text: 'and only '),
+            TextSpan(text: 'for now only '),
             TextSpan(
               text: '${aboveProduct.productCartCount} ',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -230,7 +268,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
               text: '${aboveProduct.productName} ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            TextSpan(text: 'left.'),
+            TextSpan(text: 'left with seller.'),
           ],
         ),
       ),

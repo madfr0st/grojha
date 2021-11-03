@@ -8,8 +8,7 @@ import 'order_details_footer.dart';
 import '../../order_details_variables.dart';
 
 class Details extends StatefulWidget {
-  const Details({Key key, this.order, this.notifyOrderScreen})
-      : super(key: key);
+  const Details({Key key, this.order, this.notifyOrderScreen}) : super(key: key);
   final Function notifyOrderScreen;
 
   final Order order;
@@ -26,6 +25,7 @@ class _DetailsState extends State<Details> {
 
   @override
   Widget build(BuildContext context) {
+    OrderDetailsVariables.modifiedOrderItemTotal[widget.order.orderId] = OrderDetailsVariables.itemTotal;
     return Column(
       children: [
         Expanded(
@@ -38,8 +38,7 @@ class _DetailsState extends State<Details> {
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
-                Instructions.orderNumberBanner(
-                    widget.order.secondaryOrderId.toString()),
+                Instructions.orderNumberBanner(widget.order.secondaryOrderId.toString()),
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
@@ -49,12 +48,12 @@ class _DetailsState extends State<Details> {
                     product: OrderDetailsVariables.orderedProductList[index],
                     order: widget.order,
                     notifyOrderScreen: _refresh,
-                    productNumber: index+1,
+                    productNumber: index + 1,
                   ),
                 ),
                 OrderDetailsFooter(
                   order: widget.order,
-                  notifyOrderScreen:_refresh,
+                  notifyOrderScreen: _refresh,
                 ),
               ],
             ),

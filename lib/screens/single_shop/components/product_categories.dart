@@ -34,8 +34,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
         _loadMore();
       }
     });
@@ -43,7 +42,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
     list = AllProductData.categoryList;
     list.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
 
-    if (list.length < _currentViewItem * 2) {
+    if (list.length/2 < _currentViewItem ) {
       _currentViewItem = (list.length / 2).floor();
     }
 
@@ -99,10 +98,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
                   itemCount: _currentViewItem,
                   itemBuilder: (context, index) {
                     return CategoryCardRow(
-                        list[index],
-                        list[index + size],
-                        color_list[_random.nextInt(color_list.length)],
-                        color_list[_random.nextInt(color_list.length)]);
+                        list[index], list[index + size], color_list[_random.nextInt(color_list.length)], color_list[_random.nextInt(color_list.length)]);
                   }),
               (_currentViewItem != list.length / 2.floor())
                   ? CircularProgressIndicator(
@@ -134,17 +130,13 @@ class _ProductCategoriesState extends State<ProductCategories> {
                   itemCount: _currentViewItem,
                   itemBuilder: (context, index) {
                     return CategoryCardRow(
-                        list[index],
-                        list[index + size],
-                        color_list[_random.nextInt(color_list.length)],
-                        color_list[_random.nextInt(color_list.length)]);
+                        list[index], list[index + size], color_list[_random.nextInt(color_list.length)], color_list[_random.nextInt(color_list.length)]);
                   }),
-              (_currentViewItem != list.length / 2.floor())
+              (_currentViewItem != (list.length / 2).floor())
                   ? CircularProgressIndicator(
                       color: kPrimaryColor,
                     )
-                  : CategoryCardRow1(list[2 * size],
-                      color_list[_random.nextInt(color_list.length)]),
+                  : CategoryCardRow1(list[2 * size], color_list[_random.nextInt(color_list.length)]),
               SizedBox(
                 height: getProportionateScreenWidth(20),
               ),
@@ -159,8 +151,7 @@ class _ProductCategoriesState extends State<ProductCategories> {
     return ranks.floor();
   }
 
-  Padding CategoryCardRow(
-      String name1, String name2, Color color1, Color color2) {
+  Padding CategoryCardRow(String name1, String name2, Color color1, Color color2) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
       child: Row(
@@ -273,14 +264,13 @@ class SingleProductCategories extends StatelessWidget {
                 width: SizeConfig.screenWidth * .3,
                 child: CachedNetworkImage(
                   imageUrl: AllProductData.categoryImageMap[name],
-                  imageBuilder: (context,image){
+                  imageBuilder: (context, image) {
                     return Container(
                       decoration: new BoxDecoration(
                         color: const Color(0xff7c94b6),
                         image: new DecorationImage(
                           fit: BoxFit.cover,
-                          colorFilter: new ColorFilter.mode(
-                              Colors.white.withOpacity(.2), BlendMode.lighten),
+                          colorFilter: new ColorFilter.mode(Colors.white.withOpacity(.2), BlendMode.lighten),
                           image: image,
                         ),
                       ),
@@ -341,10 +331,7 @@ class SingleProductCategories extends StatelessWidget {
                     ),
                     child: Text(
                       name,
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12),
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white),
+                      style: TextStyle(fontSize: getProportionateScreenWidth(12), fontWeight: FontWeight.w800, color: Colors.white),
                     ),
                   ),
                 ),

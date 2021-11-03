@@ -13,6 +13,7 @@ import 'package:new_version/new_version.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
 import 'home_header.dart';
+import 'home_searched_field.dart';
 import 'section_title.dart';
 
 class AllShops extends StatefulWidget {
@@ -76,6 +77,11 @@ class _AllShopsState extends State<AllShops> {
                         child: SingleChildScrollView(
                             controller: scrollController,
                             child: Column(children: [
+                              SizedBox(height: getProportionateScreenHeight(10)),
+                              HomeSearchField(
+                                notifyHomeScreen: _refresh,
+                              ),
+                              SizedBox(height: getProportionateScreenHeight(5)),
                               Categories(notifyHomeScreen: _refresh),
                               Padding(
                                 padding: EdgeInsets.symmetric(

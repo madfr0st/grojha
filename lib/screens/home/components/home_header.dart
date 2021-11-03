@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/icon_btn_with_counter.dart';
 import 'package:grojha/components/notification_btn_with_counter.dart';
@@ -6,6 +7,7 @@ import 'package:grojha/screens/cart/cart_screen.dart';
 import 'package:grojha/screens/notification/notification_screen.dart';
 import 'package:grojha/screens/profile/profile_screen.dart';
 import 'package:grojha/screens/searched_data/searched_shop_data.dart';
+import 'package:share/share.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -24,13 +26,7 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          HomeSearchField(
-            notifyHomeScreen: notifyHomeScreen,
-          ),
           Spacer(),
-          SizedBox(
-            width: getProportionateScreenWidth(10),
-          ),
           NotificationBtnWithCounter(
               icon: Icon(
                 Icons.notifications_outlined,
@@ -41,9 +37,18 @@ class HomeHeader extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NotificationScreen(
-                              notifyHomeScreen: notifyHomeScreen,
-                            )));
+                          notifyHomeScreen: notifyHomeScreen,
+                        )));
               }),
+          SizedBox(
+            width: getProportionateScreenWidth(10),
+          ),
+          buildShareButton(press: () {
+            // Share.share("https://play.google.com/store/apps/details?id=com.grojha.grojha");
+            Share.share(
+              "*Grojha* is a platform where you can order products in more than 20 categories from nearby local stores and get them delivered to your doorstep within 20-30 minutes.\n\nDownload the app & order now!! \n\nhttps://play.google.com/store/apps/details?id=com.grojha.grojha\n\nIn case if the above link does not work then please search *\"Grojha\"* in the Google Play Store.",
+            );
+          }),
           SizedBox(
             width: getProportionateScreenWidth(10),
           ),
@@ -62,69 +67,53 @@ class HomeHeader extends StatelessWidget {
             },
             //press: () => Navigator.pushNamed(context, CartScreen.routeName),
           ),
+          SizedBox(
+            width: getProportionateScreenWidth(10),
+          ),
         ],
       ),
     );
   }
-}
 
-class HomeSearchField extends StatelessWidget {
-  const HomeSearchField({
-    Key key,
-    this.notifyHomeScreen,
-  }) : super(key: key);
-
-  final Function notifyHomeScreen;
-
-  @override
-  Widget build(BuildContext context) {
+  Container buildShareButton({
+    GestureTapCallback press,
+  }) {
     return Container(
-        width: SizeConfig.screenWidth * 0.6,
-        padding: EdgeInsets.all(getProportionateScreenWidth(2)),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(17),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.greenAccent.withOpacity(1),
-              kPrimaryColor.withOpacity(1),
-              Color(0xff34783b),
-            ],
+      padding: EdgeInsets.all(getProportionateScreenWidth(2)),
+      height: getProportionateScreenWidth(45),
+      width: getProportionateScreenWidth(45),
+      decoration: BoxDecoration(
+        color: kPrimaryColor,
+        shape: BoxShape.circle,
+      ),
+      child: Container(
+          alignment: Alignment.center,
+          height: getProportionateScreenWidth(45),
+          width: getProportionateScreenWidth(45),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
           ),
-        ),
-        child: Material(
-            borderRadius: BorderRadius.circular(15),
+          child: Material(
+            borderRadius: BorderRadius.circular(1000),
             child: InkWell(
-          borderRadius: BorderRadius.circular(15),
-          onTap: () => showSearch(
-              context: context,
-              delegate: SearchedShopData(notifyHomeScreen: notifyHomeScreen)),
-          child: Container(
-            width: SizeConfig.screenWidth * 0.55,
-            padding: EdgeInsets.all(getProportionateScreenWidth(10)),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(1000),
+              onTap: press,
+              child: Container(
+                alignment: Alignment.center,
+                height: getProportionateScreenWidth(45),
+                width: getProportionateScreenWidth(45),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(1000),
+                ),
+                child: SvgPicture.asset(
+                  "assets/icons/share.svg",
+                  color: Colors.black,
+                  width: getProportionateScreenWidth(18),
+                  height: getProportionateScreenWidth(18),
+                ),
+              ),
             ),
-            child: Container(
-                child: Row(
-              children: [
-                Icon(
-                  Icons.search_outlined,
-                  color: kPrimaryColor,
-                ),
-                SizedBox(
-                  width: getProportionateScreenWidth(5),
-                ),
-                Text(
-                  "Search nearby shops",
-                  style: TextStyle(
-                      fontSize: getProportionateScreenWidth(15), height: 1),
-                ),
-              ],
-            )),
-          ),
-        )));
+          )),
+    );
   }
 }

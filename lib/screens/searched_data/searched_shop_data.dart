@@ -41,14 +41,6 @@ class SearchedShopData extends SearchDelegate<String> {
     final List<Shop> suggestionList = query.isEmpty
         ? []
         : AllShopData.list.where((element) {
-            if (element.shopName
-                    .toLowerCase()
-                    .startsWith(query.toLowerCase()) ||
-                element.shopCategory
-                    .toLowerCase()
-                    .startsWith(query.toLowerCase())) {
-              return true;
-            }
             if (element.shopName.toLowerCase().contains(query.toLowerCase()) ||
                 element.shopCategory
                     .toLowerCase()
@@ -86,14 +78,6 @@ class SearchedShopData extends SearchDelegate<String> {
     final List<Shop> suggestionList = query.isEmpty
         ? []
         : AllShopData.list.where((element) {
-            if (element.shopName
-                    .toLowerCase()
-                    .startsWith(query.toLowerCase()) ||
-                element.shopCategory
-                    .toLowerCase()
-                    .startsWith(query.toLowerCase())) {
-              return true;
-            }
             if (element.shopName.toLowerCase().contains(query.toLowerCase()) ||
                 element.shopCategory
                     .toLowerCase()

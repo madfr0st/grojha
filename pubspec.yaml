@@ -46,8 +46,7 @@ dependencies:
   url_launcher: ^6.0.4
   in_app_update: ^1.1.15
   new_version: ^0.0.7
-
-
+  share: ^0.6.5+4
 
 
 dev_dependencies:

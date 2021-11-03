@@ -4,6 +4,7 @@ import 'package:grojha/Objects/notifications.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/business_logic/cancel_order.dart';
+import 'package:grojha/screens/order_details/order_details_variables.dart';
 
 import 'FCM.dart';
 
@@ -51,6 +52,7 @@ class AcceptedModifiedOrder {
   void acceptModifiedOrder() {
     _removeOutOfStockProducts();
     _clearModifiedData();
+    OrderDetailsVariables.reset();
   }
 
   void _removeOrderFromUserDatabase() {
@@ -136,7 +138,7 @@ class AcceptedModifiedOrder {
     });
   }
 
-  void _removeOutOfStockProducts() {
+  Future<void> _removeOutOfStockProducts() async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("orders").child(order.orderId).child("productList");
 
     databaseReference.set({});
@@ -164,10 +166,10 @@ class AcceptedModifiedOrder {
       _setOrderToShopDatabase();
       _setOrderToOrderDatabase();
 
-      FCM().sendNotification(
+      await FCM().sendNotification(
           notifications: new Notifications(
         title: "New order",
-        body: "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal}/-",
+        body: "You have received a new order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal-order.deliveryCharge}/-",
         senderId: order.userId,
         receiverId: order.shopId,
         receiverType: "shops",

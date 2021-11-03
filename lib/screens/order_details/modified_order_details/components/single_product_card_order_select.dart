@@ -1,53 +1,40 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grojha/Objects/product.dart';
 import 'package:grojha/business_logic/camel_case.dart';
 import 'package:grojha/components/cached_image.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../size_config.dart';
 import '../../order_details_variables.dart';
 
 class SingleProductCardOrderSelect extends StatefulWidget {
-  const SingleProductCardOrderSelect(
-      {Key key, this.product, this.function, this.orderId})
-      : super(key: key);
+  const SingleProductCardOrderSelect({Key key, this.product, this.function, this.orderId}) : super(key: key);
   final Product product;
   final Function function;
   final String orderId;
 
   @override
-  _SingleProductCardOrderSelectState createState() =>
-      _SingleProductCardOrderSelectState();
+  _SingleProductCardOrderSelectState createState() => _SingleProductCardOrderSelectState();
 }
 
-class _SingleProductCardOrderSelectState
-    extends State<SingleProductCardOrderSelect> {
+class _SingleProductCardOrderSelectState extends State<SingleProductCardOrderSelect> {
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (OrderDetailsVariables.modifiedAddedProductCartCount[
-            widget.orderId + " " + widget.product.productId] ==
-        null) {
-      OrderDetailsVariables.modifiedAddedProductCartCount[
-          widget.orderId + " " + widget.product.productId] = 0;
-    }
 
-    if (widget.product.productCartCount == null ||
-        widget.product.productCartCount == 0) {
-      widget.product.productCartCount = 99999999;
-    }
+    //print( OrderDetailsVariables.modifiedOrderItemTotal[widget.orderId]);
+
+
+
 
     return Container(
       child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(0),
-            vertical: getProportionateScreenWidth(3)),
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+        margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(0), vertical: getProportionateScreenWidth(3)),
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
         height: getProportionateScreenWidth(110),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -81,19 +68,11 @@ class _SingleProductCardOrderSelectState
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey.shade300),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade300),
                         child: Container(
                             margin: EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(9),
-                                color: Colors.white),
-                            child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(9)),
-                                child: CachedImage(
-                                    url: widget.product.productImage))),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(9), color: Colors.white),
+                            child: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(9)), child: CachedImage(url: widget.product.productImage))),
                       ),
                       buildPositionedDiscountBanner()
                     ],
@@ -106,8 +85,7 @@ class _SingleProductCardOrderSelectState
                       height: getProportionateScreenWidth(100),
                       width: getProportionateScreenWidth(230),
                       //  color: Colors.blueAccent,
-                      padding: EdgeInsets.fromLTRB(
-                          getProportionateScreenWidth(10), 0, 0, 0),
+                      padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(10), 0, 0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -119,11 +97,7 @@ class _SingleProductCardOrderSelectState
                             child: Text(
                               CamelCase.convert(widget.product.productName),
                               textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getProportionateScreenWidth(15),
-                                  height: 1.1,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.black, fontSize: getProportionateScreenWidth(15), height: 1.1, fontWeight: FontWeight.bold),
                             ),
                           ),
                           Container(
@@ -155,13 +129,11 @@ class _SingleProductCardOrderSelectState
                                 SizedBox(
                                   width: getProportionateScreenWidth(10),
                                 ),
-                                (widget.product.productSellingPrice !=
-                                        widget.product.productMRP)
+                                (widget.product.productSellingPrice != widget.product.productMRP)
                                     ? Text("₹ ${widget.product.productMRP}",
                                         style: TextStyle(
                                           //color: Colors.black12,
-                                          decoration:
-                                              TextDecoration.lineThrough,
+                                          decoration: TextDecoration.lineThrough,
                                         ))
                                     : Container(),
                               ],
@@ -192,49 +164,26 @@ class _SingleProductCardOrderSelectState
                                         color: Colors.redAccent,
                                         borderRadius: BorderRadius.circular(7),
                                         child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
+                                          borderRadius: BorderRadius.circular(7),
                                           onTap: () {
-                                            if (OrderDetailsVariables
-                                                        .modifiedAddedProductCartCount[
-                                                    widget.orderId +
-                                                        " " +
-                                                        widget.product
-                                                            .productId] >
-                                                0) {
+                                            if (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId] > 0) {
                                               HapticFeedback.lightImpact();
-                                              OrderDetailsVariables
-                                                      .modifiedAddedProductCartCount[
-                                                  widget.orderId +
-                                                      " " +
-                                                      widget
-                                                          .product.productId]--;
-                                              OrderDetailsVariables.itemTotal -=
-                                                  widget.product
-                                                      .productSellingPrice;
+                                              OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId]--;
+                                              //OrderDetailsVariables.modifiedOrderItemTotal[widget.orderId] -= widget.product.productSellingPrice;
                                               setState(() {
                                                 widget.function();
                                               });
                                             }
                                           },
                                           child: Container(
-                                            width:
-                                                getProportionateScreenWidth(27),
-                                            height:
-                                                getProportionateScreenWidth(27),
+                                            width: getProportionateScreenWidth(27),
+                                            height: getProportionateScreenWidth(27),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(),
                                             child: Icon(
                                               Icons.remove_outlined,
-                                              size: getProportionateScreenWidth(
-                                                  18),
-                                              color: (OrderDetailsVariables
-                                                              .modifiedAddedProductCartCount[
-                                                          widget.orderId +
-                                                              " " +
-                                                              widget.product
-                                                                  .productId] >
-                                                      0)
+                                              size: getProportionateScreenWidth(18),
+                                              color: (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId] > 0)
                                                   ? Colors.white
                                                   : Colors.redAccent,
                                             ),
@@ -249,72 +198,37 @@ class _SingleProductCardOrderSelectState
                                           color: Colors.white,
                                         ),
                                         child: Text(
-                                          OrderDetailsVariables
-                                              .modifiedAddedProductCartCount[
-                                                  widget.orderId +
-                                                      " " +
-                                                      widget.product.productId]
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize:
-                                                  getProportionateScreenWidth(
-                                                      12),
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w800),
+                                          OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId].toString(),
+                                          style: TextStyle(fontSize: getProportionateScreenWidth(12), color: Colors.black, fontWeight: FontWeight.w800),
                                         ),
                                       ),
                                       Material(
                                         color: Colors.redAccent,
                                         borderRadius: BorderRadius.circular(7),
                                         child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
+                                          borderRadius: BorderRadius.circular(7),
                                           onTap: () {
-                                            if (OrderDetailsVariables
-                                                        .modifiedAddedProductCartCount[
-                                                    widget.orderId +
-                                                        " " +
-                                                        widget.product
-                                                            .productId] <
-                                                widget
-                                                    .product.productCartCount) {
-                                              OrderDetailsVariables
-                                                      .modifiedAddedProductCartCount[
-                                                  widget.orderId +
-                                                      " " +
-                                                      widget
-                                                          .product.productId]++;
-                                              OrderDetailsVariables
-                                                  .modifiedProductSet
-                                                  .add(widget.product);
+                                            if (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId] <
+                                                widget.product.productCartCount) {
+                                              OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId]++;
+                                              OrderDetailsVariables.modifiedProductSet.add(widget.product);
                                               HapticFeedback.lightImpact();
-                                              OrderDetailsVariables.itemTotal +=
-                                                  widget.product
-                                                      .productSellingPrice;
+                                              //OrderDetailsVariables.modifiedOrderItemTotal[widget.orderId] += widget.product.productSellingPrice;
                                               setState(() {
                                                 widget.function();
                                               });
                                             }
                                           },
                                           child: Container(
-                                            width:
-                                                getProportionateScreenWidth(27),
-                                            height:
-                                                getProportionateScreenWidth(27),
+                                            width: getProportionateScreenWidth(27),
+                                            height: getProportionateScreenWidth(27),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(),
                                             child: Icon(
                                               Icons.add_outlined,
-                                              size: getProportionateScreenWidth(
-                                                  18),
-                                              color: (OrderDetailsVariables
-                                                              .modifiedAddedProductCartCount[
-                                                          widget.orderId +
-                                                              " " +
-                                                              widget.product
-                                                                  .productId] <
-                                                      widget.product
-                                                          .productCartCount)
+                                              size: getProportionateScreenWidth(18),
+                                              color: (OrderDetailsVariables.modifiedAddedProductCartCount[widget.orderId + " " + widget.product.productId] <
+                                                      widget.product.productCartCount)
                                                   ? Colors.white
                                                   : Colors.redAccent,
                                             ),
@@ -329,10 +243,7 @@ class _SingleProductCardOrderSelectState
                             if (widget.product.productCartCount != 99999999)
                               Text(
                                 "Only ${widget.product.productCartCount} left",
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontSize: getProportionateScreenWidth(12),
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(color: kPrimaryColor, fontSize: getProportionateScreenWidth(12), fontWeight: FontWeight.bold),
                               ),
                           ],
                         )),
@@ -354,25 +265,18 @@ class _SingleProductCardOrderSelectState
             alignment: Alignment.center,
             height: getProportionateScreenWidth(20),
             width: getProportionateScreenWidth(70),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12), color: kPrimaryColor),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: kPrimaryColor),
             child: Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(10),
-                  vertical: getProportionateScreenWidth(3)),
+              padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10), vertical: getProportionateScreenWidth(3)),
               margin: EdgeInsets.all(getProportionateScreenWidth(2)),
               height: getProportionateScreenWidth(25),
               width: getProportionateScreenWidth(80),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
               child: Text(
                 "${widget.product.productDiscountPercentage}% off",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: getProportionateScreenWidth(11),
-                    color: Colors.black,
-                    height: 1),
+                style: TextStyle(fontSize: getProportionateScreenWidth(11), color: Colors.black, height: 1),
               ),
             ),
           ));

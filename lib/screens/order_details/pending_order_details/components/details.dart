@@ -69,7 +69,7 @@ class _DetailsState extends State<Details> {
   }
   Container support(){
     return Container(
-      height: getProportionateScreenWidth(60),
+      height: getProportionateScreenWidth(80),
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.fromLTRB(getProportionateScreenWidth(10),0, getProportionateScreenWidth(10), getProportionateScreenWidth(30)),
       decoration: BoxDecoration(
@@ -90,7 +90,7 @@ class _DetailsState extends State<Details> {
                   fontSize: getProportionateScreenWidth(12),
                 ),
                 children: [
-                  TextSpan(text: 'If this order have been not accepted in 15 minutes, please call '),
+                  TextSpan(text: 'If this order has not been accepted by seller in 15 minutes, please call '),
                   TextSpan(
                     text: '+91-74398-52955.',
                     style: TextStyle(fontWeight: FontWeight.bold,color: kPrimaryColor),

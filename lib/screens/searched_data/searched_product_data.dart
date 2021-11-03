@@ -41,11 +41,6 @@ class SearchedProductData extends SearchDelegate<String> {
         : AllProductData.productList.where((element) {
             if (element.productName
                 .toLowerCase()
-                .startsWith(query.toLowerCase())) {
-              return true;
-            }
-            if (element.productName
-                .toLowerCase()
                 .contains(query.toLowerCase())) {
               return true;
             }
@@ -71,11 +66,6 @@ class SearchedProductData extends SearchDelegate<String> {
     final List<Product> suggestionList = query.isEmpty
         ? []
         : AllProductData.productList.where((element) {
-            if (element.productName
-                .toLowerCase()
-                .startsWith(query.toLowerCase())) {
-              return true;
-            }
             if (element.productName
                 .toLowerCase()
                 .contains(query.toLowerCase())) {

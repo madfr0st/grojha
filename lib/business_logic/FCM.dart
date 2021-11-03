@@ -9,11 +9,11 @@ class FCM {
   String token = "";
 
   // sandbox key
-  // String serverKey =
-  //     "AAAA8lAs5eo:APA91bGCBJY7vfNH0OMEQ4U0wf7c90WNnMpQITNX60wGT_GLnTV4gnMnh3CfsLHTKhk02QFPAI1ZySVZanTNlqyMUpJVOL-N3UPRCSni5nYwmSSvVl4c0YnXJc8DtXySXwVLZv7QwB7q";
-
   String serverKey =
-      "AAAAgwfPT8E:APA91bG9lIaiQu0VJhB-80BNtCc4-Ycf2koLunnCP2qzfHB4NXNslPgE6lZrVTKUtRgJhRoiShJtuW9Sj5sVde7p39pSrHEkHLyknAsWxJKLBAnsAT2_8s5kFZxFG2FT1-n1a2WarVnd";
+      "AAAA8lAs5eo:APA91bGCBJY7vfNH0OMEQ4U0wf7c90WNnMpQITNX60wGT_GLnTV4gnMnh3CfsLHTKhk02QFPAI1ZySVZanTNlqyMUpJVOL-N3UPRCSni5nYwmSSvVl4c0YnXJc8DtXySXwVLZv7QwB7q";
+
+  // String serverKey =
+  //     "AAAAgwfPT8E:APA91bG9lIaiQu0VJhB-80BNtCc4-Ycf2koLunnCP2qzfHB4NXNslPgE6lZrVTKUtRgJhRoiShJtuW9Sj5sVde7p39pSrHEkHLyknAsWxJKLBAnsAT2_8s5kFZxFG2FT1-n1a2WarVnd";
 
 
   Future<void> sendNotification({Notifications notifications}) async {
