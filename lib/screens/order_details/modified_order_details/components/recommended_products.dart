@@ -258,7 +258,7 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
               text: '₹ ${aboveProduct.productSellingPrice} ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            TextSpan(text: 'for now only '),
+            TextSpan(text: 'and for now only '),
             TextSpan(
               text: '${aboveProduct.productCartCount} ',
               style: TextStyle(fontWeight: FontWeight.bold),

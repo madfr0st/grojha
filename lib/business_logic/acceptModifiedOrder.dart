@@ -175,6 +175,7 @@ class AcceptedModifiedOrder {
         receiverType: "shops",
         senderType: "users",
       ));
+      _notifyAdmin();
     } else {
       CancelOrder(order: order).cancelOrder();
     }
@@ -209,5 +210,32 @@ class AcceptedModifiedOrder {
   void _clearModifiedData() {
     DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("modifiedOrderDetails/${order.orderId}");
     databaseReference.set({});
+  }
+
+  Future<void> _notifyAdmin()async {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("adminDeviceId");
+
+    await databaseReference.once().then((value) {
+      if(value.value!=null){
+        Map<dynamic,dynamic> map = value.value;
+        map.forEach((key, value) async {
+          String id = value;
+          await FCM().sendNotification(
+              notifications: new Notifications(
+                title: "Hey Admin!!!",
+                body:
+                "A modified order #${_sixDigitOrderNumber(order.secondaryOrderId.toString())} of value ${order.grandTotal-order.deliveryCharge}/- has been placed.",
+                senderId: order.userId,
+                receiverId: order.shopId,
+                receiverToken: id,
+                receiverType: "shops",
+                senderType: "users",
+              ));
+        });
+      }
+    });
+
   }
 }

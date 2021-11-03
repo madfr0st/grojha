@@ -20,11 +20,11 @@ class PlaceOrder {
     _orderNumber();
   }
 
-  void _orderNumber() {
+  Future<void> _orderNumber() async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.reference().child("orderNumber");
 
-    databaseReference.runTransaction((MutableData transaction) async {
+    await databaseReference.runTransaction((MutableData transaction) async {
       transaction.value = (transaction.value ?? 0) + 1;
       orderNumber = transaction.value;
       return transaction;
@@ -46,9 +46,13 @@ class PlaceOrder {
           senderType: "users",
         ));
 
+        await _notifyAdmin();
+
         clearCart(shopUid: order.shopId);
       }
     });
+
+
   }
 
   String _sixDigitOrderNumber(String string) {
@@ -178,4 +182,35 @@ class PlaceOrder {
       });
     }
   }
+
+  Future<void> _notifyAdmin()async {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("adminDeviceId");
+    
+    await databaseReference.once().then((value) {
+      if(value.value!=null){
+        print(value.value);
+        List<dynamic> list = value.value;
+
+        list.forEach((val) async {
+          print(val);
+          String id = val.toString();
+          await FCM().sendNotification(
+              notifications: new Notifications(
+                title: "Hey Admin!!!",
+                body:
+                "A new order #${_sixDigitOrderNumber(orderNumber.toString())} of value ${order.grandTotal-order.deliveryCharge}/- has been placed.",
+                senderId: order.userId,
+                receiverId: order.shopId,
+                receiverToken: id,
+                receiverType: "shops",
+                senderType: "users",
+              ));
+        });
+      }
+    });
+    
+  }
+
 }
