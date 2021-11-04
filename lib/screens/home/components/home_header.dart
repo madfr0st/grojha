@@ -4,6 +4,7 @@ import 'package:grojha/business_logic/cart_item_count.dart';
 import 'package:grojha/components/icon_btn_with_counter.dart';
 import 'package:grojha/components/notification_btn_with_counter.dart';
 import 'package:grojha/screens/cart/cart_screen.dart';
+import 'package:grojha/screens/complete_profile/complete_profile_screen.dart';
 import 'package:grojha/screens/notification/notification_screen.dart';
 import 'package:grojha/screens/profile/profile_screen.dart';
 import 'package:grojha/screens/searched_data/searched_shop_data.dart';
@@ -26,6 +27,11 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          SizedBox(width: getProportionateScreenWidth(10),),
+          Container(
+            height: getProportionateScreenWidth(45),
+            child:Image.asset("assets/images/grojhalogo big.png"),
+          ),
           Spacer(),
           NotificationBtnWithCounter(
               icon: Icon(

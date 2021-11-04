@@ -20,8 +20,7 @@ class ProductsList extends StatefulWidget {
   final Shop shop;
   final Function notifyHomeScreen;
 
-  const ProductsList({Key key, this.shop, this.notifyHomeScreen})
-      : super(key: key);
+  const ProductsList({Key key, this.shop, this.notifyHomeScreen}) : super(key: key);
 
   @override
   _ProductsListState createState() => _ProductsListState();
@@ -46,8 +45,7 @@ class _ProductsListState extends State<ProductsList> {
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
         _loadMore();
       }
     });
@@ -57,11 +55,7 @@ class _ProductsListState extends State<ProductsList> {
   @override
   Widget build(BuildContext context) {
     shopId = widget.shop.shopId;
-    databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child("shops")
-        .child(shopId)
-        .child("products");
+    databaseReference = FirebaseDatabase.instance.reference().child("shops").child(shopId).child("products");
 
     List<Color> color_list = [
       Colors.green,
@@ -114,15 +108,13 @@ class _ProductsListState extends State<ProductsList> {
                               //controller: scrollController,
                               itemCount: _currentViewItem,
                               itemBuilder: (context, i) {
-                                Color color = color_list[
-                                _random.nextInt(color_list.length)];
+                                Color color = color_list[_random.nextInt(color_list.length)];
                                 return new ExpansionTile(
                                     title: Text(
                                       CamelCase.convert(categoryList[i]),
                                       style: TextStyle(
                                         color: color,
-                                        fontSize:
-                                        getProportionateScreenWidth(15),
+                                        fontSize: getProportionateScreenWidth(15),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -131,12 +123,10 @@ class _ProductsListState extends State<ProductsList> {
                                     initiallyExpanded: true,
                                     iconColor: color.withOpacity(.7),
                                     collapsedIconColor: color,
-                                    collapsedBackgroundColor:
-                                    color.withOpacity(0.1),
+                                    collapsedBackgroundColor: color.withOpacity(0.1),
                                     children: [
                                       ListView.builder(
-                                        physics:
-                                        const NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         // controller: scrollController,
                                         itemCount: map[categoryList[i]].length,
@@ -155,10 +145,9 @@ class _ProductsListState extends State<ProductsList> {
                           ),
                           (_currentViewItem != count)
                               ? CircularProgressIndicator(
-                            color: kPrimaryColor,
-                          )
-                              : Instructions.banner_1(
-                              "That's all", kPrimaryColor),
+                                  color: kPrimaryColor,
+                                )
+                              : Instructions.banner_1("That's all", kPrimaryColor),
                           SizedBox(
                             height: getProportionateScreenWidth(60),
                           ),
@@ -177,8 +166,8 @@ class _ProductsListState extends State<ProductsList> {
           }
           return Center(
               child: CircularProgressIndicator(
-                color: kPrimaryColor,
-              ));
+            color: kPrimaryColor,
+          ));
         });
   }
 
@@ -205,7 +194,7 @@ class _ProductsListState extends State<ProductsList> {
 
       values.forEach((key, value) {
         try {
-          if(value["productCategory"]==null){
+          if (value["productCategory"] == null) {
             print(key);
           }
           if (value["productStatus"]) {
@@ -220,14 +209,14 @@ class _ProductsListState extends State<ProductsList> {
                 productStatus: value["productStatus"],
                 productQuantity: value["productQuantity"]);
 
-            if (map.containsKey(value["productCategory"]??" ")) {
-              map[value["productCategory"]??" "].add(product);
+            if (map.containsKey(value["productCategory"] ?? " ")) {
+              map[value["productCategory"] ?? " "].add(product);
             } else {
               count++;
-              map[value["productCategory"]??" "] = [];
-              map[value["productCategory"]??" "].add(product);
-              categoryList.add(value["productCategory"]??" ");
-              AllProductData.categoryImageMap[value["productCategory"]??" "] = value["productImage"];
+              map[value["productCategory"] ?? " "] = [];
+              map[value["productCategory"] ?? " "].add(product);
+              categoryList.add(value["productCategory"] ?? " ");
+              AllProductData.categoryImageMap[value["productCategory"] ?? " "] = value["productImage"];
             }
 
             products.add(product);
@@ -239,24 +228,23 @@ class _ProductsListState extends State<ProductsList> {
 
       AllProductData.categoryList = categoryList;
 
-      AllProductData.categoryList
-          .sort((a, b) {
+      AllProductData.categoryList.sort((a, b) {
         try {
           return a.toLowerCase().compareTo(b.toLowerCase());
-        }
-        catch (e) {
-            print(a+" "+b);
-            return -1;
+        } catch (e) {
+          print(a + " " + b);
+          return -1;
         }
       });
 
       AllProductData.productList = products;
-      AllProductData.productList.sort((a, b) =>
-          a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+      AllProductData.productList.sort((a, b) => a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
 
       if (_currentViewItem > count) {
         _currentViewItem = count;
       }
     }
   }
+
+
 }
