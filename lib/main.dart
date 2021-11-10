@@ -71,7 +71,7 @@ Future<void> main() async {
         ChangeNotifierProvider<OrderDetailsVariables>(create: (context) => OrderDetailsVariables()),
         //ChangeNotifierProvider<>(create: (context) => SomeOtherClass()),
       ],
-      child: const MyApp(),
+      child: App(),
     ),
   );
 }

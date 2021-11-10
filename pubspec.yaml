@@ -47,6 +47,10 @@ dependencies:
   in_app_update: ^1.1.15
   new_version: ^0.0.7
   share: ^0.6.5+4
+  get_it: ^5.0.6
+  http: ^0.13.4
+  easy_loader: ^1.0.3
+  firebase_dynamic_links: ^3.0.1
 
 
 dev_dependencies:
