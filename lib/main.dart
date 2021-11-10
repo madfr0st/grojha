@@ -68,7 +68,8 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<OrderDetailsVariables>(create: (context) => OrderDetailsVariables()),
+        ChangeNotifierProvider<OrderDetailsVariables>(
+            create: (context) => OrderDetailsVariables()),
         //ChangeNotifierProvider<>(create: (context) => SomeOtherClass()),
       ],
       child: App(),
@@ -93,7 +94,6 @@ class _AppState extends State<App> {
   /// The future is part of the state of our widget. We should not call `initializeApp`
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
 
   @override
   void initState() {
@@ -147,7 +147,9 @@ class _AppState extends State<App> {
         // Check for errors
         if (snapshot.hasError) {
           print("snapshot error");
-          return CircularProgressIndicator(color: kPrimaryColor,);
+          return CircularProgressIndicator(
+            color: kPrimaryColor,
+          );
         }
 
         // Once complete, show your application
@@ -165,7 +167,9 @@ class _AppState extends State<App> {
 
         // Otherwise, show something whilst waiting for initialization to complete
         print("loading");
-        return CircularProgressIndicator(color: kPrimaryColor,);
+        return CircularProgressIndicator(
+          color: kPrimaryColor,
+        );
       },
     );
   }
@@ -190,7 +194,6 @@ class _MyAppState extends State<MyApp> {
     } else {
       print('User is currently null :(');
     }
-    
 
     return FutureBuilder(
         future: _logic(),
@@ -211,7 +214,7 @@ class _MyAppState extends State<MyApp> {
                     return MediaQuery(
                       child: child,
                       data:
-                      MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                          MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                     );
                   },
                 );
@@ -228,7 +231,7 @@ class _MyAppState extends State<MyApp> {
                     return MediaQuery(
                       child: child,
                       data:
-                      MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                          MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                     );
                   },
                 );
@@ -265,15 +268,14 @@ class _MyAppState extends State<MyApp> {
     await FirebaseDatabase.instance.reference().keepSynced(true);
     await FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
     DatabaseReference databaseReference =
-    FirebaseDatabase.instance.reference().child("grojhaAppVersion");
+        FirebaseDatabase.instance.reference().child("grojhaAppVersion");
 
-    return await databaseReference.once().then((value){
+    return await databaseReference.once().then((value) {
       print(value.value);
-      if(value.value<=SizeConfig.appVersion){
+      if (value.value <= SizeConfig.appVersion) {
         return true;
       }
       return false;
     });
-
   }
 }
