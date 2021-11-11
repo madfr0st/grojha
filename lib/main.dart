@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grojha/locator.dart';
 import 'package:grojha/routes.dart';
 import 'package:grojha/screens/home/home_screen.dart';
 import 'package:grojha/screens/new_update/new_update_screen.dart';
 import 'package:grojha/screens/order_details/order_details_variables.dart';
-import 'package:grojha/screens/splash/splash_screen.dart';
+import 'package:grojha/screens/splash_screen/splash_screen.dart';
 import 'package:grojha/size_config.dart';
 import 'package:grojha/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'Objects/current_user.dart';
+import 'components/loading.dart';
 import 'constants.dart';
 import 'message.dart';
 
@@ -35,6 +38,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
 
   if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
@@ -65,9 +69,11 @@ Future<void> main() async {
     );
   }
 
+  setupLocator();
   runApp(
     MultiProvider(
       providers: [
+        Provider<CurrentUser>(create: (context)=>CurrentUser()),
         ChangeNotifierProvider<OrderDetailsVariables>(
             create: (context) => OrderDetailsVariables()),
         //ChangeNotifierProvider<>(create: (context) => SomeOtherClass()),
@@ -211,6 +217,7 @@ class _MyAppState extends State<MyApp> {
                   initialRoute: string,
                   routes: routes,
                   builder: (context, child) {
+                    SizeConfig().init(context);
                     return MediaQuery(
                       child: child,
                       data:
@@ -228,6 +235,7 @@ class _MyAppState extends State<MyApp> {
                   initialRoute: NewUpdateScreen.routeName,
                   routes: routes,
                   builder: (context, child) {
+                    SizeConfig().init(context);
                     return MediaQuery(
                       child: child,
                       data:
@@ -247,6 +255,7 @@ class _MyAppState extends State<MyApp> {
                 initialRoute: NewUpdateScreen.routeName,
                 routes: routes,
                 builder: (context, child) {
+                  SizeConfig().init(context);
                   return MediaQuery(
                     child: child,
                     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -256,9 +265,7 @@ class _MyAppState extends State<MyApp> {
             }
           }
           return Center(
-            child: CircularProgressIndicator(
-              color: kPrimaryColor,
-            ),
+            child: Loading.loadingGrojha(),
           );
         });
   }

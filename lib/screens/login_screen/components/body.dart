@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grojha/components/custom_surfix_icon.dart';
+import 'package:grojha/Objects/current_user.dart';
 import 'package:grojha/components/default_button.dart';
-import 'package:grojha/screens/otp/otp_screen.dart';
+import 'package:grojha/components/instructions.dart';
+import 'package:grojha/components/utils.dart';
+import 'package:grojha/screens/otp_screen/otp_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -17,29 +20,36 @@ class Body extends StatefulWidget {
 
 class _Body extends State<Body> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> errors = [];
+  final Set<String> errors = {};
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
   void addError({String error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   void removeError({String error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
+    }
   }
+
+  String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
+
+    phoneNumber = Provider.of<CurrentUser>(context,listen: false).phoneNumber;
+    phoneNumber = "";
+
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(getProportionateScreenWidth(20)),
             child: Form(
@@ -47,26 +57,34 @@ class _Body extends State<Body> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: getProportionateScreenWidth(80),
+                    height: getProportionateScreenWidth(30),
+                  ),
+                  Instructions.heading(text: "Login With Phone Number", color: Colors.black),
+                  SizedBox(
+                    height: getProportionateScreenWidth(30),
                   ),
                   buildPhoneNumberFormField(),
                   SizedBox(
-                    height: getProportionateScreenWidth(40),
+                    height: getProportionateScreenWidth(20),
                   ),
+                  Utils.showError(set: errors),
+                  const Spacer(),
                   DefaultButton(
-                    text: "continue",
+                    text: "Continue",
                     press: () {
-                      print(SizeConfig.phoneNumber);
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        SizeConfig.phoneNumber = "+91" + SizeConfig.phoneNumber;
+                        phoneNumber = "+91" + phoneNumber;
+                        Provider.of<CurrentUser>(context,listen: false).phoneNumber = phoneNumber;
                         Navigator.pushNamed(context, OtpScreen.routeName);
-                      }
-                    },
+                     }
+                   },
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenWidth(40),
                   ),
                 ],
               ),
-            ),
           ),
         ),
       ),
@@ -77,44 +95,30 @@ class _Body extends State<Body> {
     return TextFormField(
       keyboardType: TextInputType.phone,
       inputFormatters : [FilteringTextInputFormatter.digitsOnly],
-      onSaved: (newValue) => SizeConfig.phoneNumber = newValue,
+      onSaved: (newValue) => phoneNumber = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kPhoneNumberNullError);
+          removeError(error: "Phone number must be 10 digits.");
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value.isEmpty || value.length != 10) {
-          addError(error: kPhoneNumberNullError);
+          addError(error: "Phone number must be 10 digits.");
           return "";
         }
         return null;
       },
       maxLength: 10,
       decoration: InputDecoration(
+        prefixText: "+91 ",
+        prefixStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: getProportionateScreenWidth(14)),
         labelText: "Phone Number",
         //hintText: "Enter your phone number",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
-        prefixIcon: Container(
-          alignment: Alignment.centerRight,
-          width: getProportionateScreenWidth(10),
-                height : getProportionateScreenWidth(10),
-          //color: Colors.redAccent,
-          child: Text(
-            "+91 ",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: getProportionateScreenWidth(15),
-                height: 1.2,
-                color: Colors.black),
-          ),
-
-        ),
+        suffixIcon: const Icon(Icons.phone,color: kPrimaryColor,),
       ),
     );
   }

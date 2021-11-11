@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
+import '../constants.dart';
 
 class Instructions {
   static Container banner(String string,Color color) {
@@ -92,6 +93,94 @@ class Instructions {
           textAlign: TextAlign.center,
         ),
       ),
+    );
+  }
+
+  static Container bannerWithoutBackground(
+      { String text,
+         double fontSize,
+         Color color,
+         double fontHeight}) {
+    return Container(
+      padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          height: fontHeight,
+          fontWeight: FontWeight.bold,
+          fontSize: fontSize,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  static Container heading(
+      { String text,
+         Color color,
+      }) {
+    return Container(
+      padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+      width: double.infinity,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: color,
+          height: 1.2,
+          fontWeight: FontWeight.bold,
+          fontSize: getProportionateScreenWidth(20),
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  static Container errorBanner(
+      { String text}) {
+    return Container(
+        padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error,color: Colors.red,),
+            SizedBox(width: getProportionateScreenWidth(10),),
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.red,
+                height: 1.2,
+                fontWeight: FontWeight.bold,
+                fontSize: getProportionateScreenWidth(15),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        )
+    );
+  }
+
+  static Container emptyStatusBanner(
+      { String text}) {
+    return Container(
+        padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.sentiment_very_dissatisfied,color: kPrimaryColor),
+            SizedBox(width: getProportionateScreenWidth(10),),
+            Text(
+              text,
+              style: TextStyle(
+                color: kPrimaryColor,
+                height: 1.2,
+                fontWeight: FontWeight.bold,
+                fontSize: getProportionateScreenWidth(15),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        )
     );
   }
 
