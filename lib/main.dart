@@ -6,6 +6,7 @@ import 'package:grojha/screens/home/home_screen.dart';
 import 'package:grojha/screens/new_update/new_update_screen.dart';
 import 'package:grojha/screens/order_details/order_details_variables.dart';
 import 'package:grojha/screens/splash_screen/splash_screen.dart';
+import 'package:grojha/services/push_notification_service.dart';
 import 'package:grojha/size_config.dart';
 import 'package:grojha/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,54 +23,15 @@ import 'components/loading.dart';
 import 'constants.dart';
 import 'message.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-}
 
-AndroidNotificationChannel channel;
-
-/// Initialize the [FlutterLocalNotificationsPlugin] package.
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-
-  if (!kIsWeb) {
-    channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      'This channel is used for important notifications.', // description
-      importance: Importance.high,
-    );
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    /// Create an Android Notification Channel.
-    ///
-    /// We use this channel in the `AndroidManifest.xml` file to override the
-    /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
-
   setupLocator();
+
+  await locator<PushNotificationService>().init();
+
   runApp(
     MultiProvider(
       providers: [
@@ -101,48 +63,6 @@ class _AppState extends State<App> {
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
-  @override
-  void initState() {
-    super.initState();
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage message) {
-      if (message != null) {
-        Navigator.pushNamed(context, '/message',
-            arguments: MessageArguments(message, true));
-      }
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null && !kIsWeb) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channel.description,
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
-                icon: 'applogo',
-                color: kPrimaryColor,
-                enableVibration: true,
-                playSound: true,
-              ),
-            ));
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      Navigator.pushNamed(context, '/message',
-          arguments: MessageArguments(message, true));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,29 +73,19 @@ class _AppState extends State<App> {
         // Check for errors
         if (snapshot.hasError) {
           print("snapshot error");
-          return CircularProgressIndicator(
-            color: kPrimaryColor,
-          );
+          return Loading.loadingMainGrojha();
         }
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           print("connection is done");
           //databaseReference.push().set({'name': "check", 'comment': 'A good season'});
-
-          FirebaseMessaging.instance.getToken().then((value) {
-            print(value);
-          });
-          print("---------------------------");
-
           return MyApp();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
         print("loading");
-        return CircularProgressIndicator(
-          color: kPrimaryColor,
-        );
+        return Loading.loadingMainGrojha();
       },
     );
   }
@@ -190,13 +100,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   User user = FirebaseAuth.instance.currentUser;
-  String string = SplashScreen.routeName;
+  Widget home = SplashScreen();
 
   @override
   Widget build(BuildContext context) {
     if (user != null) {
       print('User is currently signed in :)');
-      string = HomeScreen.routeName;
+      home = HomeScreen();
     } else {
       print('User is currently null :(');
     }
@@ -214,7 +124,7 @@ class _MyAppState extends State<MyApp> {
                   theme: theme(),
                   // home: SplashScreen(),
                   // We use routeName so that we dont need to remember the name
-                  initialRoute: string,
+                  home: home,
                   routes: routes,
                   builder: (context, child) {
                     SizeConfig().init(context);
@@ -264,9 +174,7 @@ class _MyAppState extends State<MyApp> {
               );
             }
           }
-          return Center(
-            child: Loading.loadingGrojha(),
-          );
+          return Loading.loadingMainGrojha();
         });
   }
 

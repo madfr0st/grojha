@@ -4,12 +4,15 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:grojha/Objects/shop.dart';
 import 'package:grojha/business_logic/get_notifications.dart';
 import 'package:grojha/components/Instructions.dart';
+import 'package:grojha/components/loading.dart';
 import 'package:grojha/constants.dart';
 import 'package:grojha/global_variables/all_shop_data.dart';
 import 'package:grojha/screens/home/components/single_shop_card.dart';
 import 'package:grojha/screens/single_shop/single_shop.dart';
+import 'package:grojha/services/dynamic_link_service.dart';
 import 'package:new_version/new_version.dart';
 
+import '../../../locator.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
 import 'home_header.dart';
@@ -19,14 +22,14 @@ import 'section_title.dart';
 class AllShops extends StatefulWidget {
   const AllShops({Key key}) : super(key: key);
   static bool showUpdate = true;
+
   @override
   _AllShopsState createState() => _AllShopsState();
 }
 
 class _AllShopsState extends State<AllShops> {
   List<Shop> shops;
-  DatabaseReference databaseReference =
-      FirebaseDatabase.instance.reference().child("pincode/700001/shops");
+  DatabaseReference databaseReference = FirebaseDatabase.instance.reference().child("pincode/700001/shops");
 
   final scrollController = ScrollController();
 
@@ -35,8 +38,7 @@ class _AllShopsState extends State<AllShops> {
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
         _loadMore();
       }
     });
@@ -51,13 +53,15 @@ class _AllShopsState extends State<AllShops> {
       setState(() {});
     }
 
-    if(AllShops.showUpdate) {
+    if (AllShops.showUpdate) {
       NewVersion(
         context: context,
         androidId: 'com.grojha.grojha',
       ).showAlertIfNecessary();
       AllShops.showUpdate = false;
     }
+
+    locator<DynamicLinkService>().handleDynamicLinks(context,_refresh);
 
     return FutureBuilder(
         future: databaseReference.once(),
@@ -84,9 +88,7 @@ class _AllShopsState extends State<AllShops> {
                               SizedBox(height: getProportionateScreenHeight(5)),
                               Categories(notifyHomeScreen: _refresh),
                               Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        getProportionateScreenWidth(20)),
+                                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                                 child: SectionTitle(
                                   title: "Shops near by",
                                   press: () {},
@@ -105,17 +107,24 @@ class _AllShopsState extends State<AllShops> {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SingleShop(
+                                                builder: (context) => SingleShop(
                                                   shop: shops[index],
                                                   notifyHomeScreen: _refresh,
                                                 ),
                                               ));
                                         });
                                   }),
-                              SizedBox(height: getProportionateScreenWidth(80),),
-                              (_currentViewItem!=AllShopData.list.length)?CircularProgressIndicator(color: kPrimaryColor,): Instructions.banner_1("That's all", kPrimaryColor),
-                              SizedBox(height: getProportionateScreenWidth(20),),
+                              SizedBox(
+                                height: getProportionateScreenWidth(80),
+                              ),
+                              (_currentViewItem != AllShopData.list.length)
+                                  ? CircularProgressIndicator(
+                                      color: kPrimaryColor,
+                                    )
+                                  : Instructions.banner_1("That's all", kPrimaryColor),
+                              SizedBox(
+                                height: getProportionateScreenWidth(20),
+                              ),
                             ])))
                   ]),
                   color: kPrimaryColor,
@@ -130,10 +139,7 @@ class _AllShopsState extends State<AllShops> {
               return Center(child: Text("Some Error Occurred!!!"));
             }
           }
-          return Center(
-              child: CircularProgressIndicator(
-            color: kPrimaryColor,
-          ));
+          return Loading.loadingGrojha();
         });
   }
 
@@ -158,7 +164,7 @@ class _AllShopsState extends State<AllShops> {
     //print(shops);
 
     AllShopData.list = shops;
-    if(_currentViewItem>shops.length){
+    if (_currentViewItem > shops.length) {
       _currentViewItem = shops.length;
     }
   }

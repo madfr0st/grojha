@@ -2,43 +2,60 @@
 
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:grojha/Objects/shop.dart';
+import 'package:grojha/screens/home/home_screen.dart';
+import 'package:grojha/screens/single_shop/single_shop.dart';
 
 import '../locator.dart';
-import 'navigation_service.dart';
+
 
 class DynamicLinkService {
-  final NavigationService _navigationService = locator<NavigationService>();
 
-  Future handleDynamicLinks() async {
+  String previousLink = "";
+
+  Future handleDynamicLinks(BuildContext context,Function function) async {
     // Get the initial dynamic link if the app is opened with a dynamic link
     final PendingDynamicLinkData data =
         await FirebaseDynamicLinks.instance.getInitialLink();
 
-    // handle link that has been retrieved
-    _handleDeepLink(data);
+    await Future.delayed(Duration(seconds: 1),(){
+      _handleDeepLink(data,context,function);
 
-    // Register a link callback to fire if the app is opened up from the background
-    // using a dynamic link.
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData dynamicLink) async {
-      // handle link that has been retrieved
-      _handleDeepLink(dynamicLink);
-    }, onError: (OnLinkErrorException e) async {
-      print('Link Failed: ${e.message}');
+      // Register a link callback to fire if the app is opened up from the background
+      // using a dynamic link.
+      FirebaseDynamicLinks.instance.onLink(
+          onSuccess: (PendingDynamicLinkData dynamicLink) async {
+            // handle link that has been retrieved
+            _handleDeepLink(dynamicLink,context,function);
+          }, onError: (OnLinkErrorException e) async {
+        print('Link Failed: ${e.message}');
+      });
     });
+
+
   }
 
-  void _handleDeepLink(PendingDynamicLinkData data) {
-    final Uri deepLink = data.link;
-    if (deepLink != null) {
-      debugPrint('_handleDeepLink | deeplink: $deepLink');
-      print(deepLink.toString());
-      var isPost = deepLink.pathSegments.contains('post');
-      if (isPost) {
-        var title = deepLink.queryParameters['shop_id'];
-        print(title.toString());
-        if (title != null) {
-          //_navigationService.navigateTo(CreatePostViewRoute, arguments: title);
+  void _handleDeepLink(PendingDynamicLinkData data,BuildContext context,Function function) {
+    if(data!=null) {
+      final Uri deepLink = data.link;
+      if (deepLink != null) {
+        debugPrint('_handleDeepLink | deeplink: $deepLink');
+        var isPost = deepLink.pathSegments.contains('post');
+        if (isPost) {
+          var title = deepLink.queryParameters['shop_id'];
+          if (title != null && title!=previousLink) {
+            previousLink = title;
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SingleShop(notifyHomeScreen: function,
+                          shop: Shop(shopId: title, shopName: "check"
+                            //notifyHomeScreen: _refresh,
+                          ),
+                        )));
+          }
         }
       }
     }
@@ -47,7 +64,7 @@ class DynamicLinkService {
   Future<String> createFirstPostLink() async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://projectred.page.link',
-      link: Uri.parse('https://www.grojha.com/post?shop_id=6adbadbadajdvahudaucv62e25428452845287542'),
+      link: Uri.parse('https://www.grojha.com/post?shop_id=LVFggWiBrfgR2ayPSdSQF7PGNY33'),
       androidParameters: AndroidParameters(
         packageName: 'com.grojha.grojha',
       ),
@@ -75,7 +92,7 @@ class DynamicLinkService {
 
     final Uri dynamicUrl = await parameters.buildUrl();
 
-    debugPrint(dynamicUrl.toString());
+    //debugPrint(dynamicUrl.toString());
 
     return dynamicUrl.toString();
   }
