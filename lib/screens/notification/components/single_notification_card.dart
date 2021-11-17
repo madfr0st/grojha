@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/notifications.dart';
-
-
+import 'package:grojha/screens/orders/orders_screen.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -10,8 +9,6 @@ class SingleNotificationCard extends StatelessWidget {
   const SingleNotificationCard({Key key, this.notifications}) : super(key: key);
 
   final Notifications notifications;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,80 +33,87 @@ class SingleNotificationCard extends StatelessWidget {
         height: getProportionateScreenWidth(100),
         width: double.infinity,
         margin: EdgeInsets.all(2),
-        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
         ),
-        child: Container(
-          //  color: Colors.redAccent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                height: getProportionateScreenHeight(18),
-                //  color: Colors.grey,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.label_important,
-                      color: kPrimaryColor,
-                      size: getProportionateScreenWidth(15),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, OrdersScreen.routeName);
+            },
+            child: Container(
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: getProportionateScreenHeight(18),
+                    //  color: Colors.grey,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.label_important,
+                          color: kPrimaryColor,
+                          size: getProportionateScreenWidth(15),
+                        ),
+                        SizedBox(
+                          width: getProportionateScreenWidth(5),
+                        ),
+                        Text(
+                          notifications.title,
+                          style: TextStyle(
+                            height: 1.1,
+                            fontSize: getProportionateScreenWidth(15),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(5),
-                    ),
-                    Text(
-                      notifications.title,
-                      style: TextStyle(
-                        height: 1.1,
-                        fontSize: getProportionateScreenWidth(15),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                height: getProportionateScreenHeight(34),
-                width: double.infinity,
-                //  color: Colors.grey,
-                alignment: Alignment.centerLeft,
-                child:  Text(
-                  notifications.body,
-                  style: TextStyle(
-                      height: 1,
-                      fontSize: getProportionateScreenWidth(12),
-                      //fontWeight: FontWeight.bold,
-                      color: Colors.black
                   ),
-                ),
-              ),
-              Container(
-                height: getProportionateScreenHeight(18),
-                //    color: Colors.grey,
-                child: Row(
-                  children: [
-                    Spacer(),
-                    Text(
-                      timesStampToDate(notifications.time),
+                  Container(
+                    height: getProportionateScreenHeight(34),
+                    width: double.infinity,
+                    //  color: Colors.grey,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      notifications.body,
                       style: TextStyle(
-                        height: 1,
-                        fontSize: getProportionateScreenWidth(12),
-                        fontWeight: FontWeight.bold,
-
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
+                          height: 1,
+                          fontSize: getProportionateScreenWidth(12),
+                          //fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
+                  Container(
+                    height: getProportionateScreenHeight(18),
+                    //    color: Colors.grey,
+                    child: Row(
+                      children: [
+                        Spacer(),
+                        Text(
+                          timesStampToDate(notifications.time),
+                          style: TextStyle(
+                            height: 1,
+                            fontSize: getProportionateScreenWidth(12),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
+
   String orderNumber(int a) {
     String num = a.toString();
     int len = num.length;
@@ -172,5 +176,4 @@ class SingleNotificationCard extends StatelessWidget {
 
     return time.toString();
   }
-
 }

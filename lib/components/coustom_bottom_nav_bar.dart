@@ -50,7 +50,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    Navigator.popAndPushNamed(context, HomeScreen.routeName);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                        HomeScreen()), (Route<dynamic> route) => false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +107,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    Navigator.popAndPushNamed(context, OrdersScreen.routeName);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                        OrdersScreen()), (Route<dynamic> route) => false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -134,7 +136,8 @@ class CustomBottomNavBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: InkWell(
                   onTap: () {
-                    Navigator.popAndPushNamed(context, ProfileScreen.routeName);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                        ProfileScreen()), (Route<dynamic> route) => false);
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

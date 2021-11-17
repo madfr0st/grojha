@@ -76,9 +76,9 @@ class _AllShopCartState extends State<AllShopCart> {
                             cartTotalCost: list[index].cartTotalProductCost,
                             cartUniqueProducts: list[index].cartUniqueProducts,
                             shop: Shop(
-                              shopName: list[index].shopName,
-                              shopId: list[index].shopId,
-                              shopCategory: list[index].shopCategory,
+                              shopName: list[index].shopName??" ",
+                              shopId: list[index].shopId??" ",
+                              shopCategory: list[index].shopCategory??" ",
                               shopImage: list[index].shopImage,
                             ),
                           );
