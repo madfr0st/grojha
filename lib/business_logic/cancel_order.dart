@@ -22,6 +22,7 @@ class CancelOrder {
     _setOrderToUserDatabase();
     _setOrderToShopDatabase();
     _setOrderToOrderDatabase();
+    _setOrderTimestamp();
     notifySeller = true;
     if(notifySeller!=null && notifySeller) {
       FCM().sendNotification(
@@ -111,6 +112,16 @@ class CancelOrder {
         .child("orders/cancelled")
         .child(order.orderId);
     ChangeOrderState(this.order,databaseReference,"cancelled");
+  }
+
+  void _setOrderTimestamp() {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("timeline/orders/${this.order.orderId}");
+    databaseReference.push().set({
+      "orderState": "cancelled",
+      "time": ServerValue.timestamp,
+    });
   }
 
 }

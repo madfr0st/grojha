@@ -21,8 +21,6 @@ import 'package:provider/provider.dart';
 import 'Objects/current_user.dart';
 import 'components/loading.dart';
 import 'constants.dart';
-import 'message.dart';
-
 
 
 Future<void> main() async {

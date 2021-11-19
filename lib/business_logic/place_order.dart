@@ -35,6 +35,7 @@ class PlaceOrder {
         _setOrderInShopAccount();
         _setOrderInUserAccount();
         _setProductList();
+        _setOrderTimestamp();
         await FCM().sendNotification(
             notifications: new Notifications(
           title: "New order",
@@ -211,6 +212,16 @@ class PlaceOrder {
       }
     });
     
+  }
+
+  void _setOrderTimestamp() {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("timeline/orders/${this.order.orderId}");
+      databaseReference.push().set({
+        "orderState": order.orderState,
+        "time": ServerValue.timestamp,
+      });
   }
 
 }

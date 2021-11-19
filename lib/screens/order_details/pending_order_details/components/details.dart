@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grojha/Objects/orders.dart';
 import 'package:grojha/components/custom_button.dart';
+import 'package:grojha/screens/order_details/order_timeline.dart';
 import 'package:grojha/screens/order_details/single_order_details_product_card_without_switch.dart';
 import 'package:grojha/size_config.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,6 +47,7 @@ class _DetailsState extends State<Details> {
                 SizedBox(
                   height: getProportionateScreenHeight(10),
                 ),
+                OrderTimeLine(order : widget.order),
                 ...List.generate(
                   OrderDetailsVariables.orderedProductList.length,
                   (index) => SingleOrderDetailsProductcardWithoutSwitch(

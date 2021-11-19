@@ -43,7 +43,7 @@ class AcceptedModifiedOrder {
       }
       order.grandTotal = totalCartCost + order.deliveryCharge;
       order.uniqueItems = processedList.length;
-      print(processedList);
+      //print(processedList);
     } catch (e) {
       print(e);
     }
@@ -165,6 +165,7 @@ class AcceptedModifiedOrder {
       _setOrderToUserDatabase();
       _setOrderToShopDatabase();
       _setOrderToOrderDatabase();
+      _setOrderTimestamp();
 
       await FCM().sendNotification(
           notifications: new Notifications(
@@ -238,5 +239,14 @@ class AcceptedModifiedOrder {
       }
     });
 
+  }
+  void _setOrderTimestamp() {
+    DatabaseReference databaseReference = FirebaseDatabase.instance
+        .reference()
+        .child("timeline/orders/${this.order.orderId}");
+    databaseReference.push().set({
+      "orderState": order.orderState,
+      "time": ServerValue.timestamp,
+    });
   }
 }
