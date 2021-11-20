@@ -17,11 +17,8 @@ class FCM {
 
   Future<void> sendNotification({Notifications notifications}) async {
     if (notifications.receiverToken == null) {
-      DatabaseReference databaseReference = FirebaseDatabase.instance
-          .reference()
-          .child(notifications.receiverType)
-          .child(notifications.receiverId)
-          .child("deviceToken");
+      DatabaseReference databaseReference =
+          FirebaseDatabase.instance.reference().child(notifications.receiverType).child(notifications.receiverId).child("deviceToken");
 
       await databaseReference.once().then((value) async {
         if (value.value != null) {
@@ -61,16 +58,13 @@ class FCM {
   String _constructFCMPayload({Notifications notifications}) {
     return jsonEncode({
       'to': notifications.receiverToken,
-      'data': {
-        "click_action": "FLUTTER_NOTIFICATION_CLICK",
-        "screen": "/orders_screen"
-      },
+      'data': {"click_action": "FLUTTER_NOTIFICATION_CLICK", "screen": "/orders_screen"},
       "priority": "high",
       'notification': {
         'title': '${notifications.title}',
         'body': '${notifications.body}',
-    "android_channel_id": "high_importance_channel", // For Android >= 8
-    "channel_id": "high_importance_channel", // For Android Version < 8
+        "android_channel_id": "high_importance_channel", // For Android >= 8
+        "channel_id": "high_importance_channel", // For Android Version < 8
       },
     });
   }
@@ -78,20 +72,13 @@ class FCM {
   static void init() {
     String uid = FirebaseAuth.instance.currentUser.uid;
     FirebaseMessaging.instance.getToken().then((token) {
-      FirebaseDatabase.instance
-          .reference()
-          .child("users")
-          .child(uid)
-          .child("deviceToken")
-          .set(token);
+      FirebaseDatabase.instance.reference().child("users").child(uid).child("deviceToken").set(token);
     });
   }
 
   void _uploadNotification({Notifications notifications}) {
-    DatabaseReference databaseReference = FirebaseDatabase.instance
-        .reference()
-        .child(
-            "${notifications.receiverType}/${notifications.receiverId}/notifications");
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.reference().child("${notifications.receiverType}/${notifications.receiverId}/notifications");
     databaseReference.push().set({
       "title": notifications.title,
       "body": notifications.body,
